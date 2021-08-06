@@ -1,7 +1,7 @@
 let apiUrl
 const apiUrls = {
-  production: '<replace-with-heroku-url>',
-  development: 'http://localhost:4741'
+	production: 'https://cryptoblox-api.herokuapp.com',
+	development: 'http://localhost:4741',
 }
 
 if (window.location.hostname === 'localhost') {

@@ -11,4 +11,5 @@ $(() => {
   $('#sign-up-form').on('submit', authEvents.onSignUp)
 	$('#sign-in-form').on('submit', authEvents.onSignIn)
 	$('#sign-out-btn').on('click', authEvents.onSignOut)
+  $('#transaction-form').on('submit', authEvents.onTransactionSubmit)
 })

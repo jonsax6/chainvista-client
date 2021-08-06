@@ -29,14 +29,24 @@ const onSignIn = (event) => {
 
 const onSignOut = (event) => {
 	event.preventDefault()
-	store.stats = false
 	api.signOut()
     .then(ui.onSignOutSuccess)
     .catch(ui.onFailure)
 }
 
+const onTransactionSubmit = (event) => {
+	event.preventDefault()
+  // console.log(event)
+	const form = event.target
+	const data = getFormFields(form)
+	api.transaction(data)
+    .then(ui.onTransactionSuccess)
+    .catch(ui.onTransactionFailure)
+}
+
 module.exports = {
   onSignUp,
   onSignIn,
-  onSignOut
+  onSignOut,
+  onTransactionSubmit
 }

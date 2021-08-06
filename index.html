@@ -18,11 +18,13 @@
             <a class="navbar-brand" href="#">
               <img src="/public/cryptoblox-logo-text.png" alt="" width="300">
             </a>
+            <button id="sign-out-btn" type="submit" class="btn btn-secondary nav-button">Sign Out</button>
+
           </div>
         </nav>
         <div class="row">
           <div class="col-12">
-            <div class="row forms mt-5">
+            <div class="row login-forms mt-5">
               <div class="col-12 m-auto sign-in">
                 <div id="sign-in" class="row">
                   <div
@@ -74,6 +76,38 @@
                 </div>
               </div>
             </div>
+            <div class="col-12">
+              <div class="row">
+                <div class="col-md-6 col-11 m-auto text-light rounded-3 bg-secondary bg-gradient border border-dark shadow-lg p-5 mt-5">
+                  <form id="transaction-form">
+                    <h4 id="transaction-title">Log a new transaction</h4>
+                    <div class="mb-3">
+                      <label class="form-label">Coin</label>
+                      <input name="transaction[coin]" type="text" class="form-control" id="form-coin" placeholder="crypto name">
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Symbol</label>
+                      <input name="transaction[symbol]" type="text" class="form-control" id="form-symbol" placeholder="crypto symbol">
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Cost</label>
+                      <input name="transaction[cost]" type="text" class="form-control" id="form-cost" placeholder="order price">
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Amount</label>
+                      <input name="transaction[amount]" type="text" class="form-control" id="form-amount" placeholder="amount">
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">orderType</label>
+                      <input name="transaction[orderType]" type="text" class="form-control" id="form-orderType" placeholder="buy/sell">
+                    </div>
+                    <button type="submit" class="btn btn-warning border-dark shadow shadow">Submit</button>
+                  </form>
+                </div>
+              </div>
+
+            </div>
+            <div class="row "></div>
           </div>
         </div>
       </div>

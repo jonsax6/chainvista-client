@@ -20,10 +20,9 @@ const onSignUpFailure = () => {
 const onSignInSuccess = (response) => {
 	store.token = response.user.token
 	store.user = response.user.email
+  console.log(store.token)
 	$('#sign-in-form').trigger('reset')
-	$('#sign-in').hide()
-	$('#sign-up').hide()
-	$('.forms').hide()
+	$('.login-forms').hide()
 	$('#sign-out-btn').show()
 	$('#sign-up-error').hide()
 }
@@ -34,9 +33,23 @@ const onSignInFailure = (error) => {
 	$('#user-login-message').text('Account not found.  Try another account.')
 }
 
+const onSignOutSuccess = () => {
+    $('.login-forms').show()
+}
+
+const onTransactionSuccess = (response) => {
+  console.log(response)
+}
+
+const onTransactionFailure = (error) => {
+	console.log(error)
+}
 module.exports = {
 	onSignUpSuccess,
-  onSignUpFailure,
-  onSignInSuccess,
-  onSignInFailure
+	onSignUpFailure,
+	onSignInSuccess,
+	onSignInFailure,
+	onSignOutSuccess,
+	onTransactionSuccess,
+	onTransactionFailure
 }
