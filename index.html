@@ -12,6 +12,70 @@
       <script src="public/application.js" type="text/javascript" charset="utf-8" defer></script>
     </head>
     <body>
-      <h1>Browser Template</h1>
+      <div class="container-lg">
+        <nav class="navbar navbar-dark bg-black">
+          <div class="container">
+            <a class="navbar-brand" href="#">
+              <img src="/public/cryptoblox-logo-text.png" alt="" width="300">
+            </a>
+          </div>
+        </nav>
+        <div class="row">
+          <div class="col-12">
+            <div class="row forms mt-5">
+              <div class="col-12 m-auto sign-in">
+                <div id="sign-in" class="row">
+                  <div
+                    class="col-md-6 col-11 text-light m-auto rounded-3 bg-secondary bg-gradient border border-dark shadow-lg p-5">
+                    <form id="sign-in-form">
+                      <h4 id="login-title">Login:</h4>
+                      <h4 id="user-login-message"></h4>
+                      <div class="mb-3">
+                        <label for="signin-email" class="form-label">Email address</label>
+                        <input name="credentials[email]" type="email" class="form-control border-dark shadow"
+                          placeholder="email@example.com">
+                      </div>
+                      <div class="mb-3">
+                        <label for="signin-password" class="form-label">Password</label>
+                        <input name="credentials[password]" type="password" class="form-control border-dark shadow"
+                          placeholder="enter password">
+                      </div>
+                      <button type="submit" class="btn btn-warning border-dark shadow">Login</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <div id="sign-up" class="col-12 m-auto mt-5 sign-up">
+                <div class="row">
+                  <div
+                    class="col-md-6 col-11 m-auto text-light rounded-3 bg-secondary bg-gradient border border-dark shadow-lg p-5">
+                    <form id="sign-up-form" autocomplete="off">
+                      <h4 id="sign-up-welcome">Sign up for a new account:</h4>
+                      <!-- <h4 id="sign-up-error">There was an error, try again...</h4> -->
+                      <div class="mb-3">
+                        <label class="form-label">Email address</label>
+                        <input id="sign-up-email" name="credentials[email]" type="email" class="form-control border-dark shadow"
+                          placeholder="email@example.com">
+                        <div id="emailHelp" class="form-text text-light">We'll never share your email with anyone else.</div>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input id="sign-up-password" name="credentials[password]" type="password"
+                          class="form-control border-dark shadow" placeholder="enter a password">
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Re-type Password</label>
+                        <input name="credentials[password_confirmation]" type="password" class="form-control border-dark shadow"
+                          placeholder="re-type your password">
+                      </div>
+                      <button type="submit" class="btn btn-warning border-dark shadow shadow">Register</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </body>
 </html>
