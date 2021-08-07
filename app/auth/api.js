@@ -39,9 +39,20 @@ const transaction = (data) => {
 	})
 }
 
+const index = () => {
+  return $.ajax({
+    url: `${apiUrl}/transactions`,
+    method: 'GET',
+    headers: {
+      Authorization: 'Bearer ' + store.token,
+    }
+  })
+}
+
 module.exports = {
 	signUp,
 	signIn,
 	signOut,
-  transaction
+  transaction,
+  index
 }

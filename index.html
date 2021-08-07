@@ -90,12 +90,12 @@
                       <input name="transaction[symbol]" type="text" class="form-control" id="form-symbol" placeholder="crypto symbol">
                     </div>
                     <div class="mb-3">
-                      <label class="form-label">Cost</label>
-                      <input name="transaction[cost]" type="text" class="form-control" id="form-cost" placeholder="order price">
+                      <label class="form-label">Price</label>
+                      <input name="transaction[price]" type="text" class="form-control" id="form-cost" placeholder="order price">
                     </div>
                     <div class="mb-3">
-                      <label class="form-label">Amount</label>
-                      <input name="transaction[amount]" type="text" class="form-control" id="form-amount" placeholder="amount">
+                      <label class="form-label">Quantity</label>
+                      <input name="transaction[quantity]" type="text" class="form-control" id="form-quantity" placeholder="quantity">
                     </div>
                     <div class="mb-3">
                       <label class="form-label">orderType</label>
@@ -103,6 +103,28 @@
                     </div>
                     <button type="submit" class="btn btn-warning border-dark shadow shadow">Submit</button>
                   </form>
+                </div>
+              </div>
+              <div class="row transaction-table mt-5">
+                <div class="col-12">
+                  <div class="tab-pane fade show active" id="nav-transaction-table" role="tabpanel" aria-labelledby="nav-home-tab">
+                    <table class="table" id="markets-table-header">
+                      <!--start of table data-->
+                      <thead id="transaction-table-header">
+                        <tr>
+                          <th class="text-left text-light" scope="col">Coin</th>
+                          <th class="text-right text-light" scope="col">Symbol</th>
+                          <th class="text-right text-light" scope="col">Price</th>
+                          <th class="text-right text-light" scope="col">Quantity</th>
+                          <th class="text-right text-light" scope="col">Order Type</th>
+                        </tr>
+                      </thead>
+                      <tbody id="transaction-table">
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">Your Watchlist
+                  </div>
                 </div>
               </div>
 

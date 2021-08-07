@@ -39,6 +39,7 @@ const onTransactionSubmit = (event) => {
   // console.log(event)
 	const form = event.target
 	const data = getFormFields(form)
+  console.log(data)
 	api.transaction(data)
     .then(ui.onTransactionSuccess)
     .catch(ui.onTransactionFailure)

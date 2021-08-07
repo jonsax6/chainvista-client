@@ -38,8 +38,34 @@ const onSignOutSuccess = () => {
 }
 
 const onTransactionSuccess = (response) => {
-  console.log(response)
+	$('#transaction-table').text('')
+  api.index()
+    .then(onIndexSuccess)
+    .catch(error => console.error(error))
 }
+
+const onIndexSuccess = (response) => {
+  const data = response.transaction
+  // iterate over the data array backwards (most recent first)
+  data.slice().reverse().forEach(transaction => {
+		const coin = transaction.coin
+		const symbol = transaction.symbol
+		const price = transaction.price
+		const quantity = transaction.quantity
+		const orderType = transaction.orderType
+		$('#transaction-form').trigger('reset')
+		$('#transaction-table').append(
+			`<tr>
+		      <th class="text-light" scope="row">${coin}</td>
+		      <td class="text-right text-light">${symbol}</td>
+		      <td class="text-right text-light">${actions.formatter.format(price)}</td>
+		      <td class="text-right text-light">${quantity}</td>
+		      <td class="text-right text-light">${orderType}</td>
+		  </tr>`
+		)
+	})
+}
+
 
 const onTransactionFailure = (error) => {
 	console.log(error)
@@ -51,5 +77,5 @@ module.exports = {
 	onSignInFailure,
 	onSignOutSuccess,
 	onTransactionSuccess,
-	onTransactionFailure
+	onTransactionFailure, 
 }
