@@ -1,5 +1,6 @@
 'use strict'
 const store = require('../store')
+const actions = require('./actions')
 const { apiUrl } = require('../config')
 
 const signUp = (data) => {
@@ -28,6 +29,18 @@ const signOut = () => {
 	})
 }
 
+const changePassword = (data) => {
+  console.log(data)
+  return $.ajax({
+		url: `${apiUrl}/change-password`,
+		method: 'PATCH',
+		headers: {
+			Authorization: 'Bearer ' + store.token,
+		},
+		data,
+  })
+}
+
 const transaction = (data) => {
   return $.ajax({
 		url: `${apiUrl}/transactions`,
@@ -49,10 +62,23 @@ const index = () => {
   })
 }
 
+const editTransaction = (data) => {
+  return $.ajax({
+		url: `${apiUrl}/transactions/${data.transaction.id}`,
+		method: 'PATCH',
+		headers: {
+			Authorization: 'Bearer ' + store.token,
+		},
+		data,
+	})
+}
+
 module.exports = {
 	signUp,
 	signIn,
 	signOut,
   transaction,
-  index
+  index,
+  editTransaction,
+  changePassword
 }

@@ -45,9 +45,38 @@ const onTransactionSubmit = (event) => {
     .catch(ui.onTransactionFailure)
 }
 
+const onTransactionEditSubmit = (event) => {
+  event.preventDefault()
+  const form = event.target
+  const data = getFormFields(form)
+  api.editTransaction(data)
+    .then(ui.onTransactionSuccess)
+    .then(ui.onTransactionFailure)
+}
+
+const onShowAccount = (event) => {
+  event.preventDefault()
+  $('#user-account-form').show()
+  $('#app-tabs').hide()
+  $('#app-tabs-content').hide()
+  $('#account-email').text(`${store.user}`)
+}
+
+const onChangePassword = (event) => {
+  event.preventDefault()
+  const form = event.target
+  const data = getFormFields(form)
+  api.changePassword(data)
+    .then(ui.onChangePasswordSuccess)
+    .catch(ui.onChangePasswordFailure)
+}
+
 module.exports = {
   onSignUp,
   onSignIn,
   onSignOut,
-  onTransactionSubmit
+  onTransactionSubmit,
+  onTransactionEditSubmit,
+  onShowAccount,
+  onChangePassword
 }

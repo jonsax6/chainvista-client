@@ -1,9 +1,35 @@
 @import '~bootstrap/scss/bootstrap';
 
+$modal-bg-clr: rgb(70, 71, 82);
+
+
 body {
   background-color: black;
 }
 
-.container {
-  // background-color: grey;
+.modal-content {
+  border-radius: 25px;
+}
+
+.modal-body {
+  background-color: $modal-bg-clr;
+}
+
+.modal-header {
+  background-color: $modal-bg-clr;
+}
+
+.modal-footer {
+  background-color: $modal-bg-clr;
+}
+
+#app-tabs li.active button { 
+  border-color: rgb(145, 145, 145);
+  border-bottom-color: transparent; 
+  background-color:Yellow;
+  border-radius: 25px;
+}
+
+.coin-logo {
+  height: 15px;
 }
