@@ -24,6 +24,7 @@ const onSignInSuccess = async (response) => {
 	store.token = response.user.token
 	store.user = response.user.email
   store.login = true
+  store.owner = response.user._id
 	console.log(store.token)
 	$('#app-tabs').show()
 	$('#user-account-span').show()
@@ -36,7 +37,7 @@ const onSignInSuccess = async (response) => {
 	$('#sign-up-error').hide()
   $('#login-title').text('Login to see your crypto:')
   await populateCoinsTable()
-  store.images = await getCoinImages(store.markets)
+  store.images = getCoinImages(store.markets)
   console.log(store.images)
 }
 
@@ -72,7 +73,7 @@ const onSignOutSuccess = () => {
   $('#app-tabs').hide()
   $('#app-tabs-content').hide()
   $('.login-forms').show()
-  $('#transaction-table').html('')
+  $('#transaction-table').empty()
   $('#user-alert-message').show()
 	$('#user-alert-message').text('See you next time!')
 	$('#user-alert-message').fadeOut(4000)
@@ -90,24 +91,46 @@ const onIndexSuccess = (response) => {
   // iterate over the data array backwards (most recent first)
   data.slice().reverse().forEach(transaction => {
 		const coin = transaction.coin
+    const coinNormalized = coin.toLowerCase()
+    const txOwner = transaction.owner
 		const symbol = transaction.symbol
 		const price = transaction.price
 		const quantity = transaction.quantity
 		const orderType = transaction.orderType
     const id = transaction._id
+    // variable for the coin images array created in getCoinImages()
+    const coins = store.images
+    // filter through coins and return the object with the same id key as 'coinNormalized' above
+    let coinImage = null
+    coins.forEach(coinObj => {
+      if (coinNormalized === coinObj.id) {
+      coinImage = coinObj.image
+      }
+    }) 
+    // variable to contain the image
+    console.log(coinImage)
+    // console.log(txOwner)
+    // const image = imageObj !== undefined ? imageObj[0].image : null
+    // console.log(image)
     // reset the modal form
 		$('#transaction-form-new').trigger('reset')
     // fills out the transactions table
-		$('#transaction-table').append(
-			`<tr>
-		      <th class="text-light" scope="row">${coin}</td>
-		      <td class="text-right text-light">${symbol}</td>
-		      <td class="text-right text-light">${actions.formatter.format(price)}</td>
-		      <td class="text-right text-light">${quantity}</td>
-		      <td class="text-right text-light">${orderType}</td>
-          <td class="text-right text-light">${id}</td>
-		  </tr>`
-		)
+    if (store.owner === txOwner) {
+      $('#transaction-table').append(
+				`<tr>
+                <th class="text-light" scope="row">
+                <b class="text-light"><img src="${coinImage}" style="height: 1em;">&nbsp;&nbsp;${coin}</b></th>
+                <td class="text-right text-light">${symbol}</td>
+                <td class="text-right text-light">${actions.formatter.format(
+									price
+								)}</td>
+                <td class="text-right text-light">${quantity}</td>
+                <td class="text-right text-light">${orderType}</td>
+                <td class="text-right text-light">${id}</td>
+            </tr>`
+			)
+    }
+		
 	})
 }
 
@@ -229,6 +252,8 @@ const getCoinImages = (data) => {
 const onShowMarkets = async () => {
   populateCoinsTable()
 }
+
+
 
 module.exports = {
 	onSignUpSuccess,
