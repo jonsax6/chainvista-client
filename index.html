@@ -205,6 +205,26 @@
                   </div>
                   <!-- portfolio tab content -->
                   <div class="tab-pane light" id="portfolio" role="tabpanel" aria-labelledby="portfolio-tab">
+                    <div class="row">
+                      <div class="col-6 m-auto">
+                        <div class="card text-white bg-dark m-auto mt-4">
+                          <div class="text-center">
+                            <img src="public/chainvista-logo-notxt.png" class="card-img-top card-img-header text-center" alt="crypto-logo">
+                          </div>
+                          <div class="card-body">
+                            <h5 class="card-title">Account Portfolio</h5>
+                            <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                          </div>
+                            <ul class="list-group list-group-flush">
+                              <li id="account-usd-value" class="list-group-item bg-secondary text-light">Total USD Value:</li>
+                            </ul>
+                            <ul class="list-group list-group-flush">
+                              <li id="account-btc-value" class="list-group-item bg-secondary text-light">Total BTC Value:</li>
+                            </ul>
+                        </div>
+                      </div>
+                    </div>
+                   
                     <div id="portfolio-cards" class="row">
                       <!-- <div class="col-lg-3 col-md-4 colsm-6 col-12">
                         <div class="card text-white bg-dark m-auto mt-4" style="width: 18rem;">
@@ -436,3 +456,9 @@
       </div>
     </body>
 </html>
+
+<!-- code to go in the portfolio cards after modal generation working -->
+<!--  <a class="edit-tx" type="submit" href="#" data-id="${id}" data-bs-toggle="modal"
+        data-bs-target="#edit-transaction-modal" style="text-decoration:none">edit &nbsp;</a><span>/</span>
+      <a class="delete-tx" type="submit" href="#" data-id="${id}" data-bs-toggle="modal"
+        data-bs-target="#delete-transaction-modal" style="text-decoration:none">delete</a> -->

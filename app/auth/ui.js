@@ -159,8 +159,7 @@ const onIndexSuccess = (response) => {
                 <td class="text-right text-light">${quantity}</td>
                 <td class="text-right text-light">${orderType}</td>
                 <td class="text-right text-light">
-                  <a class="edit-tx" type="submit" href="#" data-id="${id}" data-bs-toggle="modal" data-bs-target="#edit-transaction-modal" style="text-decoration:none">edit &nbsp;</a><span>/</span>
-                  <a class="delete-tx" type="submit" href="#" data-id="${id}" data-bs-toggle="modal" data-bs-target="#delete-transaction-modal" style="text-decoration:none">delete</a>
+                  ${id}
                 </td>
             </tr>`
 			)
@@ -203,7 +202,7 @@ const populateCoinsTable = async () => {
   // const data = await res.json()
   let data = store.markets
 
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 100; i++) {
     let coinData = data[i]
     const MarketCap = coinData.market_cap
       ? Number(coinData.market_cap).toFixed(2)
@@ -283,6 +282,7 @@ const getCoinImages = (data) => {
 }
 
 const onShowMarkets = async () => {
+  $('.market-tab-table').empty()
   populateCoinsTable()
 }
 
@@ -314,6 +314,8 @@ const onShowPortfolio = () => {
   console.log(portfolio)
   let coinImage = null
   let usdValue 
+  let totalUsdValue = 0
+  let totalBtcValue = 0
   let change
   let price
   let circSupply
@@ -332,6 +334,8 @@ const onShowPortfolio = () => {
       if(coin === crypto.id) {
         price = crypto.current_price
         usdValue = portfolio[coin] * price
+        totalUsdValue += usdValue
+        totalBtcValue = totalUsdValue / store.markets[0].current_price
         change = crypto.price_change_percentage_24h
         change = change.toPrecision(3)
         circSupply = crypto.circulating_supply
@@ -358,11 +362,8 @@ const onShowPortfolio = () => {
 							usdValue
 						)}</li>
             <li class="list-group-item bg-dark text-${changeColor}">24h Change: ${change}%</li>
-            <li class="list-group-item bg-dark text-light">Market Cap: ${actions.formatter.format(
-							marketCap
-						)}</li>
-            <li class="list-group-item bg-dark text-light">Circ Supply: ${circSupply}</li>
-
+            <li class="list-group-item bg-dark text-light">Market Cap: ${actions.formatter.format(marketCap)}</li>
+            <li class="list-group-item bg-dark text-light">Circ Supply: ${new Intl.NumberFormat().format(circSupply)}</li>
           </ul>
           <div class="card-body">
             <a href="#" class="card-link">Card link</a>
@@ -371,6 +372,8 @@ const onShowPortfolio = () => {
         </div>
       </div>`
 		)
+    $('#account-usd-value').text(`Total USD Value: ${actions.formatter.format(totalUsdValue)}`)
+    $('#account-btc-value').text(`Total BTC Value: ${new Intl.NumberFormat().format(totalBtcValue)}`)
   }
 }
 
