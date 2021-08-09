@@ -7,11 +7,13 @@ const api = require('./api')
 const BASE_URL = 'https://api.coingecko.com/api/v3'
 let PG = 1
 
-const coinsMarkets = async () => {
-  let marketData = `${BASE_URL}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=${PG}&sparkline=true`
-	const res = await fetch(marketData)
+const allCoinsMarkets = async (PG) => {
+  let allMarketData = `${BASE_URL}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=${PG}&sparkline=true`
+	const res = await fetch(allMarketData)
 	const data = await res.json()
-  return data
+  data.forEach(coin => {
+    store.markets.push(coin)
+  })
 } 
 
 const onSignUpSuccess = (response) => {
@@ -28,13 +30,10 @@ const onSignUpFailure = () => {
 }
 
 const onSignInSuccess = async (response) => {
-  // store.markets = coinsMarkets()
-  // console.log(store.markets)
 	store.token = response.user.token
 	store.user = response.user.email
   store.login = true
   store.owner = response.user._id
-	console.log(store.token)
 	$('#app-tabs').show()
 	$('#user-account-span').show()
 	$('#user-account-form').hide()
@@ -45,6 +44,11 @@ const onSignInSuccess = async (response) => {
 	$('#sign-out-btn').show()
 	$('#sign-up-error').hide()
   $('#login-title').text('Login to see your crypto:')
+  $('#user-alert-message').show()
+	$('#user-alert-message').text('...fetching market data...')
+  await onRefreshMarkets()
+  $('#user-alert-message').hide()
+	$('#user-alert-message').text('')
   await populateCoinsTable()
   store.images = getCoinImages(store.markets)
   console.log(store.images)
@@ -91,7 +95,9 @@ const onSignOutSuccess = () => {
 
 const onTransactionSuccess = (response) => {
 	$('#transaction-table').text('')
-  $('#transaction-form-new, transaction-form-edit, transaction-form-delete').trigger('reset')
+  $('#transaction-form-new').trigger('reset')
+  $('#transaction-form-edit').trigger('reset')
+  $('#transaction-form-delete').trigger('reset')
   api.index()
     .then(onIndexSuccess)
     .catch(error => console.error(error))
@@ -111,7 +117,9 @@ const getCoinUrl = (coin) => {
 }
 
 const onIndexSuccess = (response) => {
+  // make a data variable from the fetched transactions from API
   const data = response.transaction
+  // make the data available to the global store object
   store.transactions = data
   console.log(store.transactions)
   // iterate over the data array backwards (most recent first)
@@ -127,8 +135,8 @@ const onIndexSuccess = (response) => {
     // variable for the coin images array created in getCoinImages()
     const coins = store.images
     // filter through coins and return the object with the same id key as 'coinNormalized' above
+    // variable to contain the image
     let coinImage = null
-    
     coins.forEach(coinObj => {
       // if the object from the images object array's coin key is the same as key we're iterating above
       // grab that URL and bind it to coinImage variable
@@ -136,12 +144,7 @@ const onIndexSuccess = (response) => {
       coinImage = coinObj.image
       }
     }) 
-    // variable to contain the image
     console.log(coinImage)
-    // console.log(txOwner)
-    // const image = imageObj !== undefined ? imageObj[0].image : null
-    // console.log(image)
-    // reset the modal form
 		$('#transaction-form-new').trigger('reset')
     // fills out the transactions table
     if (store.owner === txOwner) {
@@ -155,11 +158,13 @@ const onIndexSuccess = (response) => {
 								)}</td>
                 <td class="text-right text-light">${quantity}</td>
                 <td class="text-right text-light">${orderType}</td>
-                <td class="text-right text-light">${id}</td>
+                <td class="text-right text-light">
+                  <a class="edit-tx" type="submit" href="#" data-id="${id}" data-bs-toggle="modal" data-bs-target="#edit-transaction-modal" style="text-decoration:none">edit &nbsp;</a><span>/</span>
+                  <a class="delete-tx" type="submit" href="#" data-id="${id}" data-bs-toggle="modal" data-bs-target="#delete-transaction-modal" style="text-decoration:none">delete</a>
+                </td>
             </tr>`
 			)
     }
-		
 	})
 }
 
@@ -193,12 +198,12 @@ const current_BTC_price = async () => {
 }
 
 const populateCoinsTable = async () => {
-  let marketData = `${BASE_URL}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=${PG}&sparkline=true`
-  const res = await fetch(marketData)
-  const data = await res.json()
-  store.markets = data
+  // let marketData = `${BASE_URL}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=${PG}&sparkline=true`
+  // const res = await fetch(marketData)
+  // const data = await res.json()
+  let data = store.markets
 
-  for (let i = 0; i < data.length; i++) {
+  for (let i = 0; i < 50; i++) {
     let coinData = data[i]
     const MarketCap = coinData.market_cap
       ? Number(coinData.market_cap).toFixed(2)
@@ -231,7 +236,7 @@ const populateCoinsTable = async () => {
       //if change is a negative number show it red
       classColor = 'danger'
     }
-    $('#market-tab-table').append(
+    $('.market-tab-table').append(
 			//populates the table rows with data from API
 			`<tr>
                 <th class="text-right text-light" scope="row">${
@@ -337,17 +342,25 @@ const onShowPortfolio = () => {
 			`
       <div class="col-lg-3 col-md-4 col-sm-6 col-12 rounded-3">
         <div class="card text-white bg-dark m-auto mt-4" style="width: 18rem;">
-          <img src="${coinImage}" class="card-img-top" alt="...">
+          <div class="text-center">
+            <img src="${coinImage}" class="card-img-top text-center" alt="crypto-logo">
+          </div>
           <div class="card-body">
             <h5 class="card-title">${coin}</h5>
             <p class="card-text">${portfolio[coin]}
             </p>
           </div>
           <ul class="list-group list-group-flush">
-            <li class="list-group-item bg-secondary text-light">Current Price: ${actions.formatter.format(price)}</li>
-            <li class="list-group-item bg-secondary text-light">USD value: ${actions.formatter.format(usdValue)}</li>
+            <li class="list-group-item bg-secondary text-light">Current Price: ${actions.formatter.format(
+							price
+						)}</li>
+            <li class="list-group-item bg-secondary text-light">USD value: ${actions.formatter.format(
+							usdValue
+						)}</li>
             <li class="list-group-item bg-dark text-${changeColor}">24h Change: ${change}%</li>
-            <li class="list-group-item bg-dark text-light">Market Cap: ${actions.formatter.format(marketCap)}</li>
+            <li class="list-group-item bg-dark text-light">Market Cap: ${actions.formatter.format(
+							marketCap
+						)}</li>
             <li class="list-group-item bg-dark text-light">Circ Supply: ${circSupply}</li>
 
           </ul>
@@ -359,9 +372,20 @@ const onShowPortfolio = () => {
       </div>`
 		)
   }
-
 }
 
+const onRefreshMarkets = async () => {
+  store.markets = []
+  $('#user-alert-message').show()
+  $('#user-alert-message').text('...fetching market data...')
+  for(let i = 1; i < 6; i++) {
+    await allCoinsMarkets(i)
+  }
+  $('#user-alert-message').hide()
+	$('#user-alert-message').text('')
+  console.log(store.markets)
+  store.images = getCoinImages(store.markets)
+}
 
 module.exports = {
 	onSignUpSuccess,
@@ -377,5 +401,6 @@ module.exports = {
   current_BTC_price,
   populateCoinsTable,
   onShowMarkets,
-  onShowPortfolio
+  onShowPortfolio,
+  onRefreshMarkets
 }

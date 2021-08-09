@@ -17,7 +17,7 @@
         <nav class="navbar navbar-expand-lg navbar-dark bg-black">
           <div class="container-fluid">
             <a class="navbar-brand" href="#">
-              <img src="/public/chainvista-logo.png" alt="" width="300">
+              <img src="public/chainvista-logo.png" alt="" width="300">
             </a>            
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
               aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,9 +26,9 @@
             <div class="collapse navbar-collapse" id="navbarText">
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <!-- <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="#">Home</a>
-                </li>
-                <li class="nav-item">
+
+                </li> -->
+                <!-- <li class="nav-item">
                   <a class="nav-link" href="#">Features</a>
                 </li>
                 <li class="nav-item">
@@ -45,8 +45,8 @@
         <div class="row">
           <div class="col-12">
             <div class="row">
-              <div class="col-12 m-auto text-center">
-                <h4 id="user-alert-message" class="text-light"></h4>
+              <div class="col-12 m-auto mt-4 text-center">
+                <h5 id="user-alert-message" class="text-light"></h5>
               </div>
             </div>
             <div id="login-forms" class="row login-forms mt-5">
@@ -167,6 +167,17 @@
                       </li>
                     </ul>
                   </li>
+                  <li class="nav-item rounded-3">
+                    <button id="refresh-markets" type="button" class="nav-link">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise"
+                        viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"></path>
+                        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z">
+                        </path>
+                      </svg>
+                      refresh markets
+                    </button>                  
+                  </li>
 
 
 
@@ -176,7 +187,7 @@
                   <div class="tab-pane light show active" id="markets-tab" role="tabpanel" aria-labelledby="markets-tab">
                     <table class="table table-responsive" id="markets-table-header">
                       <!--start of table data-->
-                      <thead id="cmc-table-header">
+                      <thead id="table-header">
                         <tr>
                           <th class="text-right text-light" scope="col">Rank</th>
                           <th class="text-left text-light" scope="col">Name</th>
@@ -188,7 +199,7 @@
                           <th class="text-right text-primary" scope="col">Price Graph(7d)</th>
                         </tr>
                       </thead>
-                      <tbody id="market-tab-table">
+                      <tbody class="market-tab-table">
                       </tbody>
                     </table>
                   </div>
@@ -289,7 +300,7 @@
                             <th class="text-right text-success" scope="col">Price</th>
                             <th class="text-right text-success" scope="col">Quantity</th>
                             <th class="text-right text-success" scope="col">Order Type</th>
-                            <th class="text-right text-secondary" scope="col">Transaction ID</th>
+                            <th class="text-right text-secondary" scope="col">Edit / Delete Tx</th>
                           </tr>
                         </thead>
                         <tbody id="transaction-table">
@@ -381,7 +392,7 @@
                             <input name="transaction[id]" type="text" class="form-control" id="form-id-edit"
                               placeholder="transaction ID">
                           </div>
-                          <button type="submit" class="btn btn-warning border-dark shadow shadow">Submit</button>
+                          <button id="edit-tx-submit" type="submit" class="btn btn-warning border-dark shadow shadow">Submit</button>
                         </form>
                       </div>
                       <div class="modal-footer text-light">
