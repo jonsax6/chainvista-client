@@ -10,7 +10,6 @@
       <!-- Do not add `script` tags-->
       <script src="public/vendor.js" type="text/javascript" charset="utf-8" defer></script>
       <script src="public/application.js" type="text/javascript" charset="utf-8" defer></script>
-      <!-- <script src="https://omnipotent.net/jquery.sparkline/2.1.2/jquery.sparkline.js"></script> -->
 
     </head>
     <body>
@@ -39,7 +38,7 @@
               <span id="user-account-span" class="navbar-text">
                 <a id="user-account-text" class="nav-link active" href="#">user account</a>
               </span>
-              <button id="sign-out-btn" type="submit" class="btn btn-secondary nav-button ms-3">Sign Out</button>
+              <button id="sign-out-btn" type="submit" class="btn btn-primary nav-button ms-3">Sign Out</button>
             </div>
           </div>
         </nav>
@@ -129,7 +128,7 @@
             </div>
             <div id="transactions" class="row">
               <div class="col-12">
-                <!-- main tabs section -->
+                <!-- main tabs menus section -->
                 <ul class="nav nav-tabs mt-5" id="app-tabs" role="tablist">
                   <li class="nav-item me-3 rounded-3" role="presentation">
                     <button class="nav-link active" id="market-tab" data-bs-toggle="tab" data-bs-target="#markets-tab" type="button" role="tab"
@@ -143,23 +142,39 @@
                     <button class="nav-link" id="transactions-tab" data-bs-toggle="tab" data-bs-target="#transactions-list" type="button" role="tab"
                       aria-controls="transactions-list" aria-selected="false">Transactions</button>
                   </li>
-                  <li class="nav-item me-3 rounded-3">
-                    <!-- New transaction trigger modal -->
-                    <button type="button" class="nav-link" data-bs-toggle="modal" data-bs-target="#new-transaction-modal">
-                      Add Transaction
-                    </button>
+
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                      aria-expanded="false">Tx Options</a>
+                    <ul class="dropdown-menu">
+                      <li class="dropdown-item me-3 rounded-3">
+                        <!-- New transaction trigger modal -->
+                        <button type="button" class="nav-link" data-bs-toggle="modal" data-bs-target="#new-transaction-modal">
+                          Add Transaction
+                        </button>
+                      </li>                      
+                      <li class="dropdown-item rounded-3">
+                        <!-- Edit transaction trigger modal -->
+                        <button type="button" class="nav-link" data-bs-toggle="modal" data-bs-target="#edit-transaction-modal">
+                          Edit Transaction
+                        </button>
+                      </li>                                          
+                      <li class="dropdown-item rounded-3">
+                        <!-- Delete transaction trigger modal -->
+                        <button type="button" class="nav-link" data-bs-toggle="modal" data-bs-target="#delete-transaction-modal">
+                          Delete Transaction
+                        </button>
+                      </li>
+                    </ul>
                   </li>
-                  <li class="nav-item rounded-3">
-                    <!-- Edit transaction trigger modal -->
-                    <button type="button" class="nav-link" data-bs-toggle="modal" data-bs-target="#edit-transaction-modal">
-                      Edit Transaction
-                    </button>
-                  </li>
+
+
+
                 </ul>
                 <div class="tab-content" id="app-tabs-content">
                   <!-- markets-tab content -->
                   <div class="tab-pane light show active" id="markets-tab" role="tabpanel" aria-labelledby="markets-tab">
-                    <table class="table" id="markets-table-header">
+                    <table class="table table-responsive" id="markets-table-header">
                       <!--start of table data-->
                       <thead id="cmc-table-header">
                         <tr>
@@ -179,7 +194,88 @@
                   </div>
                   <!-- portfolio tab content -->
                   <div class="tab-pane light" id="portfolio" role="tabpanel" aria-labelledby="portfolio-tab">
-
+                    <div id="portfolio-cards" class="row">
+                      <!-- <div class="col-lg-3 col-md-4 colsm-6 col-12">
+                        <div class="card text-white bg-dark m-auto mt-4" style="width: 18rem;">
+                          <img src="https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579" class="card-img-top" alt="...">
+                          <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+                              content.
+                            </p>
+                          </div>
+                          <ul class="list-group list-group-flush">
+                            <li class="list-group-item">An item</li>
+                            <li class="list-group-item">A second item</li>
+                            <li class="list-group-item">A third item</li>
+                          </ul>
+                          <div class="card-body">
+                            <a href="#" class="card-link">Card link</a>
+                            <a href="#" class="card-link">Another link</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-3 col-md-4 colsm-6 col-12">
+                        <div class="card text-white bg-dark m-auto mt-4" style="width: 18rem;">
+                          <img src="..." class="card-img-top" alt="...">
+                          <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+                              content.
+                            </p>
+                          </div>
+                          <ul class="list-group list-group-flush">
+                            <li class="list-group-item">An item</li>
+                            <li class="list-group-item">A second item</li>
+                            <li class="list-group-item">A third item</li>
+                          </ul>
+                          <div class="card-body">
+                            <a href="#" class="card-link">Card link</a>
+                            <a href="#" class="card-link">Another link</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-3 col-md-4 colsm-6 col-12">
+                        <div class="card text-white bg-dark m-auto mt-4" style="width: 18rem;">
+                          <img src="..." class="card-img-top" alt="...">
+                          <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+                              content.
+                            </p>
+                          </div>
+                          <ul class="list-group list-group-flush">
+                            <li class="list-group-item">An item</li>
+                            <li class="list-group-item">A second item</li>
+                            <li class="list-group-item">A third item</li>
+                          </ul>
+                          <div class="card-body">
+                            <a href="#" class="card-link">Card link</a>
+                            <a href="#" class="card-link">Another link</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-3 col-md-4 colsm-6 col-12">
+                        <div class="card text-white bg-dark m-auto mt-4" style="width: 18rem;">
+                          <img src="..." class="card-img-top" alt="...">
+                          <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+                              content.
+                            </p>
+                          </div>
+                          <ul class="list-group list-group-flush">
+                            <li class="list-group-item">An item</li>
+                            <li class="list-group-item">A second item</li>
+                            <li class="list-group-item">A third item</li>
+                          </ul>
+                          <div class="card-body">
+                            <a href="#" class="card-link">Card link</a>
+                            <a href="#" class="card-link">Another link</a>
+                          </div>
+                        </div>
+                      </div> -->
+                    </div>
                   </div>
                   <!-- transactions tab content -->
                   <div class="tab-pane" id="transactions-list" role="tabpanel" aria-labelledby="transactions-tab">
@@ -204,54 +300,6 @@
                 </div>
 
                 <div class="row">
-                </div>
-                <!-- edit transaction modal -->
-                <div class="modal custom fade" id="edit-transaction-modal" tabindex="-1" aria-labelledby="editTransactionModalLabel"
-                  aria-hidden="true">
-                  <div class="modal-dialog">
-                    <div class="modal-content content-dark">
-                      <div class="modal-header">
-                        <h5 class="modal-title text-light" id="editTransactionModalLabel">Log a new transaction</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body text-light">
-                        <form id="transaction-form-edit">
-                          <div class="mb-3">
-                            <label class="form-label">Coin</label>
-                            <input name="transaction[coin]" type="text" class="form-control" id="form-coin-edit" placeholder="crypto name">
-                          </div>
-                          <div class="mb-3">
-                            <label class="form-label">Symbol</label>
-                            <input name="transaction[symbol]" type="text" class="form-control" id="form-symbol-edit"
-                              placeholder="crypto symbol">
-                          </div>
-                          <div class="mb-3">
-                            <label class="form-label">Price</label>
-                            <input name="transaction[price]" type="text" class="form-control" id="form-cost-edit" placeholder="order price">
-                          </div>
-                          <div class="mb-3">
-                            <label class="form-label">Quantity</label>
-                            <input name="transaction[quantity]" type="text" class="form-control" id="form-quantity-edit"
-                              placeholder="quantity">
-                          </div>
-                          <div class="mb-3">
-                            <label class="form-label">orderType</label>
-                            <input name="transaction[orderType]" type="text" class="form-control" id="form-orderType-edit"
-                              placeholder="buy/sell">
-                          </div>
-                          <div class="mb-3">
-                            <label class="form-label">Tx ID</label>
-                            <input name="transaction[id]" type="text" class="form-control" id="form-id-edit" placeholder="transaction ID">
-                          </div>
-                          <button type="submit" class="btn btn-warning border-dark shadow shadow">Submit</button>
-                        </form>
-                      </div>
-                      <div class="modal-footer text-light">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
-                      </div>
-                    </div>
-                  </div>
                 </div>
                 <!-- New Transaction Modal -->
                 <div class="modal custom fade" id="new-transaction-modal" tabindex="-1" aria-labelledby="newTransactionModalLabel" aria-hidden="true">
@@ -292,8 +340,84 @@
                     </div>
                   </div>
                 </div>
+                <!-- edit transaction modal -->
+                <div class="modal custom fade" id="edit-transaction-modal" tabindex="-1" aria-labelledby="editTransactionModalLabel"
+                  aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content content-dark">
+                      <div class="modal-header">
+                        <h5 class="modal-title text-light" id="editTransactionModalLabel">Log a new transaction</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body text-light">
+                        <form id="transaction-form-edit">
+                          <div class="mb-3">
+                            <label class="form-label">Coin</label>
+                            <input name="transaction[coin]" type="text" class="form-control" id="form-coin-edit"
+                              placeholder="crypto name">
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Symbol</label>
+                            <input name="transaction[symbol]" type="text" class="form-control" id="form-symbol-edit"
+                              placeholder="crypto symbol">
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Price</label>
+                            <input name="transaction[price]" type="text" class="form-control" id="form-cost-edit"
+                              placeholder="order price">
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Quantity</label>
+                            <input name="transaction[quantity]" type="text" class="form-control" id="form-quantity-edit"
+                              placeholder="quantity">
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">orderType</label>
+                            <input name="transaction[orderType]" type="text" class="form-control" id="form-orderType-edit"
+                              placeholder="buy/sell">
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">Tx ID</label>
+                            <input name="transaction[id]" type="text" class="form-control" id="form-id-edit"
+                              placeholder="transaction ID">
+                          </div>
+                          <button type="submit" class="btn btn-warning border-dark shadow shadow">Submit</button>
+                        </form>
+                      </div>
+                      <div class="modal-footer text-light">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- delete transaction modal -->
+                <div class="modal custom fade" id="delete-transaction-modal" tabindex="-1" aria-labelledby="deleteTransactionModalLabel"
+                  aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title text-light" id="deleteTransactionModalLabel">Delete a transaction</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body text-light">
+                        <form id="transaction-form-delete">
+                          <div class="mb-3">
+                            <label class="form-label">Tx ID</label>
+                            <input name="transaction[id]" type="text" class="form-control" id="form-id-delete" placeholder="transaction ID">
+                          </div>
+                          <button type="submit" class="btn btn-warning border-dark shadow shadow">Submit</button>
+                        </form>
+                      </div>
+                      <div class="modal-footer text-light">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 </div>
               </div>
+
             </div>
 
           </div>

@@ -7,6 +7,13 @@ const api = require('./api')
 const BASE_URL = 'https://api.coingecko.com/api/v3'
 let PG = 1
 
+const coinsMarkets = async () => {
+  let marketData = `${BASE_URL}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=${PG}&sparkline=true`
+	const res = await fetch(marketData)
+	const data = await res.json()
+  return data
+} 
+
 const onSignUpSuccess = (response) => {
 	$('#sign-up-form').trigger('reset')
 	$('#sign-up').hide()
@@ -21,6 +28,8 @@ const onSignUpFailure = () => {
 }
 
 const onSignInSuccess = async (response) => {
+  // store.markets = coinsMarkets()
+  // console.log(store.markets)
 	store.token = response.user.token
 	store.user = response.user.email
   store.login = true
@@ -74,6 +83,7 @@ const onSignOutSuccess = () => {
   $('#app-tabs-content').hide()
   $('.login-forms').show()
   $('#transaction-table').empty()
+  $('#portfolio-cards').empty()
   $('#user-alert-message').show()
 	$('#user-alert-message').text('See you next time!')
 	$('#user-alert-message').fadeOut(4000)
@@ -81,13 +91,29 @@ const onSignOutSuccess = () => {
 
 const onTransactionSuccess = (response) => {
 	$('#transaction-table').text('')
+  $('#transaction-form-new, transaction-form-edit, transaction-form-delete').trigger('reset')
   api.index()
     .then(onIndexSuccess)
     .catch(error => console.error(error))
 }
 
+const getCoinUrl = (coin) => {
+	const coins = store.images
+	// filter through coins and return the object with the same id key as 'coinNormalized' above
+	coins.forEach((coinObj) => {
+		// if the object from the images object array's coin key is the same as key we're iterating above
+		// grab that URL and bind it to coinImage variable above.
+		if (coin === coinObj.id) {
+			coinImage = coinObj.image
+			return
+		}
+	})
+}
+
 const onIndexSuccess = (response) => {
   const data = response.transaction
+  store.transactions = data
+  console.log(store.transactions)
   // iterate over the data array backwards (most recent first)
   data.slice().reverse().forEach(transaction => {
 		const coin = transaction.coin
@@ -102,7 +128,10 @@ const onIndexSuccess = (response) => {
     const coins = store.images
     // filter through coins and return the object with the same id key as 'coinNormalized' above
     let coinImage = null
+    
     coins.forEach(coinObj => {
+      // if the object from the images object array's coin key is the same as key we're iterating above
+      // grab that URL and bind it to coinImage variable
       if (coinNormalized === coinObj.id) {
       coinImage = coinObj.image
       }
@@ -119,7 +148,7 @@ const onIndexSuccess = (response) => {
       $('#transaction-table').append(
 				`<tr>
                 <th class="text-light" scope="row">
-                <b class="text-light"><img src="${coinImage}" style="height: 1em;">&nbsp;&nbsp;${coin}</b></th>
+                <b class="text-light"><img src="${coinImage}" style="height: 1.5em;">&nbsp;&nbsp;${coin}</b></th>
                 <td class="text-right text-light">${symbol}</td>
                 <td class="text-right text-light">${actions.formatter.format(
 									price
@@ -164,11 +193,10 @@ const current_BTC_price = async () => {
 }
 
 const populateCoinsTable = async () => {
-  let COINS_MARKETS = `${BASE_URL}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=${PG}&sparkline=true`
-  const res = await fetch(COINS_MARKETS)
+  let marketData = `${BASE_URL}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=${PG}&sparkline=true`
+  const res = await fetch(marketData)
   const data = await res.json()
   store.markets = data
-  console.log(store.markets[0])
 
   for (let i = 0; i < data.length; i++) {
     let coinData = data[i]
@@ -193,7 +221,7 @@ const populateCoinsTable = async () => {
     const coinName = coinData.name
     const capSymbol = coinSymbol.toUpperCase() //converts lowercase coin symbols to uppercase
 
-    //table dynamically created, data feed from fetch(COINS_MARKETS)
+    //table dynamically created, data feed from fetch(marketData)
     var classColor //variable to change color class for percent change 24h (coinDelta).
     if (coinDelta > 0) {
       //if change is a positive number show it green
@@ -211,7 +239,7 @@ const populateCoinsTable = async () => {
 								}</td>
                 <td><b class="text-light"><img src="${
 									coinData.image
-								}" style="height: 1em;">&nbsp;&nbsp;${coinName}</b></td>
+								}" style="height: 1.5em;">&nbsp;&nbsp;${coinName}</b></td>
                 <td class="text-right text-light">${actions.formatter.format(
 									MarketCap
 								)}</td>
@@ -253,6 +281,86 @@ const onShowMarkets = async () => {
   populateCoinsTable()
 }
 
+const onShowPortfolio = () => {
+  $('#portfolio-cards').empty()
+  let txs = store.transactions
+  let markets = store.markets
+  console.log(markets)
+  let portfolio = {}
+  txs.forEach(tx => {
+    console.log(tx.coin)
+    console.log(tx.quantity)
+    let coin = tx.coin.toLowerCase()
+    if(store.owner === tx.owner) {
+      if(!(coin in portfolio)) {
+        portfolio[coin] = 0
+      }
+    }
+  })
+  for (const coin in portfolio) {
+    txs.forEach(tx => {
+      // if the coin in the store transactions array is the same as the coin were iterating
+      // add the quantity from that coin object to the coin key in the portfolio 
+      if(tx.coin.toLowerCase() === coin && store.owner === tx.owner) {
+        portfolio[coin] += tx.quantity
+      }
+    })
+  }
+  console.log(portfolio)
+  let coinImage = null
+  let usdValue 
+  let change
+  let price
+  let circSupply
+  let marketCap
+  let changeColor = change > 0 ? 'success' : 'danger'
+  for (const coin in portfolio) {
+    const coins = store.images
+    coins.forEach((coinObj) => {
+			// if the object from the images object array's coin key is the same as key we're iterating above
+			// grab that URL and bind it to coinImage variable
+			if (coin === coinObj.id) {
+				coinImage = coinObj.image
+			}
+		})
+    markets.forEach(crypto => {
+      if(coin === crypto.id) {
+        price = crypto.current_price
+        usdValue = portfolio[coin] * price
+        change = crypto.price_change_percentage_24h
+        change = change.toPrecision(3)
+        circSupply = crypto.circulating_supply
+        marketCap = crypto.market_cap
+      }
+    })
+    $('#portfolio-cards').append(
+			`
+      <div class="col-lg-3 col-md-4 col-sm-6 col-12 rounded-3">
+        <div class="card text-white bg-dark m-auto mt-4" style="width: 18rem;">
+          <img src="${coinImage}" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">${coin}</h5>
+            <p class="card-text">${portfolio[coin]}
+            </p>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item bg-secondary text-light">Current Price: ${actions.formatter.format(price)}</li>
+            <li class="list-group-item bg-secondary text-light">USD value: ${actions.formatter.format(usdValue)}</li>
+            <li class="list-group-item bg-dark text-${changeColor}">24h Change: ${change}%</li>
+            <li class="list-group-item bg-dark text-light">Market Cap: ${actions.formatter.format(marketCap)}</li>
+            <li class="list-group-item bg-dark text-light">Circ Supply: ${circSupply}</li>
+
+          </ul>
+          <div class="card-body">
+            <a href="#" class="card-link">Card link</a>
+            <a href="#" class="card-link">Another link</a>
+          </div>
+        </div>
+      </div>`
+		)
+  }
+
+}
 
 
 module.exports = {
@@ -268,5 +376,6 @@ module.exports = {
 	onLogoClick,
   current_BTC_price,
   populateCoinsTable,
-  onShowMarkets
+  onShowMarkets,
+  onShowPortfolio
 }

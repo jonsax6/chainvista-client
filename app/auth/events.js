@@ -54,6 +54,17 @@ const onTransactionEditSubmit = (event) => {
     .then(ui.onTransactionFailure)
 }
 
+
+const onTransactionDeleteSubmit = (event) => {
+	event.preventDefault()
+	const form = event.target
+	const data = getFormFields(form)
+  const id = data.transaction.id
+	api.deleteTransaction(id)
+		.then(ui.onTransactionSuccess)
+		.then(ui.onTransactionFailure)
+}
+
 const onShowAccount = (event) => {
   event.preventDefault()
   $('#user-account-form').show()
@@ -72,11 +83,12 @@ const onChangePassword = (event) => {
 }
 
 module.exports = {
-  onSignUp,
-  onSignIn,
-  onSignOut,
-  onTransactionSubmit,
-  onTransactionEditSubmit,
-  onShowAccount,
-  onChangePassword
+	onSignUp,
+	onSignIn,
+	onSignOut,
+	onTransactionSubmit,
+	onTransactionEditSubmit,
+	onShowAccount,
+	onChangePassword,
+	onTransactionDeleteSubmit
 }

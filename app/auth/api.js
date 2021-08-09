@@ -73,6 +73,16 @@ const editTransaction = (data) => {
 	})
 }
 
+const deleteTransaction = (id) => {
+	return $.ajax({
+		url: `${apiUrl}/transactions/${id}`,
+		method: 'DELETE',
+		headers: {
+			Authorization: 'Bearer ' + store.token,
+		},
+	})
+}
+
 module.exports = {
 	signUp,
 	signIn,
@@ -80,5 +90,6 @@ module.exports = {
   transaction,
   index,
   editTransaction,
-  changePassword
+  changePassword,
+  deleteTransaction
 }

@@ -23,6 +23,9 @@ $(() => {
 	$('#sign-out-btn').on('click', authEvents.onSignOut)
   $('#transactions-tab').on('click', ui.onTransactionSuccess)
   $('#market-tab').on('click', ui.onShowMarkets)
+  $('#portfolio-tab').on('click', ui.onShowPortfolio)
   $('#transaction-form-new').on('submit', authEvents.onTransactionSubmit)
   $('#transaction-form-edit').on('submit', authEvents.onTransactionEditSubmit)
+  $('#transaction-form-delete').on('submit', authEvents.onTransactionDeleteSubmit)
+
 })
