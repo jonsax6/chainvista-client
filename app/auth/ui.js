@@ -300,16 +300,21 @@ const onShowMarkets = async () => {
 
 const onShowPortfolio = () => {
   $('#portfolio-cards').empty()
+  // variable for the fetched transactions from database
   let txs = store.transactions
+  // variable for large database from coingecko
   let markets = store.markets
-  console.log(markets)
+  // initialize portfolio object
   let portfolio = {}
+  // iterate over transactions
   txs.forEach(tx => {
-    console.log(tx.coin)
-    console.log(tx.quantity)
+    // make the coin name all lower case for each transaction
     let coin = tx.coin.toLowerCase()
+    // if user owns the transaction
     if(store.owner === tx.owner) {
+      // and if the token is NOT already in the portfolio object
       if(!(coin in portfolio)) {
+        // initialize this crypto into the portfolio starting at 0
         portfolio[coin] = 0
       }
     }
