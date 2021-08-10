@@ -21,7 +21,7 @@ const sparkLine = (data, color,i) => {
 	$(`#sparkline${i}`).sparkline(data, {
 		type: 'line',
 		width: '160',
-		height: '30',
+		height: '40',
 		lineColor: color,
 		fillColor: null,
 		lineWidth: 1.5,

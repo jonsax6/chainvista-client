@@ -162,10 +162,10 @@ const onIndexSuccess = (response) => {
       $('#transaction-table').append(
 				`<tr>
                 <td class="text-light" scope="row">
-                <b><img src="${coinImage}" style="height: 1.5em;">&nbsp;&nbsp;${coin}</b></td>
+                <b><img src="${coinImage}" style="height: 1em;">&nbsp;&nbsp;${coin}</b></td>
                 <td class="text-right">${symbol}</td>
                 <td class="text-right">${actions.formatter.format(price)}</td>
-                <td class="text-right">${quantity}</td>
+                <td class="text-right">${new Intl.NumberFormat().format(quantity)}</td>
                 <td class="text-right">${orderType}</td>
                 <td class="text-right">
                   <a class="edit-tx" href="#" data-id="${id}" data-bs-toggle="modal"
@@ -249,13 +249,13 @@ const populateCoinsTable = async () => {
     $('.market-tab-table').append(
 			//populates the table rows with data from API
 			`<tr>
-                <th class="text-right" scope="row">${coinData.market_cap_rank}</td>
-                <td><b class="text-right"><img src="${coinData.image}" style="height: 1.5em;">&nbsp;&nbsp;${coinName}</b></td>
+                <td class="text-right" scope="row">${coinData.market_cap_rank}</td>
+                <td><b class="text-right"><img src="${coinData.image}" style="height: 1em;">&nbsp;&nbsp;&nbsp;${coinName}</b></td>
                 <td class="text-right">${actions.formatter.format(MarketCap)}</td>
                 <td class="text-right">${actions.formatter.format(coinPrice)}</td>
                 <td class="text-right">${actions.formatter.format(cirSuppy)}&nbsp;${capSymbol}</td>
                 <td id="coin-change-percent" class="text-right text-${classColor}">${coinDelta}%</td>
-                <td class="text-right"><span id="sparkline${i}"></span></td>
+                <td class="text-right p-0"><span id="sparkline${i}"></span></td>
             </tr>`
 		)
     //control flow for painting sparklines green (up-trending) or red (down-trending)
