@@ -1,6 +1,6 @@
 @import '~bootstrap/scss/bootstrap';
 
-$modal-bg-clr: rgb(70, 71, 82);
+$modal-bg-clr: rgb(43, 53, 78);
 
 
 body {
@@ -12,7 +12,8 @@ body {
 }
 
 .modal-body {
-  background-color: $modal-bg-clr;
+  background: rgb(31,56,120);
+  background: linear-gradient(0deg, rgba(31,56,120,1) 0%, rgba(56,85,159,1) 50%, rgba(86,116,195,1) 100%);
 }
 
 .modal-header {
@@ -76,7 +77,11 @@ a .nav-link .dropdown-toggle {
   background-color: black;
 }
 .table {
-  color: rgb(213, 213, 213);
+  color: rgb(186, 186, 186);
+}
+
+.text-table {
+  color: rgb(186, 186, 186);
 }
 
 .card-img-top {
@@ -98,3 +103,8 @@ a .nav-link .dropdown-toggle {
 #sign-out-btn:hover {
   background-color: #587edd;
 }
+
+.forms-bg {
+  background: rgb(31,56,120);
+  background: linear-gradient(0deg, rgba(31,56,120,1) 0%, rgba(56,85,159,1) 50%, rgba(86,116,195,1) 100%);
+} 

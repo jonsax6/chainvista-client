@@ -7,8 +7,10 @@ const authEvents = require('./auth/events')
 const store = require('./store')
 const events = require('./auth/events')
 const ui = require('./auth/ui')
+const Modal = require('bootstrap').Modal
 
 $(() => {
+
   $('#user-account-span').hide()
   $('#user-alert-message').hide()
   $('#app-tabs').hide()
@@ -28,5 +30,8 @@ $(() => {
   $('#transaction-form-new').on('submit', authEvents.onTransactionSubmit)
   $('#transaction-form-edit').on('submit', authEvents.onTransactionEditSubmit)
   $('#transaction-form-delete').on('submit', authEvents.onTransactionDeleteSubmit)
+  $('#transaction-table').on('click', '.delete-tx', authEvents.onTransactionDeleteModal)
+  $('#transaction-table').on('click', '.edit-tx', authEvents.onTransactionEditModal)
+
 
 })

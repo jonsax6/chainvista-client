@@ -93,6 +93,17 @@ const onSignOutSuccess = () => {
 	$('#user-alert-message').fadeOut(4000)
 }
 
+const onEditTransactionSuccess = () => {
+  $('#transaction-table').text('')
+  $('#transaction-form-new').trigger('reset')
+  $('#transaction-form-edit').trigger('reset')
+  $('#transaction-form-delete').trigger('reset')
+  $('#editTransactionModalLabel').text('Your transaction was revised.')
+  api.index()
+    .then(onIndexSuccess)
+    .catch(error => console.error(error))
+}
+
 const onTransactionSuccess = (response) => {
 	$('#transaction-table').text('')
   $('#transaction-form-new').trigger('reset')
@@ -159,7 +170,9 @@ const onIndexSuccess = (response) => {
                 <td class="text-right text-light">${quantity}</td>
                 <td class="text-right text-light">${orderType}</td>
                 <td class="text-right text-light">
-                  ${id}
+                  <a class="edit-tx" href="#" data-id="${id}" data-bs-toggle="modal"
+                    data-bs-target="#edit-transaction-modal" style="text-decoration:none">edit &nbsp;</a><span>/</span>
+                  <a class="delete-tx" href="#" data-id="${id}" style="text-decoration:none">delete</a>                
                 </td>
             </tr>`
 			)
@@ -238,26 +251,14 @@ const populateCoinsTable = async () => {
     $('.market-tab-table').append(
 			//populates the table rows with data from API
 			`<tr>
-                <th class="text-right text-light" scope="row">${
-									coinData.market_cap_rank
-								}</td>
-                <td><b class="text-light"><img src="${
-									coinData.image
-								}" style="height: 1.5em;">&nbsp;&nbsp;${coinName}</b></td>
-                <td class="text-right text-light">${actions.formatter.format(
-									MarketCap
-								)}</td>
-                <td class="text-right text-light">${actions.formatter.format(
-									coinPrice
-								)}</td>
-                <td class="text-right text-light">${actions.formatter.format(
-									volume
-								)}</td>
-                <td class="text-right text-light">${actions.formatter.format(
-									cirSuppy
-								)}&nbsp;${capSymbol}</td>
+                <th class="text-right" scope="row">${coinData.market_cap_rank}</td>
+                <td><b class="text-right"><img src="${coinData.image}" style="height: 1.5em;">&nbsp;&nbsp;${coinName}</b></td>
+                <td class="text-right">${actions.formatter.format(MarketCap)}</td>
+                <td class="text-right">${actions.formatter.format(coinPrice)}</td>
+                <td class="text-right">${actions.formatter.format(volume)}</td>
+                <td class="text-right">${actions.formatter.format(cirSuppy)}&nbsp;${capSymbol}</td>
                 <td id="coin-change-percent" class="text-right text-${classColor}">${coinDelta}%</td>
-                <td class="text-right text-light"><span id="sparkline${i}"></span></td>
+                <td class="text-right"><span id="sparkline${i}"></span></td>
             </tr>`
 		)
     //control flow for painting sparklines green (up-trending) or red (down-trending)
@@ -365,10 +366,6 @@ const onShowPortfolio = () => {
             <li class="list-group-item bg-dark text-light">Market Cap: ${actions.formatter.format(marketCap)}</li>
             <li class="list-group-item bg-dark text-light">Circ Supply: ${new Intl.NumberFormat().format(circSupply)}</li>
           </ul>
-          <div class="card-body">
-            <a href="#" class="card-link">Card link</a>
-            <a href="#" class="card-link">Another link</a>
-          </div>
         </div>
       </div>`
 		)
@@ -401,9 +398,10 @@ module.exports = {
 	onChangePasswordSuccess,
 	onChangePasswordFailure,
 	onLogoClick,
-  current_BTC_price,
-  populateCoinsTable,
-  onShowMarkets,
-  onShowPortfolio,
-  onRefreshMarkets
+	current_BTC_price,
+	populateCoinsTable,
+	onShowMarkets,
+	onShowPortfolio,
+	onRefreshMarkets,
+	onEditTransactionSuccess
 }

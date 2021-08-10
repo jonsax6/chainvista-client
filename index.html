@@ -53,8 +53,7 @@
               <!-- sign-in form -->
               <div class="col-12 m-auto sign-in">
                 <div id="sign-in" class="row">
-                  <div
-                    class="col-md-6 col-11 text-light m-auto rounded-3 bg-dark bg-gradient border border-dark shadow-lg p-5">
+                  <div class="col-md-6 col-11 text-light m-auto forms-bg rounded-3 border-dark shadow-lg p-5">
                     <form id="sign-in-form">
                       <h4 id="login-title">Login to see your crypto:</h4>
                       <div class="mb-3">
@@ -76,7 +75,7 @@
               <div id="sign-up" class="col-12 m-auto mt-5 sign-up">
                 <div class="row">
                   <div
-                    class="col-md-6 col-11 m-auto text-light rounded-3 bg-dark bg-gradient border border-dark shadow-lg p-5">
+                    class="col-md-6 col-11 m-auto text-light rounded-3 forms-bg border border-dark shadow-lg p-5">
                     <form id="sign-up-form" autocomplete="off">
                       <h4 id="sign-up-welcome">Sign up for a new account:</h4>
                       <div class="mb-3">
@@ -142,30 +141,11 @@
                     <button class="nav-link" id="transactions-tab" data-bs-toggle="tab" data-bs-target="#transactions-list" type="button" role="tab"
                       aria-controls="transactions-list" aria-selected="false">Transactions</button>
                   </li>
-
-                  <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-                      aria-expanded="false">Tx Options</a>
-                    <ul class="dropdown-menu">
-                      <li class="dropdown-item me-3 rounded-3">
-                        <!-- New transaction trigger modal -->
-                        <button type="button" class="nav-link" data-bs-toggle="modal" data-bs-target="#new-transaction-modal">
-                          Add Transaction
-                        </button>
-                      </li>                      
-                      <li class="dropdown-item rounded-3">
-                        <!-- Edit transaction trigger modal -->
-                        <button type="button" class="nav-link" data-bs-toggle="modal" data-bs-target="#edit-transaction-modal">
-                          Edit Transaction
-                        </button>
-                      </li>                                          
-                      <li class="dropdown-item rounded-3">
-                        <!-- Delete transaction trigger modal -->
-                        <button type="button" class="nav-link" data-bs-toggle="modal" data-bs-target="#delete-transaction-modal">
-                          Delete Transaction
-                        </button>
-                      </li>
-                    </ul>
+                  <li class="nav-item me-3 rounded-3" role="presentation">
+                    <!-- New transaction trigger modal -->
+                    <button type="button" class="nav-link" data-bs-toggle="modal" data-bs-target="#new-transaction-modal">
+                      Add Transaction
+                    </button>
                   </li>
                   <li class="nav-item rounded-3">
                     <button id="refresh-markets" type="button" class="nav-link">
@@ -189,14 +169,14 @@
                       <!--start of table data-->
                       <thead id="table-header">
                         <tr>
-                          <th class="text-right text-light" scope="col">Rank</th>
-                          <th class="text-left text-light" scope="col">Name</th>
+                          <th class="text-left text-table" scope="col">Rank</th>
+                          <th class="text-left text-table" scope="col">Name</th>
                           <th class="text-right text-success" scope="col">Market Cap</th>
                           <th class="text-right text-success" scope="col">Price</th>
                           <th class="text-right text-success" scope="col">Volume (24h)</th>
                           <th class="text-right text-warning" scope="col">Circulating Supply</th>
-                          <th class="text-right text-primary" scope="col">Change (24h)</th>
-                          <th class="text-right text-primary" scope="col">Price Graph(7d)</th>
+                          <th class="text-right text-primary" scope="col">24h</th>
+                          <th class="text-right text-primary" scope="col">7-Day</th>
                         </tr>
                       </thead>
                       <tbody class="market-tab-table">
@@ -377,7 +357,7 @@
                   <div class="modal-dialog">
                     <div class="modal-content content-dark">
                       <div class="modal-header">
-                        <h5 class="modal-title text-light" id="editTransactionModalLabel">Log a new transaction</h5>
+                        <h5 class="modal-title text-light" id="editTransactionModalLabel">Revise your transaction.</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body text-light">
@@ -406,11 +386,6 @@
                             <label class="form-label">orderType</label>
                             <input name="transaction[orderType]" type="text" class="form-control" id="form-orderType-edit"
                               placeholder="buy/sell">
-                          </div>
-                          <div class="mb-3">
-                            <label class="form-label">Tx ID</label>
-                            <input name="transaction[id]" type="text" class="form-control" id="form-id-edit"
-                              placeholder="transaction ID">
                           </div>
                           <button id="edit-tx-submit" type="submit" class="btn btn-warning border-dark shadow shadow">Submit</button>
                         </form>
@@ -458,7 +433,7 @@
 </html>
 
 <!-- code to go in the portfolio cards after modal generation working -->
-<!--  <a class="edit-tx" type="submit" href="#" data-id="${id}" data-bs-toggle="modal"
+ <!-- <a class="edit-tx" type="submit" href="#" data-id="${id}" data-bs-toggle="modal"
         data-bs-target="#edit-transaction-modal" style="text-decoration:none">edit &nbsp;</a><span>/</span>
       <a class="delete-tx" type="submit" href="#" data-id="${id}" data-bs-toggle="modal"
         data-bs-target="#delete-transaction-modal" style="text-decoration:none">delete</a> -->

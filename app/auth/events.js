@@ -49,11 +49,31 @@ const onTransactionEditSubmit = (event) => {
   event.preventDefault()
   const form = event.target
   const data = getFormFields(form)
+  data.transaction.id = store.editTxId
   api.editTransaction(data)
-    .then(ui.onTransactionSuccess)
+    .then(ui.onEditTransactionSuccess)
     .then(ui.onTransactionFailure)
 }
 
+
+//-----------------------------------------//
+const onTransactionEditModal = (event) => {
+	event.preventDefault()
+  $('#editTransactionModalLabel').text('Revise your transaction.')
+  const editButton = event.target
+  store.editTxId = $(editButton).data('id')
+  console.log(store.editTxId)
+}
+
+const onTransactionDeleteModal = (event) => {
+	event.preventDefault()
+	const deleteButton = event.target
+	const id = $(deleteButton).data('id')
+	api
+		.deleteTransaction(id)
+		.then(ui.onTransactionSuccess)
+		.then(ui.onTransactionFailure)
+}
 
 const onTransactionDeleteSubmit = (event) => {
 	event.preventDefault()
@@ -90,5 +110,7 @@ module.exports = {
 	onTransactionEditSubmit,
 	onShowAccount,
 	onChangePassword,
-	onTransactionDeleteSubmit
+	onTransactionDeleteSubmit,
+	onTransactionDeleteModal,
+	onTransactionEditModal,
 }
