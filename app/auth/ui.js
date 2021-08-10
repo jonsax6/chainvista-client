@@ -161,13 +161,13 @@ const onIndexSuccess = (response) => {
     if (store.owner === txOwner) {
       $('#transaction-table').append(
 				`<tr>
-                <th class="text-light" scope="row">
-                <b class="text-table"><img src="${coinImage}" style="height: 1.5em;">&nbsp;&nbsp;${coin}</b></th>
-                <td class="text-right text-table">${symbol}</td>
-                <td class="text-right text-table">${actions.formatter.format(price)}</td>
-                <td class="text-right text-table">${quantity}</td>
-                <td class="text-right text-table">${orderType}</td>
-                <td class="text-right text-table">
+                <td class="text-light" scope="row">
+                <b><img src="${coinImage}" style="height: 1.5em;">&nbsp;&nbsp;${coin}</b></td>
+                <td class="text-right">${symbol}</td>
+                <td class="text-right">${actions.formatter.format(price)}</td>
+                <td class="text-right">${quantity}</td>
+                <td class="text-right">${orderType}</td>
+                <td class="text-right">
                   <a class="edit-tx" href="#" data-id="${id}" data-bs-toggle="modal"
                     data-bs-target="#edit-transaction-modal" style="text-decoration:none">edit &nbsp;</a><span>/</span>
                   <a class="delete-tx" href="#" data-id="${id}" style="text-decoration:none">delete</a>                
@@ -253,7 +253,6 @@ const populateCoinsTable = async () => {
                 <td><b class="text-right"><img src="${coinData.image}" style="height: 1.5em;">&nbsp;&nbsp;${coinName}</b></td>
                 <td class="text-right">${actions.formatter.format(MarketCap)}</td>
                 <td class="text-right">${actions.formatter.format(coinPrice)}</td>
-                <td class="text-right">${actions.formatter.format(volume)}</td>
                 <td class="text-right">${actions.formatter.format(cirSuppy)}&nbsp;${capSymbol}</td>
                 <td id="coin-change-percent" class="text-right text-${classColor}">${coinDelta}%</td>
                 <td class="text-right"><span id="sparkline${i}"></span></td>
