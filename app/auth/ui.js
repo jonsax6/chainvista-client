@@ -162,14 +162,12 @@ const onIndexSuccess = (response) => {
       $('#transaction-table').append(
 				`<tr>
                 <th class="text-light" scope="row">
-                <b class="text-light"><img src="${coinImage}" style="height: 1.5em;">&nbsp;&nbsp;${coin}</b></th>
-                <td class="text-right text-light">${symbol}</td>
-                <td class="text-right text-light">${actions.formatter.format(
-									price
-								)}</td>
-                <td class="text-right text-light">${quantity}</td>
-                <td class="text-right text-light">${orderType}</td>
-                <td class="text-right text-light">
+                <b class="text-table"><img src="${coinImage}" style="height: 1.5em;">&nbsp;&nbsp;${coin}</b></th>
+                <td class="text-right text-table">${symbol}</td>
+                <td class="text-right text-table">${actions.formatter.format(price)}</td>
+                <td class="text-right text-table">${quantity}</td>
+                <td class="text-right text-table">${orderType}</td>
+                <td class="text-right text-table">
                   <a class="edit-tx" href="#" data-id="${id}" data-bs-toggle="modal"
                     data-bs-target="#edit-transaction-modal" style="text-decoration:none">edit &nbsp;</a><span>/</span>
                   <a class="delete-tx" href="#" data-id="${id}" style="text-decoration:none">delete</a>                
