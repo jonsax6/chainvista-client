@@ -234,6 +234,7 @@ const populateCoinsTable = async () => {
     const sparkAve = actions.movingAve(sparkData)
     const coinSymbol = coinData.symbol
     const coinName = coinData.name
+    const id = coinData.id
     const capSymbol = coinSymbol.toUpperCase() //converts lowercase coin symbols to uppercase
 
     //table dynamically created, data feed from fetch(marketData)
@@ -256,6 +257,19 @@ const populateCoinsTable = async () => {
                 <td class="text-right">${actions.formatter.format(cirSuppy)}&nbsp;${capSymbol}</td>
                 <td id="coin-change-percent" class="text-right text-${classColor}">${coinDelta}%</td>
                 <td class="text-right p-0"><span id="sparkline${i}"></span></td>
+                <td class="text-right">
+                  <a 
+                    class="new-tx" 
+                    href="#" 
+                    data-coin="${id}"
+                    data-symbol="${coinSymbol}"
+                    data-price="${coinPrice}"
+                    data-bs-toggle="modal"
+                    data-bs-target="#new-transaction-modal" 
+                    style="text-decoration:none"
+                    >add &nbsp;
+                  </a>
+                </td>
             </tr>`
 		)
     //control flow for painting sparklines green (up-trending) or red (down-trending)
@@ -366,8 +380,8 @@ const onShowPortfolio = () => {
         </div>
       </div>`
 		)
-    $('#account-usd-value').text(`Total USD Value: ${actions.formatter.format(totalUsdValue)}`)
-    $('#account-btc-value').text(`Total BTC Value: ${new Intl.NumberFormat().format(totalBtcValue)}`)
+    $('#account-usd-value').text(`${actions.formatter.format(totalUsdValue)}`)
+    $('#account-btc-value').html(`<i class="icon-btc"></i>${new Intl.NumberFormat().format(totalBtcValue)}`)
   }
 }
 

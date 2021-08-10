@@ -36,13 +36,23 @@ const onSignOut = (event) => {
 
 const onTransactionSubmit = (event) => {
 	event.preventDefault()
-  // console.log(event)
+	// console.log(event)
 	const form = event.target
-	const data = getFormFields(form)
-  console.log(data)
-	api.transaction(data)
-    .then(ui.onTransactionSuccess)
-    .catch(ui.onTransactionFailure)
+	const userData = getFormFields(form)
+	const data = {
+		transaction: {
+			coin: store.txCoin,
+			symbol: store.txSymbol.toUpperCase(),
+			price: store.txPrice,
+			quantity: userData.transaction.quantity,
+			orderType: userData.transaction.orderType,
+		},
+	}
+	console.log(data)
+	api
+		.transaction(data)
+		.then(ui.onTransactionSuccess)
+		.catch(ui.onTransactionFailure)
 }
 
 const onTransactionEditSubmit = (event) => {
@@ -57,6 +67,22 @@ const onTransactionEditSubmit = (event) => {
 
 
 //-----------------------------------------//
+const onNewTransactionModal = (event) => {
+	event.preventDefault()
+    console.log(event)
+	$('#newTransactionModalLabel').text('Add a new transaction.')
+	const newTxButton = event.target
+    const coin = $(newTxButton).data('coin')
+    const coinCaps = actions.capitalize(coin)
+	store.txCoin = coin
+    store.txSymbol = $(newTxButton).data('symbol')
+    store.txPrice = $(newTxButton).data('price')
+    $('#new-tx-form-coin').html(`<b>Coin:</b> ${coinCaps}`)
+    $('#new-tx-form-symbol').html(`<b>Symbol:</b> ${store.txSymbol.toUpperCase()}`)
+    $('#new-tx-form-price').html(`<b>Price:</b> ${actions.formatter.format(store.txPrice)}`)
+}
+
+
 const onTransactionEditModal = (event) => {
 	event.preventDefault()
   $('#editTransactionModalLabel').text('Revise your transaction.')
@@ -113,4 +139,5 @@ module.exports = {
 	onTransactionDeleteSubmit,
 	onTransactionDeleteModal,
 	onTransactionEditModal,
+	onNewTransactionModal
 }

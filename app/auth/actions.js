@@ -41,8 +41,13 @@ const formatter = new Intl.NumberFormat('en-US', {
 	minimumFractionDigits: 2,
 })
 
+const capitalize = (str) => {
+	return str.charAt(0).toUpperCase() + str.slice(1)
+}
+
 module.exports = {
 	formatter,
 	movingAve,
-	sparkLine
+	sparkLine,
+	capitalize
 }

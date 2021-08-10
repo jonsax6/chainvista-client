@@ -6,6 +6,7 @@
 
       <!-- Do not add `link` tags-->
       <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+      <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 
       <!-- Do not add `script` tags-->
       <script src="public/vendor.js" type="text/javascript" charset="utf-8" defer></script>
@@ -163,52 +164,79 @@
 
                 </ul>
                 <div class="tab-content" id="app-tabs-content">
-                  <!-- markets-tab content -->
-                  <div class="tab-pane light show active" id="markets-tab" role="tabpanel" aria-labelledby="markets-tab">
-                    <div class="table-responsive">
-                      <table class="table table-responsive" id="markets-table-header">
-                        <!--start of table data-->
-                        <thead id="table-header">
-                          <tr>
-                            <th class="text-left text-table" scope="col">Rank</th>
-                            <th class="text-left text-table" scope="col">Name</th>
-                            <th class="text-right text-success" scope="col">Market Cap</th>
-                            <th class="text-right text-success" scope="col">Price</th>
-                            <!-- <th class="text-right text-success" scope="col">Volume (24h)</th> -->
-                            <th class="text-right text-warning" scope="col">Circulating Supply</th>
-                            <th class="text-right text-primary" scope="col">24h</th>
-                            <th class="text-right text-primary" scope="col">7-Day</th>
-                          </tr>
-                        </thead>
-                        <tbody class="market-tab-table">
-                        </tbody>
-                      </table>                    
-                    </div>
+                <!-- markets-tab content -->
+                <div class="tab-pane light show active" id="markets-tab" role="tabpanel" aria-labelledby="markets-tab">
+                  <div class="table-responsive">
+                    <table class="table table-responsive" id="markets-table-header">
+                      <!--start of table data-->
+                      <thead id="table-header">
+                        <tr>
+                          <th class="text-left text-table" scope="col">Rank</th>
+                          <th class="text-left text-table" scope="col">Name</th>
+                          <th class="text-right text-success" scope="col">Market Cap</th>
+                          <th class="text-right text-success" scope="col">Price</th>
+                          <!-- <th class="text-right text-success" scope="col">Volume (24h)</th> -->
+                          <th class="text-right text-warning" scope="col">Circulating Supply</th>
+                          <th class="text-right text-primary" scope="col">24h</th>
+                          <th class="text-right text-primary" scope="col">7-Day</th>
+                          <th class="text-right text-primary" scope="col">New Tx</th>
+                        </tr>
+                      </thead>
+                      <tbody class="market-tab-table">
+                      </tbody>
+                    </table>
                   </div>
+                </div>
                   <!-- portfolio tab content -->
                   <div class="tab-pane light" id="portfolio" role="tabpanel" aria-labelledby="portfolio-tab">
                     <!-- overview card -->
                     <div class="row">
-                      <div class="col-6 m-auto">
-                        <!-- <div class="card" style="width: 18rem;">
-                          <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.
-                            </p>
-                            <a href="#" class="card-link">Card link</a>
-                            <a href="#" class="card-link">Another link</a>
+                      <div class="col-lg-9 col-sm-12 m-auto mt-4">
+                        <div class="row">
+
+                          <div class="col-4 m-auto">
+                            <div class="card bg-dark text-light" style="width: 18rem;">
+                              <div class="card-body">
+                                <h5 id="account-usd-value" class="card-title"></h5>
+                                <p class="card-text">BTC Account Value</p>
+                              </div>
+                            </div>
                           </div>
-                        </div> -->
+
+                          <div class="col-4 m-auto">
+                            <div class="card bg-dark text-light" style="width: 18rem;">
+                              <div class="card-body">
+                                <h5 id="account-btc-value" class="card-title"></h5>
+                                <p class="card-text">USD Account Value</p>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-4 m-auto">
+                            <div class="card bg-dark text-light" style="width: 18rem;">
+                              <div class="card-body">
+                                <h5 id="account-change" class="card-title"></h5>
+                                <p class="card-text">24H Account Change</p>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </div>
 
 
+
+
+
+                    <!-- <div class="row">
+                      <div class="col-6 m-auto">
                         <div class="card text-white bg-dark m-auto mt-4">
                           <div class="text-center">
                             <img src="public/chainvista-logo-notxt.png" class="card-img-top card-img-header text-center" alt="crypto-logo">
                           </div>
                           <div class="card-body">
                             <h5 class="card-title">Account Portfolio</h5>
-                            <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
                           </div>
                             <ul class="list-group list-group-flush">
                               <li id="account-usd-value" class="list-group-item bg-secondary text-light">Total USD Value:</li>
@@ -218,89 +246,10 @@
                             </ul>
                         </div>
                       </div>
-                    </div>
+                    </div> -->
                    
                     <div id="portfolio-cards" class="row">
-                      <!-- <div class="col-lg-3 col-md-4 colsm-6 col-12">
-                        <div class="card text-white bg-dark m-auto mt-4" style="width: 18rem;">
-                          <img src="https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579" class="card-img-top" alt="...">
-                          <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                              content.
-                            </p>
-                          </div>
-                          <ul class="list-group list-group-flush">
-                            <li class="list-group-item">An item</li>
-                            <li class="list-group-item">A second item</li>
-                            <li class="list-group-item">A third item</li>
-                          </ul>
-                          <div class="card-body">
-                            <a href="#" class="card-link">Card link</a>
-                            <a href="#" class="card-link">Another link</a>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 col-md-4 colsm-6 col-12">
-                        <div class="card text-white bg-dark m-auto mt-4" style="width: 18rem;">
-                          <img src="..." class="card-img-top" alt="...">
-                          <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                              content.
-                            </p>
-                          </div>
-                          <ul class="list-group list-group-flush">
-                            <li class="list-group-item">An item</li>
-                            <li class="list-group-item">A second item</li>
-                            <li class="list-group-item">A third item</li>
-                          </ul>
-                          <div class="card-body">
-                            <a href="#" class="card-link">Card link</a>
-                            <a href="#" class="card-link">Another link</a>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 col-md-4 colsm-6 col-12">
-                        <div class="card text-white bg-dark m-auto mt-4" style="width: 18rem;">
-                          <img src="..." class="card-img-top" alt="...">
-                          <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                              content.
-                            </p>
-                          </div>
-                          <ul class="list-group list-group-flush">
-                            <li class="list-group-item">An item</li>
-                            <li class="list-group-item">A second item</li>
-                            <li class="list-group-item">A third item</li>
-                          </ul>
-                          <div class="card-body">
-                            <a href="#" class="card-link">Card link</a>
-                            <a href="#" class="card-link">Another link</a>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-lg-3 col-md-4 colsm-6 col-12">
-                        <div class="card text-white bg-dark m-auto mt-4" style="width: 18rem;">
-                          <img src="..." class="card-img-top" alt="...">
-                          <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-                              content.
-                            </p>
-                          </div>
-                          <ul class="list-group list-group-flush">
-                            <li class="list-group-item">An item</li>
-                            <li class="list-group-item">A second item</li>
-                            <li class="list-group-item">A third item</li>
-                          </ul>
-                          <div class="card-body">
-                            <a href="#" class="card-link">Card link</a>
-                            <a href="#" class="card-link">Another link</a>
-                          </div>
-                        </div>
-                      </div> -->
+                      <!-- cards filled in from onShowPortfolio - ui.js -->
                     </div>
                   </div>
                   <!-- transactions tab content -->
@@ -328,7 +277,46 @@
                 <div class="row">
                 </div>
                 <!-- New Transaction Modal -->
-                <div class="modal custom fade" id="new-transaction-modal" tabindex="-1" aria-labelledby="newTransactionModalLabel" aria-hidden="true">
+                <div class="modal custom fade" id="new-transaction-modal" tabindex="-1" aria-labelledby="newTransactionModalLabel"
+                  aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title text-light" id="newTransactionModalLabel">Log a new transaction</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body text-light">
+                        <div class="mb-3">
+                          <p id="new-tx-form-coin" class="form-label"></p>
+                        </div>
+                        <div class="mb-3">
+                          <p id="new-tx-form-symbol" class="form-label"></p>
+                        </div>
+                        <div class="mb-3">
+                          <p id="new-tx-form-price" class="form-label"></p>
+                        </div>
+                        <form id="transaction-form-new">
+                          <div class="mb-3">
+                            <label class="form-label">Quantity</label>
+                            <input name="transaction[quantity]" type="text" class="form-control" id="form-quantity-new"
+                              placeholder="quantity">
+                          </div>
+                          <div class="mb-3">
+                            <label class="form-label">orderType</label>
+                            <input name="transaction[orderType]" type="text" class="form-control" id="form-orderType-new"
+                              placeholder="buy/sell">
+                          </div>
+                          <button type="submit" class="btn btn-warning border-dark shadow shadow">Submit</button>
+                        </form>
+                      </div>
+                      <div class="modal-footer text-light">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- New Transaction Modal -->
+                <!-- <div class="modal custom fade" id="new-transaction-modal" tabindex="-1" aria-labelledby="newTransactionModalLabel" aria-hidden="true">
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -365,7 +353,7 @@
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> -->
                 <!-- edit transaction modal -->
                 <div class="modal custom fade" id="edit-transaction-modal" tabindex="-1" aria-labelledby="editTransactionModalLabel"
                   aria-hidden="true">

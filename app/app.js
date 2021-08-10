@@ -32,6 +32,6 @@ $(() => {
   $('#transaction-form-delete').on('submit', authEvents.onTransactionDeleteSubmit)
   $('#transaction-table').on('click', '.delete-tx', authEvents.onTransactionDeleteModal)
   $('#transaction-table').on('click', '.edit-tx', authEvents.onTransactionEditModal)
-
+  $('.market-tab-table').on('click', '.new-tx', authEvents.onNewTransactionModal)
 
 })
