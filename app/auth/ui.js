@@ -309,7 +309,7 @@ const onShowPortfolio = () => {
       // and if the token is NOT already in the portfolio object
       if(!(coin in portfolio)) {
         // initialize this crypto into the portfolio starting at 0
-        portfolio[coin] = 0
+        portfolio[coin] = {}
       }
     }
   })
@@ -320,12 +320,13 @@ const onShowPortfolio = () => {
       // if the coin in the store transactions array is the same as the coin were iterating
       // add the quantity from that coin object to the coin key in the portfolio 
       if(tx.coin.toLowerCase() === coin && store.owner === tx.owner) {
-        portfolio[coin] += tx.quantity
+        portfolio[coin].id = coin
+        portfolio[coin].quantity = 0
+        portfolio[coin].quantity += tx.quantity
       }
     })
   }
   console.log(portfolio)
-  let coinImage = null
   let usdValue 
   let totalUsdValue = 0
   let totalBtcValue = 0
@@ -333,67 +334,87 @@ const onShowPortfolio = () => {
   let totalChangePercentage
   let totalChangeColor
   let change
-  let price
   let circSupply
   let marketCap
-  let changeColor
   for (const coin in portfolio) {
     const coins = store.images
     coins.forEach((coinObj) => {
 			// if the object from the images object array's coin key is the same as key we're iterating above
 			// grab that URL and bind it to coinImage variable
-			if (coin === coinObj.id) {
-				coinImage = coinObj.image
+			if (portfolio[coin].id === coinObj.id) {
+				portfolio[coin].image = coinObj.image
 			}
 		})
-    // iterate over the large crypto object array
+    // iterate over the large crypto object array and set each variable value to be displayed
     markets.forEach(crypto => {
       if(coin === crypto.id) {
-        price = crypto.current_price
-        usdValue = portfolio[coin] * price
-        totalUsdValue += usdValue
+        portfolio[coin].id = coin
+        portfolio[coin].price = crypto.current_price
+        portfolio[coin].usdValue = portfolio[coin].quantity * crypto.current_price
+        totalUsdValue += portfolio[coin].usdValue
         totalBtcValue = totalUsdValue / store.markets[0].current_price
-        change = crypto.price_change_percentage_24h
-        changeColor = change > 0 ? 'success' : 'danger'
+        portfolio[coin].change = crypto.price_change_percentage_24h
+        portfolio[coin].changeColor = portfolio[coin].change > 0 ? 'success' : 'danger'
         circSupply = crypto.circulating_supply
         marketCap = crypto.market_cap
-        totalChangeAmount += usdValue * (change/100)
+        totalChangeAmount += portfolio[coin].usdValue * (portfolio[coin].change/100)
         totalChangePercentage = (totalChangeAmount/totalUsdValue) * 100
         totalChangeColor = totalChangePercentage > 0 ? 'success' : 'danger'
       }
     })
-    $('#portfolio-cards').append(
-			`
-      <div class="col-lg-3 col-md-4 col-sm-6 col-12 rounded-3">
-        <div class="card bg-card text-white m-auto mt-4" style="width: 18rem;">
-          <div class="text-center">
-            <img src="${coinImage}" class="card-img-top text-center" alt="crypto-logo">
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">${coin}</h5>
-            <p class="card-text">${portfolio[coin]}
-            </p>
-          </div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item bg-secondary text-light">Current Price: ${actions.formatter.format(
-							price
-						)}</li>
-            <li class="list-group-item bg-secondary text-light">USD value: ${actions.formatter.format(
-							usdValue
-						)}</li>
-            <li class="list-group-item bg-card text-${changeColor}">24h Change: ${change.toPrecision(2)}%</li>
-            <li class="list-group-item bg-card text-light">Market Cap: ${actions.formatter.format(marketCap)}</li>
-            <li class="list-group-item bg-card text-light">Circ Supply: ${new Intl.NumberFormat().format(circSupply)}</li>
-          </ul>
-        </div>
-      </div>`
-		)
   }
+  console.log(portfolio)
+  let displayOrder = []
+  for (const coin in portfolio) {
+    displayOrder.push(portfolio[coin])
+  }
+  displayOrder.sort((a,b) => {
+    if(a.usdValue > b.usdValue) return -1
+    if(a.usdValue < b.usdValue) return 1
+    return 0
+  })
+
+  console.log(displayOrder)
+  displayOrder.forEach(coin => {
+    $('#portfolio-cards').append(
+      `
+    <div class="col-lg-3 col-md-4 col-sm-6 col-12 rounded-3">
+      <div class="card bg-card text-white m-auto mt-4" style="width: 18rem;">
+        <div class="text-center">
+          <img src="${coin.image}" class="card-img-top text-center" alt="crypto-logo">
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">${coin.id}</h5>
+          <p class="card-text">${coin.quantity}
+          </p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item bg-secondary text-light">Current Price: ${actions.formatter.format(
+            coin.price
+          )}</li>
+          <li class="list-group-item bg-secondary text-light">USD value: ${actions.formatter.format(
+            coin.usdValue
+          )}</li>
+          <li class="list-group-item bg-card text-${coin.changeColor}">24h Change: ${coin.change.toPrecision(
+        2
+      )}%</li>
+          <li class="list-group-item bg-card text-light">Market Cap: ${actions.formatter.format(
+            marketCap
+          )}</li>
+          <li class="list-group-item bg-card text-light">Circ Supply: ${new Intl.NumberFormat().format(
+            circSupply
+          )}</li>
+        </ul>
+      </div>
+    </div>`
+    )
+  })
+
+
   console.log(totalChangeAmount)
   $('#account-usd-value').text(`${actions.formatter.format(totalUsdValue)}`)
   $('#account-btc-value').html(`<i class="icon-btc"></i>${new Intl.NumberFormat().format(totalBtcValue)}`)
-  $('#account-change').html(`24H Change:
-    <span class="text-${totalChangeColor}">
+  $('#account-change').html(`<span class="text-${totalChangeColor}">
       ${totalChangePercentage.toPrecision(2)}%
     </span>`)
 }
