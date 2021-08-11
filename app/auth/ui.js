@@ -51,7 +51,10 @@ const onSignInSuccess = async (response) => {
 	$('#user-alert-message').text('')
   await populateCoinsTable()
   store.images = getCoinImages(store.markets)
-  console.log(store.images)
+  api.index()
+    .then(onIndexSuccess)
+    .then(onShowPortfolio)
+    .catch(error => console.error(error))
 }
 
 const onLogoClick = () => {
@@ -88,6 +91,9 @@ const onSignOutSuccess = () => {
   $('.login-forms').show()
   $('#transaction-table').empty()
   $('#portfolio-cards').empty()
+  $('#account-usd-value').empty()
+  $('#account-btc-value').empty()
+  $('#account-change').empty()
   $('#user-alert-message').show()
 	$('#user-alert-message').text('See you next time!')
 	$('#user-alert-message').fadeOut(4000)
@@ -164,7 +170,7 @@ const onIndexSuccess = (response) => {
       $('#transaction-table').append(
 				`<tr>
                 <td class="text-light" scope="row">
-                <b><img src="${coinImage}" style="height: 1em;">&nbsp;&nbsp;${coin}</b></td>
+                <b><img src="${coinImage}" style="height: 1.25em;">&nbsp;&nbsp;${coin}</b></td>
                 <td class="text-right">${symbol}</td>
                 <td class="text-right">${actions.formatter.format(price)}</td>
                 <td class="text-right">${new Intl.NumberFormat().format(quantity)}</td>
@@ -253,7 +259,7 @@ const populateCoinsTable = async () => {
 			//populates the table rows with data from API
 			`<tr>
                 <td class="text-right" scope="row">${coinData.market_cap_rank}</td>
-                <td><b class="text-right"><img src="${coinData.image}" style="height: 1em;">&nbsp;&nbsp;&nbsp;${coinName}</b></td>
+                <td><b class="text-right"><img src="${coinData.image}" style="height: 1.25em;">&nbsp;&nbsp;&nbsp;${coinName}</b></td>
                 <td class="text-right">${actions.formatter.format(MarketCap)}</td>
                 <td class="text-right">${actions.formatter.format(coinPrice)}</td>
                 <td class="text-right">${actions.formatter.format(cirSuppy)}&nbsp;${capSymbol}</td>
