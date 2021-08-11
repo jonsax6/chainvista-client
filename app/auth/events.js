@@ -52,6 +52,9 @@ const onTransactionSubmit = (event) => {
 	api
 		.transaction(data)
 		.then(ui.onTransactionSuccess)
+		.then(() => {
+			$('#newTransactionModalLabel').text('your transaction was added')
+		})
 		.catch(ui.onTransactionFailure)
 }
 
@@ -62,6 +65,9 @@ const onTransactionEditSubmit = (event) => {
   data.transaction.id = store.editTxId
   api.editTransaction(data)
     .then(ui.onEditTransactionSuccess)
+	.then(() => {
+		$('#editTransactionModalLabel').text('Your transaction was revised')
+	})
     .then(ui.onTransactionFailure)
 }
 
@@ -85,7 +91,7 @@ const onNewTransactionModal = (event) => {
 
 const onTransactionEditModal = (event) => {
 	event.preventDefault()
-  $('#editTransactionModalLabel').text('Revise your transaction.')
+  $('#editTransactionModalLabel').text('Revise your transaction:')
   const editButton = event.target
   store.editTxId = $(editButton).data('id')
   console.log(store.editTxId)
@@ -98,6 +104,11 @@ const onTransactionDeleteModal = (event) => {
 	api
 		.deleteTransaction(id)
 		.then(ui.onTransactionSuccess)
+		.then(() => {
+			$('#user-alert-message').text('Your transaction was deleted.')
+			$('#user-alert-message').show()
+			$('#user-alert-message').fadeOut(4000)
+		})
 		.then(ui.onTransactionFailure)
 }
 
@@ -109,6 +120,11 @@ const onTransactionDeleteSubmit = (event) => {
 	api.deleteTransaction(id)
 		.then(ui.onTransactionSuccess)
 		.then(ui.onTransactionFailure)
+}
+
+const onCloseModals = () => {
+	$('#newTransactionModalLabel').text('Add a new transaction:')
+	$('#editTransactionModalLabel').text('Revise your transaction:')
 }
 
 const onShowAccount = (event) => {
@@ -139,5 +155,6 @@ module.exports = {
 	onTransactionDeleteSubmit,
 	onTransactionDeleteModal,
 	onTransactionEditModal,
-	onNewTransactionModal
+	onNewTransactionModal,
+	onCloseModals
 }

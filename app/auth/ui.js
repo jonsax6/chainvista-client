@@ -104,11 +104,13 @@ const onEditTransactionSuccess = () => {
     .catch(error => console.error(error))
 }
 
-const onTransactionSuccess = (response) => {
+const onTransactionSuccess = async (response) => {
 	$('#transaction-table').text('')
   $('#transaction-form-new').trigger('reset')
   $('#transaction-form-edit').trigger('reset')
   $('#transaction-form-delete').trigger('reset')
+
+  // user-alert-message
   api.index()
     .then(onIndexSuccess)
     .catch(error => console.error(error))
@@ -319,7 +321,9 @@ const onShowPortfolio = () => {
       }
     }
   })
+  // iterate over each key in the portfolio
   for (const coin in portfolio) {
+    // now iterate over each transaction
     txs.forEach(tx => {
       // if the coin in the store transactions array is the same as the coin were iterating
       // add the quantity from that coin object to the coin key in the portfolio 
@@ -333,11 +337,14 @@ const onShowPortfolio = () => {
   let usdValue 
   let totalUsdValue = 0
   let totalBtcValue = 0
+  let totalChangeAmount = 0
+  let totalChangePercentage
+  let totalChangeColor
   let change
   let price
   let circSupply
   let marketCap
-  let changeColor = change > 0 ? 'success' : 'danger'
+  let changeColor
   for (const coin in portfolio) {
     const coins = store.images
     coins.forEach((coinObj) => {
@@ -347,6 +354,7 @@ const onShowPortfolio = () => {
 				coinImage = coinObj.image
 			}
 		})
+    // iterate over the large crypto object array
     markets.forEach(crypto => {
       if(coin === crypto.id) {
         price = crypto.current_price
@@ -354,9 +362,12 @@ const onShowPortfolio = () => {
         totalUsdValue += usdValue
         totalBtcValue = totalUsdValue / store.markets[0].current_price
         change = crypto.price_change_percentage_24h
-        change = change.toPrecision(3)
+        changeColor = change > 0 ? 'success' : 'danger'
         circSupply = crypto.circulating_supply
         marketCap = crypto.market_cap
+        totalChangeAmount += usdValue * (change/100)
+        totalChangePercentage = (totalChangeAmount/totalUsdValue) * 100
+        totalChangeColor = totalChangePercentage > 0 ? 'success' : 'danger'
       }
     })
     $('#portfolio-cards').append(
@@ -378,16 +389,21 @@ const onShowPortfolio = () => {
             <li class="list-group-item bg-secondary text-light">USD value: ${actions.formatter.format(
 							usdValue
 						)}</li>
-            <li class="list-group-item bg-dark text-${changeColor}">24h Change: ${change}%</li>
+            <li class="list-group-item bg-dark text-${changeColor}">24h Change: ${change.toPrecision(2)}%</li>
             <li class="list-group-item bg-dark text-light">Market Cap: ${actions.formatter.format(marketCap)}</li>
             <li class="list-group-item bg-dark text-light">Circ Supply: ${new Intl.NumberFormat().format(circSupply)}</li>
           </ul>
         </div>
       </div>`
 		)
-    $('#account-usd-value').text(`${actions.formatter.format(totalUsdValue)}`)
-    $('#account-btc-value').html(`<i class="icon-btc"></i>${new Intl.NumberFormat().format(totalBtcValue)}`)
   }
+  console.log(totalChangeAmount)
+  $('#account-usd-value').text(`${actions.formatter.format(totalUsdValue)}`)
+  $('#account-btc-value').html(`<i class="icon-btc"></i>${new Intl.NumberFormat().format(totalBtcValue)}`)
+  $('#account-change').html(`24H Change:
+    <span class="text-${totalChangeColor}">
+      ${totalChangePercentage.toPrecision(2)}%
+    </span>`)
 }
 
 const onRefreshMarkets = async () => {
