@@ -150,7 +150,6 @@ const onIndexSuccess = (response) => {
       coinImage = coinObj.image
       }
     }) 
-    console.log(coinImage)
 		$('#transaction-form-new').trigger('reset')
     // fills out the transactions table
     if (store.owner === txOwner) {
