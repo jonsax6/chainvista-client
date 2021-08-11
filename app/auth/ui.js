@@ -209,7 +209,7 @@ const populateCoinsTable = async () => {
 
   for (let i = 0; i < 100; i++) {
     let coinData = data[i]
-    const MarketCap = coinData.market_cap
+    const marketCap = coinData.market_cap
       ? Number(coinData.market_cap).toFixed(2)
       : '-'
     const coinPrice = coinData.current_price
@@ -246,7 +246,7 @@ const populateCoinsTable = async () => {
 			`<tr>
                 <td class="text-right" scope="row">${coinData.market_cap_rank}</td>
                 <td><b class="text-right"><img src="${coinData.image}" style="height: 1.25em;">&nbsp;&nbsp;&nbsp;${coinName}</b></td>
-                <td class="text-right">${actions.formatter.format(MarketCap)}</td>
+                <td class="text-right">${actions.formatter.format(marketCap)}</td>
                 <td class="text-right">${actions.formatter.format(coinPrice)}</td>
                 <td class="text-right">${actions.formatter.format(cirSuppy)}&nbsp;${capSymbol}</td>
                 <td id="coin-change-percent" class="text-right text-${classColor}">${coinDelta}%</td>
@@ -365,7 +365,7 @@ const onShowPortfolio = () => {
     $('#portfolio-cards').append(
 			`
       <div class="col-lg-3 col-md-4 col-sm-6 col-12 rounded-3">
-        <div class="card text-white bg-dark m-auto mt-4" style="width: 18rem;">
+        <div class="card bg-card text-white m-auto mt-4" style="width: 18rem;">
           <div class="text-center">
             <img src="${coinImage}" class="card-img-top text-center" alt="crypto-logo">
           </div>
@@ -381,9 +381,9 @@ const onShowPortfolio = () => {
             <li class="list-group-item bg-secondary text-light">USD value: ${actions.formatter.format(
 							usdValue
 						)}</li>
-            <li class="list-group-item bg-dark text-${changeColor}">24h Change: ${change.toPrecision(2)}%</li>
-            <li class="list-group-item bg-dark text-light">Market Cap: ${actions.formatter.format(marketCap)}</li>
-            <li class="list-group-item bg-dark text-light">Circ Supply: ${new Intl.NumberFormat().format(circSupply)}</li>
+            <li class="list-group-item bg-card text-${changeColor}">24h Change: ${change.toPrecision(2)}%</li>
+            <li class="list-group-item bg-card text-light">Market Cap: ${actions.formatter.format(marketCap)}</li>
+            <li class="list-group-item bg-card text-light">Circ Supply: ${new Intl.NumberFormat().format(circSupply)}</li>
           </ul>
         </div>
       </div>`
