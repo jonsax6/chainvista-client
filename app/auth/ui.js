@@ -105,9 +105,20 @@ const onEditTransactionSuccess = () => {
   $('#transaction-form-edit').trigger('reset')
   $('#transaction-form-delete').trigger('reset')
   $('#editTransactionModalLabel').text('Your transaction was revised.')
+  $('#edit-modal-close').trigger('click')
+	$('#user-alert-message').show()
+	$('#user-alert-message').text('Your transaction was revised.')
+	$('#user-alert-message').fadeOut(4000)
+
   api.index()
     .then(onIndexSuccess)
     .catch(error => console.error(error))
+}
+
+const onTransactionTabClick = () => {
+  api.index()
+		.then(onIndexSuccess)
+		.catch((error) => console.error(error))
 }
 
 const onTransactionSuccess = async (response) => {
@@ -115,7 +126,10 @@ const onTransactionSuccess = async (response) => {
   $('#transaction-form-new').trigger('reset')
   $('#transaction-form-edit').trigger('reset')
   $('#transaction-form-delete').trigger('reset')
-
+  $('#new-modal-close').trigger('click')
+	$('#user-alert-message').show()
+	$('#user-alert-message').text('Your transaction was added.')
+	$('#user-alert-message').fadeOut(4000)
   // user-alert-message
   api.index()
     .then(onIndexSuccess)
@@ -448,5 +462,6 @@ module.exports = {
 	onShowMarkets,
 	onShowPortfolio,
 	onRefreshMarkets,
-	onEditTransactionSuccess
+	onEditTransactionSuccess,
+	onTransactionTabClick,
 }

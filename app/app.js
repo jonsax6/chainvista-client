@@ -23,7 +23,7 @@ $(() => {
   $('#sign-up-form').on('submit', authEvents.onSignUp)
 	$('#sign-in-form').on('submit', authEvents.onSignIn)
 	$('#sign-out-btn').on('click', authEvents.onSignOut)
-  $('#transactions-tab').on('click', ui.onTransactionSuccess)
+  $('#transactions-tab').on('click', ui.onTransactionTabClick)
   $('#market-tab').on('click', ui.onShowMarkets)
   $('#portfolio-tab').on('click', ui.onShowPortfolio)
   $('#refresh-markets').on('click', ui.onRefreshMarkets)
@@ -35,4 +35,9 @@ $(() => {
   $('.market-tab-table').on('click', '.new-tx', authEvents.onNewTransactionModal)
   $('#new-modal-close').on('click', authEvents.onCloseModals)
   $('#edit-modal-close').on('click', authEvents.onCloseModals)
+  // $('#new-tx-form-submit').on('submit', function(e) {
+  //   e.preventDefault()
+  //   $('#new-transaction-modal').modal('hide')
+  //   return false
+  // })
 })
