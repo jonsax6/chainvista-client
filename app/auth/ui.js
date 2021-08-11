@@ -122,19 +122,6 @@ const onTransactionSuccess = async (response) => {
     .catch(error => console.error(error))
 }
 
-const getCoinUrl = (coin) => {
-	const coins = store.images
-	// filter through coins and return the object with the same id key as 'coinNormalized' above
-	coins.forEach((coinObj) => {
-		// if the object from the images object array's coin key is the same as key we're iterating above
-		// grab that URL and bind it to coinImage variable above.
-		if (coin === coinObj.id) {
-			coinImage = coinObj.image
-			return
-		}
-	})
-}
-
 const onIndexSuccess = (response) => {
   // make a data variable from the fetched transactions from API
   const data = response.transaction
