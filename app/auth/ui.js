@@ -545,28 +545,6 @@ const onRefreshMarkets = async () => {
   store.images = getCoinImages(store.markets)
 }
 
-//===PAGINATION===//
-const onNextPage = () => {
-  store.page++
-  console.log('store.page: ' + store.page)
-  $('.market-tab-table').empty()
-  populateCoinsTable()
-  if (store.page > 1) {
-  $('#previous-page').show()
-  }
-}
-
-const onPreviousPage = () => {
-  store.page--
-  console.log('store.page: ' + store.page)
-  $('.market-tab-table').empty()
-  populateCoinsTable()
-  if (store.page === 1) {
-    $('#previous-page').hide()
-  } 
-}
-
-
 module.exports = {
   onSignUpSuccess,
   onSignUpFailure,
@@ -587,7 +565,5 @@ module.exports = {
   onDeleteTransactionSuccess,
   onTransactionTabClick,
   onSignInButton,
-  onNextPage,
-  onPreviousPage,
   onHome,
 }

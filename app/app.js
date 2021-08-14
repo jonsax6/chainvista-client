@@ -39,8 +39,8 @@ $(async () => {
   $('#new-modal-close').on('click', authEvents.onCloseModals)
   $('#edit-modal-close').on('click', authEvents.onCloseModals)
   $('#previous-page').hide()
-  $('#next-page').on('click', ui.onNextPage)
-  $('#previous-page').on('click', ui.onPreviousPage)
+  $('#next-page').on('click', authEvents.onNextPage)
+  $('#previous-page').on('click', authEvents.onPreviousPage)
   await ui.onRefreshMarkets()
   store.loaded = true
   await ui.populateCoinsTable()

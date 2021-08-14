@@ -175,6 +175,24 @@ const onCloseModals = () => {
 	$('#editTransactionModalLabel').text('Revise your transaction:')
 }
 
+//===PAGINATION===//
+const onNextPage = () => {
+  store.page++
+  $('.market-tab-table').empty()
+  ui.populateCoinsTable()
+  if (store.page > 1) {
+  $('#previous-page').show()
+  }
+}
+
+const onPreviousPage = () => {
+  store.page--
+  $('.market-tab-table').empty()
+  ui.populateCoinsTable()
+  if (store.page === 1) {
+    $('#previous-page').hide()
+  } 
+}
 module.exports = {
   onSignUp,
   onSignIn,
@@ -189,4 +207,6 @@ module.exports = {
   onNewTransactionSubmit,
   onDeleteTransactionSubmit,
   onCloseModals,
+  onNextPage,
+  onPreviousPage
 }
