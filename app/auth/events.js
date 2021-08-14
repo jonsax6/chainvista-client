@@ -5,6 +5,8 @@ const api = require('./api')
 const ui = require('./ui')
 const actions = require('./actions')
 
+
+//===LOGIN/LOGOUT ACTIONS===//
 const onSignUp = (event) => {
   event.preventDefault()
 
@@ -34,6 +36,25 @@ const onSignOut = (event) => {
     .catch(ui.onFailure)
 }
 
+//===ACCOUNT AND CHANGE PASSWORD ACTIONS===//
+const onShowAccount = (event) => {
+  event.preventDefault()
+  $('#user-account-form').show()
+  $('#app-tabs').hide()
+  $('#app-tabs-content').hide()
+  $('#account-email').text(`${store.user}`)
+}
+
+const onChangePassword = (event) => {
+  event.preventDefault()
+  const form = event.target
+  const data = getFormFields(form)
+  api.changePassword(data)
+    .then(ui.onChangePasswordSuccess)
+    .catch(ui.onChangePasswordFailure)
+}
+
+//===MODALS AND TRANSACTION ACTIONS===//
 const onNewTransactionModal = (event) => {
   event.preventDefault()
   $('#newTransactionModalLabel').text('Add a new transaction.')
@@ -149,28 +170,9 @@ const onDeleteTransactionSubmit = (event) => {
     .then(ui.onTransactionFailure)
 }            
 
-//-----------------------------------------//
-
 const onCloseModals = () => {
 	$('#newTransactionModalLabel').text('Add a new transaction:')
 	$('#editTransactionModalLabel').text('Revise your transaction:')
-}
-
-const onShowAccount = (event) => {
-  event.preventDefault()
-  $('#user-account-form').show()
-  $('#app-tabs').hide()
-  $('#app-tabs-content').hide()
-  $('#account-email').text(`${store.user}`)
-}
-
-const onChangePassword = (event) => {
-  event.preventDefault()
-  const form = event.target
-  const data = getFormFields(form)
-  api.changePassword(data)
-    .then(ui.onChangePasswordSuccess)
-    .catch(ui.onChangePasswordFailure)
 }
 
 module.exports = {

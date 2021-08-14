@@ -29,33 +29,38 @@ body {
   background-color: $modal-bg-clr;
 }
 
-// .pagination > li > a {
-//   background-color: #495057;
-//   color: #4a68b6
-// }
 
-// .pagination > li > a:focus,
-// .pagination > li > a:hover,
-// .pagination > li > span:focus,
-// .pagination > li > span:hover
-// {
-//     color: #5a5a5a;
-//     background-color: rgb(120, 120, 120);
-//     border-color: rgba(0, 0, 0, 0);
-// }
 
-// .pagination > .active > a
-// {
-//     color: white;
-//     background-color: #5063a3;
-//     border: solid 1px #5063a3;
-// }
 
-// .pagination > .active > a:hover
-// {
-//     background-color: #5063a3;
-//     border: solid 1px #5063a3;
-// }
+.pagination > li > a {
+  background-color: #495057;
+  color: #b5b5b5;
+  border: none;
+}
+
+.pagination > li > a:focus,
+.pagination > li > a:hover,
+.pagination > li > span:focus,
+.pagination > li > span:hover
+{
+  color: #e3e3e3;
+  background-color: #4967b3;
+}
+
+.pagination > .active > a
+{
+  color: white;
+  background-color: #6179c9;
+  border: none;
+}
+
+.pagination > .active > a:hover
+{
+  background-color: $bg-color;
+}
+
+
+
 
 #app-tabs li .active button { 
   border-color: rgb(145, 145, 145);
@@ -118,7 +123,7 @@ a .nav-link .dropdown-toggle {
   width: 250px;
 }
 
-k.text-table {
+.text-table {
   color: rgb(186, 186, 186);
 }
 
@@ -167,6 +172,33 @@ k.text-table {
 }
 
 #sign-out-btn:hover {
+  background-color: #587edd;
+}
+
+#sign-in-btn {
+  background-color: #4a68b6;
+  border: none;
+}
+
+#sign-in-btn:hover {
+  background-color: #587edd;
+}
+
+#next-page {
+  background-color: #4a68b6;
+  border: none;
+}
+
+#next-page:hover {
+  background-color: #587edd;
+}
+
+#previous-page {
+  background-color: #4a68b6;
+  border: none;
+}
+
+#previous-page:hover {
   background-color: #587edd;
 }
 

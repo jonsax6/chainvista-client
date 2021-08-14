@@ -30,6 +30,7 @@ const onSignUpFailure = () => {
 }
 
 const onSignInButton = () => {
+  // if we click on the sign in button, change store.onLoginView to true
   store.onLoginView = true
   $('#sign-in-btn').hide()
   $('#login-forms').show()
@@ -51,34 +52,36 @@ const onHome = () => {
 }
 
 const onSignInSuccess = async (response) => {
-	store.token = response.user.token
-	store.user = response.user.email
+  store.token = response.user.token
+  store.user = response.user.email
   store.login = true
   store.owner = response.user._id
+  // if we click sign in, change store.onLoginView to false
   store.onLoginView = false
-	$('#app-tabs').show()
+  $('#app-tabs').show()
   $('#sign-in-btn').hide()
   $('#user-account-span').show()
-	$('#user-account-form').hide()
-	$('#user-account-text').text(`${store.user} account`)
-	$('#app-tabs-content').show()
-	$('#sign-in-form').trigger('reset')
-	$('.login-forms').hide()
-	$('#sign-out-btn').show()
-	$('#sign-up-error').hide()
+  $('#user-account-form').hide()
+  $('#user-account-text').text(`${store.user} account`)
+  $('#app-tabs-content').show()
+  $('#sign-in-form').trigger('reset')
+  $('.login-forms').hide()
+  $('#sign-out-btn').show()
+  $('#sign-up-error').hide()
   $('#login-title').text('Login to see your crypto:')
   $('#user-alert-message').show()
-	$('#user-alert-message').text('...looking up market data...')
+  $('#user-alert-message').text('...looking up market data...')
   $('#transaction-table').empty()
   $('#user-alert-message').hide()
-	$('#user-alert-message').text('')
+  $('#user-alert-message').text('')
   $('.market-tab-table').empty()
   await populateCoinsTable()
   store.images = getCoinImages(store.markets)
-  api.index()
+  api
+    .index()
     .then(onIndexSuccess)
     .then(onShowPortfolio)
-    .catch(error => console.error(error))
+    .catch((error) => console.error(error))
 }
 
 const onLogoClick = () => {
@@ -103,7 +106,10 @@ const onSignInFailure = (error) => {
 }
 
 const onSignOutSuccess = () => {
+  // change store.login to false
   store.login = false
+  // make sure store.onLoginView is false so we don't default to the login screen,
+  // we want to logout to the splash screen market overview
   store.onLoginView = false
   $('#splash-table').show()
   $('#sign-in-btn').show()
@@ -122,6 +128,9 @@ const onSignOutSuccess = () => {
   $('#user-alert-message').show()
 	$('#user-alert-message').text('See you next time!')
 	$('#user-alert-message').fadeOut(4000, () => {
+    // if we sign out we want to make sure 'Cryptocurrency Markets by Market Cap' doesn't pop up
+    // if we click 'Sign In' while the 'See you next time!' is still fading. This if statement
+    // won't allow that message to appear over the login forms if we have logged out already.
     if (!store.onLoginView) {
       $('#user-alert-message').text('Cryptocurrency Markets by Market Cap')
       $('#user-alert-message').show()
@@ -292,12 +301,12 @@ const current_BTC_price = async () => {
 }
 
 const populateCoinsTable = async () => {
-  // let marketData = `${BASE_URL}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=${PG}&sparkline=true`
-  // const res = await fetch(marketData)
-  // const data = await res.json()
   let data = store.markets
+  // find the starting index based on current page number in store.page
+  // if page is 1, then the marketIndex is 0, if page is 2, then marketIndex is 100, and so on...
+  let startIndex = (store.page - 1) * 100
 
-  for (let i = 0; i < 100; i++) {
+  for (let i = startIndex; i < (startIndex + 100); i++) {
     let coinData = data[i]
     const marketCap = coinData.market_cap
       ? Number(coinData.market_cap).toFixed(2)
@@ -536,6 +545,28 @@ const onRefreshMarkets = async () => {
   store.images = getCoinImages(store.markets)
 }
 
+//===PAGINATION===//
+const onNextPage = () => {
+  store.page++
+  console.log('store.page: ' + store.page)
+  $('.market-tab-table').empty()
+  populateCoinsTable()
+  if (store.page > 1) {
+  $('#previous-page').show()
+  }
+}
+
+const onPreviousPage = () => {
+  store.page--
+  console.log('store.page: ' + store.page)
+  $('.market-tab-table').empty()
+  populateCoinsTable()
+  if (store.page === 1) {
+    $('#previous-page').hide()
+  } 
+}
+
+
 module.exports = {
   onSignUpSuccess,
   onSignUpFailure,
@@ -556,5 +587,7 @@ module.exports = {
   onDeleteTransactionSuccess,
   onTransactionTabClick,
   onSignInButton,
-  onHome
+  onNextPage,
+  onPreviousPage,
+  onHome,
 }

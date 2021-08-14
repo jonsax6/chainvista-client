@@ -8,9 +8,10 @@ const store = require('./store')
 const events = require('./auth/events')
 const ui = require('./auth/ui')
 const Modal = require('bootstrap').Modal
+store.page = 1
 
 $(async () => {
-
+  console.log('store.page: ' + store.page)
   $('#user-account-span').hide()
   $('#app-tabs').hide()
 	$('.login-forms').hide()
@@ -37,6 +38,9 @@ $(async () => {
   $('.market-tab-table').on('click', '.new-tx', authEvents.onNewTransactionModal)
   $('#new-modal-close').on('click', authEvents.onCloseModals)
   $('#edit-modal-close').on('click', authEvents.onCloseModals)
+  $('#previous-page').hide()
+  $('#next-page').on('click', ui.onNextPage)
+  $('#previous-page').on('click', ui.onPreviousPage)
   await ui.onRefreshMarkets()
   store.loaded = true
   await ui.populateCoinsTable()
