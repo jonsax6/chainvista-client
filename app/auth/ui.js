@@ -314,22 +314,14 @@ const populateCoinsTable = async () => {
     const coinPrice = coinData.current_price
       ? Number(coinData.current_price).toFixed(2)
       : '-'
-    const volume = coinData.total_volume
-      ? Number(coinData.total_volume).toFixed(2)
-      : '-'
-    const cirSuppy = coinData.circulating_supply
-      ? Number(coinData.circulating_supply).toFixed(2)
-      : '-'
     const coinDelta = coinData.price_change_percentage_24h
       ? Number(coinData.price_change_percentage_24h).toFixed(2)
       : '-'
     const sparkData = coinData.sparkline_in_7d.price
-    const high24 = coinData.high_24h
     const sparkAve = actions.movingAve(sparkData)
     const coinSymbol = coinData.symbol
     const coinName = coinData.name
     const id = coinData.id
-    const capSymbol = coinSymbol.toUpperCase() //converts lowercase coin symbols to uppercase
 
     //table dynamically created, data feed from fetch(marketData)
     var classColor //variable to change color class for percent change 24h (coinDelta).
@@ -404,7 +396,12 @@ const onShowMarkets = async () => {
   if (!store.loaded) {
     $('.market-tab-table').empty()
     populateCoinsTable()
+  } else if (store.search === true) {
+    $('.market-tab-table').empty()
+    populateCoinsTable()
+    store.search = false
   }
+
 }
 
 const onShowPortfolio = () => {
@@ -545,6 +542,95 @@ const onRefreshMarkets = async () => {
   store.images = getCoinImages(store.markets)
 }
 
+const onCoinSearch = async (search) => {
+  // variable for the large markets data set from coinGecko
+  const markets = store.markets
+  // variable that makes the search term all lower case no matter what
+  const searchTermLowerCase = search.toLowerCase()
+  // initialize our data variable to contain our found coin object
+  let data
+  // if the search term string is contained anywhere in the markets[index].id string,
+  // then let data = that coin object at that index
+  data = markets.find(coin => {
+    // variable for the coin name found in the object currently iterated
+    let coinName = coin.id
+    // look inside the coin we're iterating, if the search string matches any part of
+    // the coin name string, assign that coin object to the data variable
+    if (coinName.indexOf(searchTermLowerCase) !== -1) {
+      // if there is a match to the search term, empty the markets table data
+      $('.market-tab-table').empty()
+      // boolean so that we can enable full market reload inside of 
+      store.search = true
+      // assign to the data variable
+      return true
+    }
+  })
+
+  const cryptoName = data.name
+  const marketRank = data.market_cap_rank
+  const coinImage = data.image
+  const marketCap = data.market_cap
+    ? Number(data.market_cap).toFixed(2)
+    : '-'
+  const coinPrice = data.current_price
+    ? Number(data.current_price).toFixed(2)
+    : '-'
+  const coinDelta = data.price_change_percentage_24h
+    ? Number(data.price_change_percentage_24h).toFixed(2)
+    : '-'
+  const sparkData = data.sparkline_in_7d.price
+  const sparkAve = actions.movingAve(sparkData)
+  const coinSymbol = data.symbol
+  const id = data.id
+  let i = 0
+
+  //table dynamically created, data feed from fetch(marketData)
+  let classColor
+  if (coinDelta > 0) {
+    //if change is a positive number show it green
+    classColor = 'success'
+  }
+  if (coinDelta < 0) {
+    //if change is a negative number show it red
+    classColor = 'danger'
+  }
+
+  $('.market-tab-table').append(
+    //populates the table rows with data from API
+    `<tr class="text-light">
+          <td class="text-center" scope="row">${marketRank}</td>
+          <td><b class="text-right"><img src="${coinImage}" style="height: 1.25em;">
+            &nbsp;&nbsp;&nbsp;${cryptoName}</b>
+          </td>
+          <td class="text-right">${actions.formatter.format(marketCap)}</td>
+          <td class="text-right">${actions.formatter.format(coinPrice)}</td>
+          <td id="coin-change-percent" class="text-right text-${classColor}">${coinDelta}%</td>
+          <td class="text-center p-0"><span id="sparkline-splash${i}"></span></td>
+          <td class="text-center">
+            <a 
+              class="new-tx" 
+              href="#" 
+              data-coin="${id}"
+              data-symbol="${coinSymbol}"
+              data-price="${coinPrice}"
+              data-bs-toggle="modal"
+              data-bs-target="#new-transaction-modal" 
+              style="text-decoration:none"
+              >add &nbsp;
+            </a>
+          </td>
+      </tr>`
+  )
+  //control flow for painting sparklines green (up-trending) or red (down-trending)
+  if (sparkAve[0] > sparkAve[sparkAve.length - 1]) {
+    actions.sparkLine(sparkAve, '#ff0000', i)
+  }
+  if (sparkAve[0] < sparkAve[sparkAve.length - 1]) {
+    actions.sparkLine(sparkAve, '#00bf00', i)
+  }
+  $('#search-form').trigger('reset')
+}
+
 module.exports = {
   onSignUpSuccess,
   onSignUpFailure,
@@ -565,5 +651,6 @@ module.exports = {
   onDeleteTransactionSuccess,
   onTransactionTabClick,
   onSignInButton,
+  onCoinSearch,
   onHome,
 }

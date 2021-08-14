@@ -41,6 +41,7 @@ $(async () => {
   $('#previous-page').hide()
   $('#next-page').on('click', authEvents.onNextPage)
   $('#previous-page').on('click', authEvents.onPreviousPage)
+  $('#search-form').on('submit', authEvents.onSearchMarkets)
   await ui.onRefreshMarkets()
   store.loaded = true
   await ui.populateCoinsTable()

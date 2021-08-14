@@ -193,6 +193,17 @@ const onPreviousPage = () => {
     $('#previous-page').hide()
   } 
 }
+
+const onSearchMarkets = (event) => {
+  event.preventDefault()
+  const form = event.target
+  const data = getFormFields(form)
+  const search = data.searchTerm.input
+  console.log(search)
+  $('#market-tab-table').empty()
+  ui.onCoinSearch(search)
+}
+
 module.exports = {
   onSignUp,
   onSignIn,
@@ -208,5 +219,6 @@ module.exports = {
   onDeleteTransactionSubmit,
   onCloseModals,
   onNextPage,
-  onPreviousPage
+  onPreviousPage,
+  onSearchMarkets,
 }

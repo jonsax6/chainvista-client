@@ -17,7 +17,7 @@ const movingAve = (array) => {
 		return aveArray
 	}
 
-const sparkLine = (data, color,i) => {
+const sparkLine = (data, color, i) => {
 	$(`#sparkline${i}, #sparkline-splash${i}`).sparkline(data, {
 		type: 'line',
 		width: '200',
