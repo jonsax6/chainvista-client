@@ -83,9 +83,14 @@ a .nav-link .dropdown-toggle {
 }
 .table {
   color: rgb(186, 186, 186);
+  // width: 1200px;
 }
 
-.text-table {
+.col-name {
+  width: 250px;
+}
+
+k.text-table {
   color: rgb(186, 186, 186);
 }
 
@@ -93,7 +98,35 @@ a .nav-link .dropdown-toggle {
     width: 65%;
     height: 10vw;
     object-fit: cover;
+    filter: drop-shadow(5px 5px 5px rgb(69, 69, 69));
 }
+
+@media screen and (max-width: 1200px) {
+  .card-img-top {
+    width: 65%;
+    height: 20vw;
+    object-fit: cover;    
+  }
+  .table {
+    width: 1000px;
+  }
+} 
+
+@media screen and (max-width: 800px) {
+  .card-img-top {
+    width: 65%;
+    height: 25vw;
+    object-fit: cover;    
+  }
+} 
+
+@media screen and (max-width: 500px) {
+  .card-img-top {
+    width: 65%;
+    height: 50vw;
+    object-fit: cover;    
+  }
+} 
 
 .card-img-header {
     width: 50%;

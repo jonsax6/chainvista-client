@@ -18,9 +18,9 @@ const movingAve = (array) => {
 	}
 
 const sparkLine = (data, color,i) => {
-	$(`#sparkline${i}`).sparkline(data, {
+	$(`#sparkline${i}, #sparkline-splash${i}`).sparkline(data, {
 		type: 'line',
-		width: '160',
+		width: '200',
 		height: '40',
 		lineColor: color,
 		fillColor: null,

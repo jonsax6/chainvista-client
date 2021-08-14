@@ -34,9 +34,32 @@ const onSignOut = (event) => {
     .catch(ui.onFailure)
 }
 
-const onTransactionSubmit = (event) => {
+const onNewTransactionModal = (event) => {
+  event.preventDefault()
+  $('#newTransactionModalLabel').text('Add a new transaction.')
+  // variable for the data passed in from the event listener
+  const newTxButton = event.target
+  // grab the data-coin from the DOM element
+  const coin = $(newTxButton).data('coin')
+  // capital the first letter for better display
+  const coinCaps = actions.capitalize(coin)
+  // bind the txCoin, txSymbol and txPrice to the store for immediate use in the onNewTransactionSubmit function
+  store.txCoin = coin
+  store.txSymbol = $(newTxButton).data('symbol')
+  store.txPrice = $(newTxButton).data('price')
+  // update the modal to show the current coin, symbol and current price,
+  // the user will enter the new amount and buy/sell manually.
+  $('#new-tx-form-coin').html(`<b>Coin:</b> ${coinCaps}`)
+  $('#new-tx-form-symbol').html(
+    `<b>Symbol:</b> ${store.txSymbol.toUpperCase()}`
+  )
+  $('#new-tx-form-price').html(
+    `<b>Price:</b> ${actions.formatter.format(store.txPrice)}`
+  )
+}
+
+const onNewTransactionSubmit = (event) => {
 	event.preventDefault()
-	// console.log(event)
 	const form = event.target
 	const userData = getFormFields(form)
 	const data = {
@@ -48,7 +71,6 @@ const onTransactionSubmit = (event) => {
 			orderType: userData.transaction.orderType,
 		},
 	}
-	console.log(data)
 	api
 		.transaction(data)
 		.then(ui.onTransactionSuccess)
@@ -58,69 +80,76 @@ const onTransactionSubmit = (event) => {
 		.catch(ui.onTransactionFailure)
 }
 
-const onTransactionEditSubmit = (event) => {
+const onEditTransactionModal = (event) => {
+  event.preventDefault()
+  $('#editTransactionModalLabel').text('Revise your transaction:')
+  const editTxButton = event.target
+  const coin = $(editTxButton).data('coin')
+  const coinCaps = actions.capitalize(coin)
+  const editButton = event.target
+  store.editTxId = $(editButton).data('id')
+  store.txCoin = coin
+  store.txSymbol = $(editTxButton).data('symbol')
+  store.txPrice = $(editTxButton).data('price')
+  $('#edit-tx-form-coin').html(`<b>Coin:</b> ${coinCaps}`)
+  $('#edit-tx-form-symbol').html(
+    `<b>Symbol:</b> ${store.txSymbol.toUpperCase()}`
+  )
+  $('#edit-tx-form-price').html(
+    `<b>Price:</b> ${actions.formatter.format(store.txPrice)}`
+  )
+}
+
+const onEditTransactionSubmit = (event) => {
   event.preventDefault()
   const form = event.target
-  const data = getFormFields(form)
-  data.transaction.id = store.editTxId
-  api.editTransaction(data)
+  const userData = getFormFields(form)
+  const data = {
+    transaction: {
+      coin: store.txCoin,
+      symbol: store.txSymbol.toUpperCase(),
+      price: store.txPrice,
+      quantity: userData.transaction.quantity,
+      orderType: userData.transaction.orderType,
+      id: store.editTxId,
+    },
+  }
+  api
+    .editTransaction(data)
     .then(ui.onEditTransactionSuccess)
-	.then(() => {
-		$('#editTransactionModalLabel').text('Your transaction was revised')
-	})
+    .then(() => {
+      $('#editTransactionModalLabel').text('Your transaction was revised')
+    })
     .then(ui.onTransactionFailure)
 }
 
+const onDeleteTransactionModal = (event) => {
+  event.preventDefault()
+  // variable to contain the click listener data that was passed in the event parameter
+  const deleteButton = event.target
+  // grab the id from data-id
+  const id = $(deleteButton).data('id')
+  // grab the coin from data-coin
+  const coin = $(deleteButton).data('coin')
+  store.deleteTxId = id
+  store.txCoin = coin
+  $('#delete-tx-form-coin').html(`Delete this ${coin} transaction?`)
+}
+
+const onDeleteTransactionSubmit = (event) => {
+  event.preventDefault()
+  const id = store.deleteTxId
+  api.deleteTransaction(id)
+    .then(ui.onDeleteTransactionSuccess)
+    .then(() => {
+      $('#user-alert-message').text('Your transaction was deleted.')
+      $('#user-alert-message').show()
+      $('#user-alert-message').fadeOut(4000)
+    })
+    .then(ui.onTransactionFailure)
+}            
 
 //-----------------------------------------//
-const onNewTransactionModal = (event) => {
-	event.preventDefault()
-    console.log(event)
-	$('#newTransactionModalLabel').text('Add a new transaction.')
-	const newTxButton = event.target
-    const coin = $(newTxButton).data('coin')
-    const coinCaps = actions.capitalize(coin)
-	store.txCoin = coin
-    store.txSymbol = $(newTxButton).data('symbol')
-    store.txPrice = $(newTxButton).data('price')
-    $('#new-tx-form-coin').html(`<b>Coin:</b> ${coinCaps}`)
-    $('#new-tx-form-symbol').html(`<b>Symbol:</b> ${store.txSymbol.toUpperCase()}`)
-    $('#new-tx-form-price').html(`<b>Price:</b> ${actions.formatter.format(store.txPrice)}`)
-}
-
-
-const onTransactionEditModal = (event) => {
-	event.preventDefault()
-  $('#editTransactionModalLabel').text('Revise your transaction:')
-  const editButton = event.target
-  store.editTxId = $(editButton).data('id')
-  console.log(store.editTxId)
-}
-
-const onTransactionDeleteModal = (event) => {
-	event.preventDefault()
-	const deleteButton = event.target
-	const id = $(deleteButton).data('id')
-	api
-		.deleteTransaction(id)
-		.then(ui.onTransactionSuccess)
-		.then(() => {
-			$('#user-alert-message').text('Your transaction was deleted.')
-			$('#user-alert-message').show()
-			$('#user-alert-message').fadeOut(4000)
-		})
-		.then(ui.onTransactionFailure)
-}
-
-const onTransactionDeleteSubmit = (event) => {
-	event.preventDefault()
-	const form = event.target
-	const data = getFormFields(form)
-  const id = data.transaction.id
-	api.deleteTransaction(id)
-		.then(ui.onTransactionSuccess)
-		.then(ui.onTransactionFailure)
-}
 
 const onCloseModals = () => {
 	$('#newTransactionModalLabel').text('Add a new transaction:')
@@ -145,16 +174,17 @@ const onChangePassword = (event) => {
 }
 
 module.exports = {
-	onSignUp,
-	onSignIn,
-	onSignOut,
-	onTransactionSubmit,
-	onTransactionEditSubmit,
-	onShowAccount,
-	onChangePassword,
-	onTransactionDeleteSubmit,
-	onTransactionDeleteModal,
-	onTransactionEditModal,
-	onNewTransactionModal,
-	onCloseModals
+  onSignUp,
+  onSignIn,
+  onSignOut,
+  onShowAccount,
+  onChangePassword,
+  onDeleteTransactionModal,
+  onDeleteTransactionSubmit,
+  onEditTransactionModal,
+  onEditTransactionSubmit,
+  onNewTransactionModal,
+  onNewTransactionSubmit,
+  onDeleteTransactionSubmit,
+  onCloseModals,
 }

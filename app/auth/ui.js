@@ -29,13 +29,34 @@ const onSignUpFailure = () => {
 	$('#sign-up-welcome').hide()
 }
 
+const onSignInButton = () => {
+  $('#sign-in-btn').hide()
+  $('#login-forms').show()
+  $('#splash-table').hide()
+  $('#user-alert-message').hide()
+  $('#user-alert-message').text('Cryptocurrency Markets by Market Cap')
+}
+
+const onHome = () => {
+  if (!store.login) {
+  $('#sign-in-btn').show()
+  $('#login-forms').hide()
+  $('#splash-table').show()
+  $('#user-alert-message').show()
+  $('#user-alert-message').text('Cryptocurrency Markets by Market Cap')  
+} else {
+  $('#market-tab').trigger('click')
+}
+}
+
 const onSignInSuccess = async (response) => {
 	store.token = response.user.token
 	store.user = response.user.email
   store.login = true
   store.owner = response.user._id
 	$('#app-tabs').show()
-	$('#user-account-span').show()
+  $('#sign-in-btn').hide()
+  $('#user-account-span').show()
 	$('#user-account-form').hide()
 	$('#user-account-text').text(`${store.user} account`)
 	$('#app-tabs-content').show()
@@ -46,7 +67,7 @@ const onSignInSuccess = async (response) => {
   $('#login-title').text('Login to see your crypto:')
   $('#user-alert-message').show()
 	$('#user-alert-message').text('...fetching market data...')
-  await onRefreshMarkets()
+  $('#transaction-table').empty()
   $('#user-alert-message').hide()
 	$('#user-alert-message').text('')
   await populateCoinsTable()
@@ -80,15 +101,15 @@ const onSignInFailure = (error) => {
 
 const onSignOutSuccess = () => {
   store.login = false
-	$('#sign-out-btn').hide()
-  $('#sign-up').show()
+  $('#splash-table').show()
+  $('#sign-in-btn').show()
+  $('#sign-out-btn').hide()
 	$('#sign-up-form').trigger('reset')
   $('#user-account-form').hide()
 	$('#change-account-info-form').trigger('reset')
   $('#user-account-span').hide()
   $('#app-tabs').hide()
   $('#app-tabs-content').hide()
-  $('.login-forms').show()
   $('#transaction-table').empty()
   $('#portfolio-cards').empty()
   $('#account-usd-value').empty()
@@ -96,11 +117,18 @@ const onSignOutSuccess = () => {
   $('#account-change').empty()
   $('#user-alert-message').show()
 	$('#user-alert-message').text('See you next time!')
-	$('#user-alert-message').fadeOut(4000)
+	$('#user-alert-message').fadeOut(4000, () => {
+    $('#user-alert-message').text('Cryptocurrency Markets by Market Cap')
+    $('#user-alert-message').show()
+  })
+
+
+
 }
 
 const onEditTransactionSuccess = () => {
-  $('#transaction-table').text('')
+  // empty the transactions table first before refilling it
+  $('#transaction-table').empty()
   $('#transaction-form-new').trigger('reset')
   $('#transaction-form-edit').trigger('reset')
   $('#transaction-form-delete').trigger('reset')
@@ -115,6 +143,18 @@ const onEditTransactionSuccess = () => {
     .catch(error => console.error(error))
 }
 
+const onDeleteTransactionSuccess = () => {
+  // empty the transactions table first before refilling it
+  $('#transaction-table').empty()
+  $('#transaction-form-new').trigger('reset')
+  $('#transaction-form-edit').trigger('reset')
+  $('#transaction-form-delete').trigger('reset')
+  $('#delete-modal-close').trigger('click')
+  api.index()
+    .then(onIndexSuccess)
+    .catch((error) => console.error(error))
+}
+
 const onTransactionTabClick = () => {
   api.index()
 		.then(onIndexSuccess)
@@ -122,7 +162,7 @@ const onTransactionTabClick = () => {
 }
 
 const onTransactionSuccess = async (response) => {
-	$('#transaction-table').text('')
+  $('#transaction-table').empty()
   $('#transaction-form-new').trigger('reset')
   $('#transaction-form-edit').trigger('reset')
   $('#transaction-form-delete').trigger('reset')
@@ -137,11 +177,12 @@ const onTransactionSuccess = async (response) => {
 }
 
 const onIndexSuccess = (response) => {
+  $('#transaction-table').empty()
   // make a data variable from the fetched transactions from API
   const data = response.transaction
   // make the data available to the global store object
   store.transactions = data
-  console.log(store.transactions)
+  const markets = store.markets
   // iterate over the data array backwards (most recent first)
   data.slice().reverse().forEach(transaction => {
 		const coin = transaction.coin
@@ -152,6 +193,16 @@ const onIndexSuccess = (response) => {
 		const quantity = transaction.quantity
 		const orderType = transaction.orderType
     const id = transaction._id
+    // initialize variable for current market price
+    let currentPrice
+    // iterate over the store.markets object
+    markets.forEach((crypto) => {
+      // if the iterated crypto.id matches the current transaction coin id grab the current price
+      // and assign it to currentPrice
+      if (crypto.id === coin) {
+        currentPrice = crypto.current_price
+      }
+    })    
     // variable for the coin images array created in getCoinImages()
     const coins = store.images
     // filter through coins and return the object with the same id key as 'coinNormalized' above
@@ -168,20 +219,39 @@ const onIndexSuccess = (response) => {
     // fills out the transactions table
     if (store.owner === txOwner) {
       $('#transaction-table').append(
-				`<tr>
-                <td class="text-light" scope="row">
-                <b><img src="${coinImage}" style="height: 1.25em;">&nbsp;&nbsp;${coin}</b></td>
-                <td class="text-right">${symbol}</td>
-                <td class="text-right">${actions.formatter.format(price)}</td>
-                <td class="text-right">${new Intl.NumberFormat().format(quantity)}</td>
-                <td class="text-right">${orderType}</td>
-                <td class="text-right">
-                  <a class="edit-tx" href="#" data-id="${id}" data-bs-toggle="modal"
-                    data-bs-target="#edit-transaction-modal" style="text-decoration:none">edit &nbsp;</a><span>/</span>
-                  <a class="delete-tx" href="#" data-id="${id}" style="text-decoration:none">delete</a>                
-                </td>
-            </tr>`
-			)
+        `<tr>
+          <td class="text-light" scope="row">
+          <b><img src="${coinImage}" style="height: 1.25em;">&nbsp;&nbsp;${coin}</b></td>
+          <td class="text-right">${symbol}</td>
+          <td class="text-right">${actions.formatter.format(price)}</td>
+          <td class="text-right">${new Intl.NumberFormat().format(
+            quantity
+          )}</td>
+          <td class="text-right">${orderType}</td>
+          <td class="text-right">
+            <a 
+              class="edit-tx" 
+              href="#" 
+              data-id="${id}" 
+              data-coin="${coin}"
+              data-symbol="${symbol}"
+              data-price="${currentPrice}"
+              data-bs-toggle="modal"
+              data-bs-target="#edit-transaction-modal" 
+              style="text-decoration:none">edit &nbsp;
+            </a><span>/</span>
+            <a 
+              class="delete-tx" 
+              href="#" 
+              data-id="${id}" 
+              data-coin="${coin}"
+              data-bs-toggle="modal"
+              data-bs-target="#delete-transaction-modal" 
+              style="text-decoration:none">delete
+            </a>                
+          </td>
+        </tr>`
+      )
     }
 	})
 }
@@ -239,6 +309,7 @@ const populateCoinsTable = async () => {
       ? Number(coinData.price_change_percentage_24h).toFixed(2)
       : '-'
     const sparkData = coinData.sparkline_in_7d.price
+    const high24 = coinData.high_24h
     const sparkAve = actions.movingAve(sparkData)
     const coinSymbol = coinData.symbol
     const coinName = coinData.name
@@ -257,29 +328,42 @@ const populateCoinsTable = async () => {
     }
     $('.market-tab-table').append(
 			//populates the table rows with data from API
-			`<tr>
-                <td class="text-right" scope="row">${coinData.market_cap_rank}</td>
-                <td><b class="text-right"><img src="${coinData.image}" style="height: 1.25em;">&nbsp;&nbsp;&nbsp;${coinName}</b></td>
-                <td class="text-right">${actions.formatter.format(marketCap)}</td>
-                <td class="text-right">${actions.formatter.format(coinPrice)}</td>
-                <td class="text-right">${actions.formatter.format(cirSuppy)}&nbsp;${capSymbol}</td>
-                <td id="coin-change-percent" class="text-right text-${classColor}">${coinDelta}%</td>
-                <td class="text-right p-0"><span id="sparkline${i}"></span></td>
-                <td class="text-right">
-                  <a 
-                    class="new-tx" 
-                    href="#" 
-                    data-coin="${id}"
-                    data-symbol="${coinSymbol}"
-                    data-price="${coinPrice}"
-                    data-bs-toggle="modal"
-                    data-bs-target="#new-transaction-modal" 
-                    style="text-decoration:none"
-                    >add &nbsp;
-                  </a>
-                </td>
-            </tr>`
+			`<tr class="text-light">
+          <td class="text-center" scope="row">${coinData.market_cap_rank}</td>
+          <td><b class="text-right"><img src="${coinData.image}" style="height: 1.25em;">&nbsp;&nbsp;&nbsp;${coinName}</b></td>
+          <td class="text-right">${actions.formatter.format(marketCap)}</td>
+          <td class="text-right">${actions.formatter.format(coinPrice)}</td>
+          <td id="coin-change-percent" class="text-right text-${classColor}">${coinDelta}%</td>
+          <td class="text-center p-0"><span id="sparkline-splash${i}"></span></td>
+          <td class="text-center">
+            <a 
+              class="new-tx" 
+              href="#" 
+              data-coin="${id}"
+              data-symbol="${coinSymbol}"
+              data-price="${coinPrice}"
+              data-bs-toggle="modal"
+              data-bs-target="#new-transaction-modal" 
+              style="text-decoration:none"
+              >add &nbsp;
+            </a>
+          </td>
+      </tr>`
 		)
+    $('#market-table-splash').append(
+      `
+      <tr>
+          <td class="text-center" scope="row">${coinData.market_cap_rank}</td>
+          <td><b class="text-right"><img src="${
+            coinData.image
+          }" style="height: 1.25em;">&nbsp;&nbsp;&nbsp;${coinName}</b></td>
+          <td class="text-right">${actions.formatter.format(marketCap)}</td>
+          <td class="text-right">${actions.formatter.format(coinPrice)}</td>
+          <td id="coin-change-percent" class="text-right text-${classColor}">${coinDelta}%</td>
+          <td class="text-center p-0"><span id="sparkline${i}"></span></td>
+      </tr>
+      `
+    )
     //control flow for painting sparklines green (up-trending) or red (down-trending)
     if (sparkAve[0] > sparkAve[sparkAve.length - 1]) {
       actions.sparkLine(sparkAve, '#ff0000', i)
@@ -323,7 +407,7 @@ const onShowPortfolio = () => {
       // and if the token is NOT already in the portfolio object
       if(!(coin in portfolio)) {
         // initialize this crypto into the portfolio starting at 0
-        portfolio[coin] = {}
+        portfolio[coin] = { quantity: 0 }
       }
     }
   })
@@ -335,12 +419,14 @@ const onShowPortfolio = () => {
       // add the quantity from that coin object to the coin key in the portfolio 
       if(tx.coin.toLowerCase() === coin && store.owner === tx.owner) {
         portfolio[coin].id = coin
-        portfolio[coin].quantity = 0
-        portfolio[coin].quantity += tx.quantity
+        if (tx.orderType === 'buy') {
+          portfolio[coin].quantity += tx.quantity
+        } else {
+          portfolio[coin].quantity -= tx.quantity
+        }
       }
     })
   }
-  console.log(portfolio)
   let usdValue 
   let totalUsdValue = 0
   let totalBtcValue = 0
@@ -377,7 +463,6 @@ const onShowPortfolio = () => {
       }
     })
   }
-  console.log(portfolio)
   let displayOrder = []
   for (const coin in portfolio) {
     displayOrder.push(portfolio[coin])
@@ -388,7 +473,6 @@ const onShowPortfolio = () => {
     return 0
   })
 
-  console.log(displayOrder)
   displayOrder.forEach(coin => {
     $('#portfolio-cards').append(
       `
@@ -425,7 +509,6 @@ const onShowPortfolio = () => {
   })
 
 
-  console.log(totalChangeAmount)
   $('#account-usd-value').text(`${actions.formatter.format(totalUsdValue)}`)
   $('#account-btc-value').html(`<i class="icon-btc"></i>${new Intl.NumberFormat().format(totalBtcValue)}`)
   $('#account-change').html(`<span class="text-${totalChangeColor}">
@@ -442,26 +525,28 @@ const onRefreshMarkets = async () => {
   }
   $('#user-alert-message').hide()
 	$('#user-alert-message').text('')
-  console.log(store.markets)
   store.images = getCoinImages(store.markets)
 }
 
 module.exports = {
-	onSignUpSuccess,
-	onSignUpFailure,
-	onSignInSuccess,
-	onSignInFailure,
-	onSignOutSuccess,
-	onTransactionSuccess,
-	onTransactionFailure,
-	onChangePasswordSuccess,
-	onChangePasswordFailure,
-	onLogoClick,
-	current_BTC_price,
-	populateCoinsTable,
-	onShowMarkets,
-	onShowPortfolio,
-	onRefreshMarkets,
-	onEditTransactionSuccess,
-	onTransactionTabClick,
+  onSignUpSuccess,
+  onSignUpFailure,
+  onSignInSuccess,
+  onSignInFailure,
+  onSignOutSuccess,
+  onTransactionSuccess,
+  onTransactionFailure,
+  onChangePasswordSuccess,
+  onChangePasswordFailure,
+  onLogoClick,
+  current_BTC_price,
+  populateCoinsTable,
+  onShowMarkets,
+  onShowPortfolio,
+  onRefreshMarkets,
+  onEditTransactionSuccess,
+  onDeleteTransactionSuccess,
+  onTransactionTabClick,
+  onSignInButton,
+  onHome
 }
