@@ -72,6 +72,7 @@ const onSignInSuccess = async (response) => {
   $('#transaction-table').empty()
   $('#user-alert-message').hide()
 	$('#user-alert-message').text('')
+  $('.market-tab-table').empty()
   await populateCoinsTable()
   store.images = getCoinImages(store.markets)
   api.index()
