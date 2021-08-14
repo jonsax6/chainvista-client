@@ -38,6 +38,7 @@ $(async () => {
   $('#new-modal-close').on('click', authEvents.onCloseModals)
   $('#edit-modal-close').on('click', authEvents.onCloseModals)
   await ui.onRefreshMarkets()
+  store.loaded = true
   await ui.populateCoinsTable()
   $('#user-alert-message').show()
   $('#user-alert-message').text('Cryptocurrency Markets by Market Cap')

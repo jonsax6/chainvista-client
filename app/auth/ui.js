@@ -30,6 +30,7 @@ const onSignUpFailure = () => {
 }
 
 const onSignInButton = () => {
+  store.onLoginView = true
   $('#sign-in-btn').hide()
   $('#login-forms').show()
   $('#splash-table').hide()
@@ -54,6 +55,7 @@ const onSignInSuccess = async (response) => {
 	store.user = response.user.email
   store.login = true
   store.owner = response.user._id
+  store.onLoginView = false
 	$('#app-tabs').show()
   $('#sign-in-btn').hide()
   $('#user-account-span').show()
@@ -101,6 +103,7 @@ const onSignInFailure = (error) => {
 
 const onSignOutSuccess = () => {
   store.login = false
+  store.onLoginView = false
   $('#splash-table').show()
   $('#sign-in-btn').show()
   $('#sign-out-btn').hide()
@@ -118,8 +121,10 @@ const onSignOutSuccess = () => {
   $('#user-alert-message').show()
 	$('#user-alert-message').text('See you next time!')
 	$('#user-alert-message').fadeOut(4000, () => {
-    $('#user-alert-message').text('Cryptocurrency Markets by Market Cap')
-    $('#user-alert-message').show()
+    if (!store.onLoginView) {
+      $('#user-alert-message').text('Cryptocurrency Markets by Market Cap')
+      $('#user-alert-message').show()
+    }
   })
 
 
@@ -386,8 +391,10 @@ const getCoinImages = (data) => {
 }
 
 const onShowMarkets = async () => {
-  $('.market-tab-table').empty()
-  populateCoinsTable()
+  if (!store.loaded) {
+    $('.market-tab-table').empty()
+    populateCoinsTable()
+  }
 }
 
 const onShowPortfolio = () => {
