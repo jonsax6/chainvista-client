@@ -66,7 +66,7 @@ const onSignInSuccess = async (response) => {
 	$('#sign-up-error').hide()
   $('#login-title').text('Login to see your crypto:')
   $('#user-alert-message').show()
-	$('#user-alert-message').text('...fetching market data...')
+	$('#user-alert-message').text('...looking up market data...')
   $('#transaction-table').empty()
   $('#user-alert-message').hide()
 	$('#user-alert-message').text('')
@@ -519,7 +519,7 @@ const onShowPortfolio = () => {
 const onRefreshMarkets = async () => {
   store.markets = []
   $('#user-alert-message').show()
-  $('#user-alert-message').text('...fetching market data...')
+  $('#user-alert-message').text('...looking up market data...')
   for(let i = 1; i < 6; i++) {
     await allCoinsMarkets(i)
   }
