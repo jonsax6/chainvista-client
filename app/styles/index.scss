@@ -29,6 +29,34 @@ body {
   background-color: $modal-bg-clr;
 }
 
+// .pagination > li > a {
+//   background-color: #495057;
+//   color: #4a68b6
+// }
+
+// .pagination > li > a:focus,
+// .pagination > li > a:hover,
+// .pagination > li > span:focus,
+// .pagination > li > span:hover
+// {
+//     color: #5a5a5a;
+//     background-color: rgb(120, 120, 120);
+//     border-color: rgba(0, 0, 0, 0);
+// }
+
+// .pagination > .active > a
+// {
+//     color: white;
+//     background-color: #5063a3;
+//     border: solid 1px #5063a3;
+// }
+
+// .pagination > .active > a:hover
+// {
+//     background-color: #5063a3;
+//     border: solid 1px #5063a3;
+// }
+
 #app-tabs li .active button { 
   border-color: rgb(145, 145, 145);
   border-bottom-color: transparent; 
