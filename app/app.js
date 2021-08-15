@@ -10,6 +10,7 @@ const ui = require('./auth/ui')
 const Modal = require('bootstrap').Modal
 store.page = 1
 store.login = false
+store.cardView = true
 
 $(async () => {
   console.log('store.page: ' + store.page)
@@ -31,6 +32,8 @@ $(async () => {
   $('#transactions-btn').on('click', ui.onTransactionTabClick)
   $('#markets-btn').on('click', ui.onShowMarkets)
   $('#portfolio-btn').on('click', ui.onShowPortfolio)
+  $('#list-toggle-btn').on('click', authEvents.onListToggle)
+  $('#portfolio-list-toggle').hide()
   $('#markets-tab').on('click', authEvents.onMarketsTab)
   $('#portfolio-tab').on('click', authEvents.onPortfolioTab)
   $('#transactions-tab').on('click', authEvents.onTransactionsTab)

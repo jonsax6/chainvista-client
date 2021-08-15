@@ -54,6 +54,7 @@ const onHome = async () => {
 
 const onMarketsTab = () => {
   $('#next-page').show()
+  $('#portfolio-list-toggle').hide()
   if (store.page > 1) {
     $('#previous-page').show()
   }
@@ -62,12 +63,29 @@ const onMarketsTab = () => {
 const onPortfolioTab = () => {
   $('#next-page').hide()
   $('#previous-page').hide()
+  $('#portfolio-list-toggle').show()
 }
 
 const onTransactionsTab = () => {
   $('#next-page').hide()
   $('#previous-page').hide()
+  $('#portfolio-list-toggle').hide()
 }
+
+const onListToggle = () => {
+  store.cardView = !store.cardView
+    if (store.cardView) {
+      $('#portfolio-list').hide()
+      $('#portfolio-cards').show()
+      $('#list-toggle-btn').text('Toggle List')
+      ui.onShowPortfolio()
+    } else {
+      $('#portfolio-list').show()
+      $('#portfolio-cards').hide()
+      $('#list-toggle-btn').text('Toggle Cards')
+      ui.onShowPortfolio()
+    }
+  }
 
 //===ACCOUNT AND CHANGE PASSWORD ACTIONS===//
 const onShowAccount = (event) => {
@@ -254,6 +272,7 @@ module.exports = {
   onSearchMarkets,
   onMarketsTab,
   onPortfolioTab,
+  onListToggle,
   onTransactionsTab,
   onHome,
 }

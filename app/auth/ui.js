@@ -114,7 +114,7 @@ const onSignOutSuccess = async () => {
   $('#app-tabs').hide()
   $('#app-tabs-content').hide()
   $('#transaction-table').empty()
-  $('#portfolio-cards').empty()
+  $('#portfolio-list').empty()
   $('#account-usd-value').empty()
   $('#account-btc-value').empty()
   $('#account-change').empty()
@@ -411,6 +411,7 @@ const onShowMarkets = async () => {
 const onShowPortfolio = () => {
   $('#previous-page').hide()
   $('#portfolio-cards').empty()
+  $('#portfolio-table-data').empty()
   // variable for the fetched transactions from database
   let txs = store.transactions
   // variable for large database from coingecko
@@ -468,11 +469,16 @@ const onShowPortfolio = () => {
         portfolio[coin].id = coin
         portfolio[coin].price = crypto.current_price
         portfolio[coin].usdValue = portfolio[coin].quantity * crypto.current_price
+        portfolio[coin].rank = crypto.market_cap_rank
         totalUsdValue += portfolio[coin].usdValue
         totalBtcValue = totalUsdValue / store.markets[0].current_price
         portfolio[coin].change = crypto.price_change_percentage_24h
         portfolio[coin].changeColor = portfolio[coin].change > 0 ? 'success' : 'danger'
-        circSupply = crypto.circulating_supply
+        portfolio[coin].marketCap = crypto.market_cap
+        portfolio[coin].circSupply = crypto.circulating_supply
+        portfolio[coin].sparkData = crypto.sparkline_in_7d.price
+        portfolio[coin].sparkAve = actions.movingAve(portfolio[coin].sparkData)
+        portfolio[coin].classColor = portfolio[coin].change > 0 ? 'success' : 'danger'
         marketCap = crypto.market_cap
         totalChangeAmount += portfolio[coin].usdValue * (portfolio[coin].change/100)
         totalChangePercentage = (totalChangeAmount/totalUsdValue) * 100
@@ -480,6 +486,7 @@ const onShowPortfolio = () => {
       }
     })
   }
+
   let displayOrder = []
   for (const coin in portfolio) {
     displayOrder.push(portfolio[coin])
@@ -489,40 +496,74 @@ const onShowPortfolio = () => {
     if(a.usdValue < b.usdValue) return 1
     return 0
   })
+  console.log(displayOrder)
 
-  displayOrder.forEach(coin => {
-    $('#portfolio-cards').append(
-      `
-    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-12 rounded-3">
-      <div class="card bg-card text-white m-auto mt-4">
-        <div class="text-center">
-          <img src="${coin.image}" class="card-img-top text-center" alt="crypto-logo">
+  displayOrder.forEach((coin, index) => {
+    // if the store.cardView toggle is true, render portfolio as cards
+    if (store.cardView === true) {
+      $('#portfolio-cards').append(
+        `
+      <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-12 rounded-3">
+        <div class="card bg-card text-white m-auto mt-4">
+          <div class="text-center">
+            <img src="${
+              coin.image
+            }" class="card-img-top text-center" alt="crypto-logo">
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">${coin.id}</h5>
+            <p class="card-text">${new Intl.NumberFormat().format(coin.quantity)}
+            </p>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item bg-secondary text-light">
+              Current Price: ${actions.formatter.format(coin.price)}</li>
+            <li class="list-group-item bg-secondary text-light">
+              USD value: ${actions.formatter.format(coin.usdValue)}</li>
+            <li class="list-group-item bg-card text-light">
+              24h: <span class="text-${
+                coin.changeColor
+              }">${coin.change.toPrecision(2)}%</span></li>
+            <li class="list-group-item bg-card text-light">
+              7-day: <span class="m-auto" id="sparkline-portfolio${index}"></span></li>
+            <li class="list-group-item bg-card text-light">
+              Mkt Cap: $${new Intl.NumberFormat().format(
+                parseInt(coin.marketCap)
+              )}</li>
+            <li class="list-group-item bg-card text-light">
+              Crc Supply: ${new Intl.NumberFormat().format(
+                parseInt(coin.circSupply)
+              )}</li>
+          </ul>
         </div>
-        <div class="card-body">
-          <h5 class="card-title">${coin.id}</h5>
-          <p class="card-text">${coin.quantity}
-          </p>
-        </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item bg-secondary text-light">Current Price: ${actions.formatter.format(
-            coin.price
-          )}</li>
-          <li class="list-group-item bg-secondary text-light">USD value: ${actions.formatter.format(
-            coin.usdValue
-          )}</li>
-          <li class="list-group-item bg-card text-${coin.changeColor}">24h Change: ${coin.change.toPrecision(
-        2
-      )}%</li>
-          <li class="list-group-item bg-card text-light">Market Cap: ${actions.formatter.format(
-            marketCap
-          )}</li>
-          <li class="list-group-item bg-card text-light">Circ Supply: ${new Intl.NumberFormat().format(
-            circSupply
-          )}</li>
-        </ul>
-      </div>
-    </div>`
-    )
+      </div>`
+      )
+    }
+    // if store.cardView is false, render the portfolio as a list
+    else {
+      $('#portfolio-table-data').append(
+        `            
+        <tr>
+          <td class="text-center">${coin.rank}</td>
+          <td><b class="text-right"><img src="${coin.image}" style="height: 1.25em;">
+            &nbsp;&nbsp;&nbsp;${coin.id}</b></td>
+          <td class="text-right">${new Intl.NumberFormat().format(coin.quantity)}</td>
+          <td class="text-right">${actions.formatter.format(coin.usdValue)}</td>
+          <td class="text-right">${actions.formatter.format(coin.price)}</td>
+          <td class="text-right">${actions.formatter.format(coin.marketCap)}</td>
+          <td class="text-right text-${coin.classColor}">${coin.change.toPrecision(2)}%</td>
+          <td class="text-center"><span class="mb-1 mt-1" id="sparkline-portfolio${index}"></span></td>
+        </tr>
+        `
+      )
+    }
+    //control flow for painting sparklines green (up-trending) or red (down-trending)
+    if (coin.sparkAve[0] > coin.sparkAve[coin.sparkAve.length - 1]) {
+      actions.sparkLine(coin.sparkAve, '#ff0000', index)
+    }
+    if (coin.sparkAve[0] < coin.sparkAve[coin.sparkAve.length - 1]) {
+      actions.sparkLine(coin.sparkAve, '#00bf00', index)
+    }
   })
 
 

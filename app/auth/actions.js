@@ -5,20 +5,20 @@ require('../../lib/jquery.sparkline')
 const movingAve = (array) => {
 		let aveArray = []
 		for (let i = 5; i < array.length - 1; i++) {
-			let indAve =
+			let movingFiveAverage =
 				(array[i - 4] +
 					array[i - 3] +
 					array[i - 2] +
 					array[i - 1] +
 					array[i]) /
 				5
-			aveArray.push(indAve)
+			aveArray.push(movingFiveAverage)
 		}
 		return aveArray
 	}
 
 const sparkLine = (data, color, i) => {
-	$(`#sparkline${i}, #sparkline-splash${i}`).sparkline(data, {
+	$(`#sparkline${i}, #sparkline-splash${i}, #sparkline-portfolio${i}`).sparkline(data, {
 		type: 'line',
 		width: '200',
 		height: '40',

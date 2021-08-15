@@ -178,6 +178,11 @@
                     refresh markets
                   </button>                  
                 </li>
+                <li id="portfolio-list-toggle" class="nav-item rounded-3">
+                  <button class="nav-link" id="list-toggle-btn" data-bs-toggle="tab" type="button"
+                    role="tab" aria-controls="portfolio-list-toggle" aria-selected="false">Toggle List
+                  </button>              
+                </li>
                 <!-- PAGINATION -->
                 <li class="nav-item me-3 rounded-3" role="presentation">
                   <button type="button" class="btn btn-primary nav-button" id="previous-page">
@@ -254,6 +259,26 @@
                   <div id="portfolio-cards" class="row">
                     <!-- cards filled in from onShowPortfolio - ui.js -->
                   </div>
+                  <div id="portfolio-list" class="row mt-5">
+                    <div class="table-responsive">
+                      <table class="table table-responsive">
+                        <thead id="portfolio-table-header">
+                          <tr>
+                            <th class="text-left text-secondary" scope="col">Rank</th>
+                            <th class="col-2 text-left text-table col-name" scope="col">Name</th>
+                            <th class="text-right text-success" scope="col">Quantity</th>
+                            <th class="text-right text-success" scope="col">USD Value</th>
+                            <th class="text-right text-success" scope="col">Price</th>
+                            <th class="text-right text-success" scope="col">Market Cap</th>
+                            <th class="text-right text-primary" scope="col">24h</th>
+                            <th class="text-center text-primary" scope="col">7-day</th>
+                          </tr>
+                        </thead>
+                        <tbody id="portfolio-table-data">
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>                
                 </div>
                 <!-- transactions tab content -->
                 <div class="tab-pane" id="transactions-list" role="tabpanel" aria-labelledby="transactions-tab">
