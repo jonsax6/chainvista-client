@@ -36,6 +36,21 @@ const onSignOut = (event) => {
     .catch(ui.onFailure)
 }
 
+const onHome = async () => {
+  if (!store.login) {
+    $('#sign-in-btn').show()
+    $('#login-forms').hide()
+    $('#splash-table').show()
+    $('#user-alert-message').show()
+    $('#user-alert-message').text('Cryptocurrency Markets by Market Cap')
+    $('.market-tab-table').empty()
+    $('#market-table-splash').empty()
+    await ui.populateCoinsTable()
+  } else {
+    $('#market-tab').trigger('click')
+  }
+}
+
 //===ACCOUNT AND CHANGE PASSWORD ACTIONS===//
 const onShowAccount = (event) => {
   event.preventDefault()
@@ -199,8 +214,6 @@ const onSearchMarkets = (event) => {
   const form = event.target
   const data = getFormFields(form)
   const search = data.searchTerm.input
-  console.log(search)
-  $('#market-tab-table').empty()
   ui.onCoinSearch(search)
 }
 
@@ -221,4 +234,5 @@ module.exports = {
   onNextPage,
   onPreviousPage,
   onSearchMarkets,
+  onHome
 }

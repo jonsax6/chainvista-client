@@ -39,18 +39,6 @@ const onSignInButton = () => {
   $('#user-alert-message').text('Cryptocurrency Markets by Market Cap')
 }
 
-const onHome = () => {
-  if (!store.login) {
-  $('#sign-in-btn').show()
-  $('#login-forms').hide()
-  $('#splash-table').show()
-  $('#user-alert-message').show()
-  $('#user-alert-message').text('Cryptocurrency Markets by Market Cap')  
-} else {
-  $('#market-tab').trigger('click')
-}
-}
-
 const onSignInSuccess = async (response) => {
   store.token = response.user.token
   store.user = response.user.email
@@ -58,6 +46,7 @@ const onSignInSuccess = async (response) => {
   store.owner = response.user._id
   // if we click sign in, change store.onLoginView to false
   store.onLoginView = false
+  $('#next-page').show()
   $('#app-tabs').show()
   $('#sign-in-btn').hide()
   $('#user-account-span').show()
@@ -393,10 +382,16 @@ const getCoinImages = (data) => {
 }
 
 const onShowMarkets = async () => {
+  // if data isn't loaded from coinGecko, empty table, load data, then populate the table.
   if (!store.loaded) {
+    $('#next-page').show()
     $('.market-tab-table').empty()
-    populateCoinsTable()
-  } else if (store.search === true) {
+    await onRefreshMarkets()
+    await populateCoinsTable()
+  } 
+  // if we have search results showing, empty results and repopulate the table
+  else if (store.search === true) {
+    $('#next-page').show()
     $('.market-tab-table').empty()
     populateCoinsTable()
     store.search = false
@@ -547,11 +542,9 @@ const onCoinSearch = async (search) => {
   const markets = store.markets
   // variable that makes the search term all lower case no matter what
   const searchTermLowerCase = search.toLowerCase()
-  // initialize our data variable to contain our found coin object
-  let data = []
   // if the search term string is contained anywhere in the markets[index].id string,
   // then let data = that coin object at that index
-  data = markets.filter(coin => {
+  let data = markets.filter(coin => {
     // variable for the coin name found in the object currently iterated
     let coinName = coin.id
     let coinSymbol = coin.symbol
@@ -561,14 +554,28 @@ const onCoinSearch = async (search) => {
       ||
       (coinSymbol.indexOf(searchTermLowerCase) !== -1)) {
       // if there is a match to the search term, empty the markets table data
+      $('#next-page').hide()
       $('.market-tab-table').empty()
+      $('#market-table-splash').empty()
       // boolean so that we can enable full market reload inside of 
       store.search = true
       // assign to the data variable
       return true
     }
   })
-  
+  if (data[0] === undefined) {
+    $('#user-alert-message').show()
+    $('#user-alert-message').text(`No results found for '${search}'`)
+    $('#user-alert-message').fadeOut(4000, () => {
+      // only show 'cryptocurrency markets by market cap' title if logged out
+      if (!store.login) {
+        $('#user-alert-message').show()
+        $('#user-alert-message').text('Cryptocurrency Markets by Market Cap')
+        $('#search-form').trigger('reset')
+      }
+    })
+  }
+
 data.forEach((coin, index) => {
   const cryptoName = coin.name
   const marketRank = coin.market_cap_rank
@@ -622,6 +629,19 @@ data.forEach((coin, index) => {
           </td>
       </tr>`
   )
+  $('#market-table-splash').append(
+    `
+  <tr>
+      <td class="text-center" scope="row">${marketRank}</td>
+      <td><b class="text-right"><img src="${coinImage}" style="height: 1.25em;">
+        &nbsp;&nbsp;&nbsp;${cryptoName}</b></td>
+      <td class="text-right">${actions.formatter.format(marketCap)}</td>
+      <td class="text-right">${actions.formatter.format(coinPrice)}</td>
+      <td id="coin-change-percent" class="text-right text-${classColor}">${coinDelta}%</td>
+      <td class="text-center p-0"><span id="sparkline${index}"></span></td>
+  </tr>
+  `
+  )
   //control flow for painting sparklines green (up-trending) or red (down-trending)
   if (sparkAve[0] > sparkAve[sparkAve.length - 1]) {
     actions.sparkLine(sparkAve, '#ff0000', index)
@@ -653,6 +673,5 @@ module.exports = {
   onDeleteTransactionSuccess,
   onTransactionTabClick,
   onSignInButton,
-  onCoinSearch,
-  onHome,
+  onCoinSearch
 }

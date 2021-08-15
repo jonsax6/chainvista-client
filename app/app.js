@@ -9,6 +9,7 @@ const events = require('./auth/events')
 const ui = require('./auth/ui')
 const Modal = require('bootstrap').Modal
 store.page = 1
+store.login = false
 
 $(async () => {
   console.log('store.page: ' + store.page)
@@ -18,7 +19,7 @@ $(async () => {
   $('#app-tabs-content').hide()
   $('#user-account-form').hide()
   $('#sign-out-btn').hide()
-  $('#home').on('click', ui.onHome)
+  $('#home').on('click', authEvents.onHome)
   $('#sign-in-btn').on('click', ui.onSignInButton)
   $('.navbar-brand').on('click', ui.onLogoClick)
   $('#change-account-info-form').on('submit', authEvents.onChangePassword)
@@ -43,6 +44,7 @@ $(async () => {
   $('#previous-page').on('click', authEvents.onPreviousPage)
   $('#search-form').on('submit', authEvents.onSearchMarkets)
   await ui.onRefreshMarkets()
+  // after market data loads, set boolean for loaded to true
   store.loaded = true
   await ui.populateCoinsTable()
   $('#user-alert-message').show()

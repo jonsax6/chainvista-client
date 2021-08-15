@@ -29,39 +29,6 @@ body {
   background-color: $modal-bg-clr;
 }
 
-
-
-
-.pagination > li > a {
-  background-color: #495057;
-  color: #b5b5b5;
-  border: none;
-}
-
-.pagination > li > a:focus,
-.pagination > li > a:hover,
-.pagination > li > span:focus,
-.pagination > li > span:hover
-{
-  color: #e3e3e3;
-  background-color: #4967b3;
-}
-
-.pagination > .active > a
-{
-  color: white;
-  background-color: #6179c9;
-  border: none;
-}
-
-.pagination > .active > a:hover
-{
-  background-color: $bg-color;
-}
-
-
-
-
 #app-tabs li .active button { 
   border-color: rgb(145, 145, 145);
   border-bottom-color: transparent; 
