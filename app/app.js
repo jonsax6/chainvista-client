@@ -47,8 +47,11 @@ $(async () => {
   $('#new-modal-close').on('click', authEvents.onCloseModals)
   $('#edit-modal-close').on('click', authEvents.onCloseModals)
   $('#previous-page').hide()
+  $('#previous-page-splash').hide()
   $('#next-page').on('click', authEvents.onNextPage)
   $('#previous-page').on('click', authEvents.onPreviousPage)
+  $('#next-page-splash').on('click', authEvents.onNextPage)
+  $('#previous-page-splash').on('click', authEvents.onPreviousPage)  
   $('#search-form').on('submit', authEvents.onSearchMarkets)
   await ui.onRefreshMarkets()
   // after market data loads, set boolean for loaded to true

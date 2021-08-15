@@ -61,7 +61,10 @@ const onSignInSuccess = async (response) => {
   $('#sign-up-error').hide()
 	$('#user-alert-message').show()
 	$('#user-alert-message').text('Welcome! Start or add to your portfolio.')
-  $('#user-alert-message').fadeOut(4000)
+  setTimeout(() => {
+    $('#user-alert-message').fadeOut(2000)
+
+  }, 4000)
   $('#login-title').text('Login to see your crypto:')
   // $('#user-alert-message').show()
   // $('#user-alert-message').text('...looking up market data...')
@@ -123,15 +126,34 @@ const onSignOutSuccess = async () => {
   $('#market-table-splash').empty()
   await populateCoinsTable()
 	$('#user-alert-message').text('See you next time!')
-	$('#user-alert-message').fadeOut(4000, () => {
+  setTimeout(() => {
+    $('#user-alert-message').fadeOut(2000, () => {
+      $('#user-alert-message').show()
+      $('#user-alert-message').text('Cryptocurrency Markets by Market Cap.')
+    })
+  }, 4000)
+ 
+  // setTimeout(() => {
+
+  // }, 6005)
+
+
+  // setTimeout()
+  // setTimeout(() => {
+  //   if (!store.onLoginView) {
+  //     $('#user-alert-message').text('Cryptocurrency Markets by Market Cap')
+  //     $('#user-alert-message').show()
+  //   }
+  // }, 5000)
+	// $('#user-alert-message').fadeOut(4000, () => {
     // if we sign out we want to make sure 'Cryptocurrency Markets by Market Cap' doesn't pop up
     // if we click 'Sign In' while the 'See you next time!' is still fading. This if statement
     // won't allow that message to appear over the login forms if we have logged out already.
-    if (!store.onLoginView) {
-      $('#user-alert-message').text('Cryptocurrency Markets by Market Cap')
-      $('#user-alert-message').show()
-    }
-  })
+  //   if (!store.onLoginView) {
+  //     $('#user-alert-message').text('Cryptocurrency Markets by Market Cap')
+  //     $('#user-alert-message').show()
+  //   }
+  // })
 
 
 
@@ -547,9 +569,9 @@ const onShowPortfolio = () => {
           <td class="text-center">${coin.rank}</td>
           <td><b class="text-right"><img src="${coin.image}" style="height: 1.25em;">
             &nbsp;&nbsp;&nbsp;${coin.id}</b></td>
+          <td class="text-right">${actions.formatter.format(coin.price)}</td>
           <td class="text-right">${new Intl.NumberFormat().format(coin.quantity)}</td>
           <td class="text-right">${actions.formatter.format(coin.usdValue)}</td>
-          <td class="text-right">${actions.formatter.format(coin.price)}</td>
           <td class="text-right">${actions.formatter.format(coin.marketCap)}</td>
           <td class="text-right text-${coin.classColor}">${coin.change.toPrecision(2)}%</td>
           <td class="text-center"><span class="mb-1 mt-1" id="sparkline-portfolio${index}"></span></td>

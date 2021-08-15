@@ -159,21 +159,21 @@ a .nav-link .dropdown-toggle {
   background-color: #587edd;
 }
 
-#next-page {
+#next-page, #next-page-splash {
   background-color: #4a68b6;
   border: none;
 }
 
-#next-page:hover {
+#next-page:hover, #next-page-splash:hover {
   background-color: #587edd;
 }
 
-#previous-page {
+#previous-page, #previous-page-splash {
   background-color: #4a68b6;
   border: none;
 }
 
-#previous-page:hover {
+#previous-page:hover, #previous-page-splash:hover {
   background-color: #587edd;
 }
 
@@ -181,6 +181,17 @@ a .nav-link .dropdown-toggle {
   background: rgb(31,56,120);
   background: linear-gradient(0deg, rgba(31,56,120,1) 0%, rgba(56,85,159,1) 50%, rgba(86,116,195,1) 100%);
 } 
+
+#search-btn {
+  color: #587edd;
+  border-color: #587edd;
+}
+
+#search-btn:hover {
+  color: #ededed;
+  border-color: #668df0;
+  background-color: #587edd;
+}
 
 .table td {
   padding: 20px;

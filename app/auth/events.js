@@ -230,18 +230,22 @@ const onCloseModals = () => {
 const onNextPage = () => {
   store.page++
   $('.market-table-tab').empty()
+  $('#market-table-splash').empty()
   ui.populateCoinsTable()
   if (store.page > 1) {
   $('#previous-page').show()
+  $('#previous-page-splash').show()
   }
 }
 
 const onPreviousPage = () => {
   store.page--
   $('.market-table-tab').empty()
+  $('#market-table-splash').empty()
   ui.populateCoinsTable()
   if (store.page === 1) {
     $('#previous-page').hide()
+    $('#previous-page-splash').hide()
   } 
 }
 

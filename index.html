@@ -37,7 +37,7 @@
               <form id="search-form" class="d-flex mt-2 mb-2">
                 <input name="searchTerm[input]" class="form-control me-2 bg-dark text-light search-box" type="text"
                   placeholder="Market Search" aria-label="Search">
-                <button class="btn btn-outline-primary" type="submit">Search</button>
+                <button id="search-btn" class="btn btn-outline-primary" type="submit">Search</button>
               </form>
             </div>
 
@@ -136,6 +136,12 @@
             <div class="col-12">
               <!-- splash view market overview -->
               <div id="splash-table" class="table-responsive mt-5">
+                  <button type="button" class="btn btn-primary nav-button me-3" id="previous-page-splash">
+                    &laquo; Previous 100
+                  </button>
+                  <button type="button" class="btn btn-primary nav-button" id="next-page-splash">
+                    Next 100 &raquo;
+                  </button>
                 <table class="table table-responsive" id="markets-table-header-splash">
                   <!--start of table data-->
                   <thead id="table-header-splash">
@@ -266,9 +272,9 @@
                           <tr>
                             <th class="text-left text-secondary" scope="col">Rank</th>
                             <th class="col-2 text-left text-table col-name" scope="col">Name</th>
-                            <th class="text-right text-success" scope="col">Quantity</th>
-                            <th class="text-right text-success" scope="col">USD Value</th>
                             <th class="text-right text-success" scope="col">Price</th>
+                            <th class="text-right text-success" scope="col">Holdings</th>
+                            <th class="text-right text-success" scope="col">USD Value</th>
                             <th class="text-right text-success" scope="col">Market Cap</th>
                             <th class="text-right text-primary" scope="col">24h</th>
                             <th class="text-center text-primary" scope="col">7-day</th>
