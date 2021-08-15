@@ -25,6 +25,14 @@ body {
   background-color: $bg-card;
 }
 
+.card {
+  width: 95%;
+}
+
+.card-summary {
+  width: 75%;
+}
+
 .modal-footer {
   background-color: $modal-bg-clr;
 }

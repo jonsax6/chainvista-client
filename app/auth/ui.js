@@ -53,7 +53,7 @@ const onSignInSuccess = async (response) => {
   $('#sign-in-btn').hide()
   $('#user-account-span').show()
   $('#user-account-form').hide()
-  $('#user-account-text').text(`${store.user} account`)
+  $('#user-account-text').text(`Your Account`)
   $('#app-tabs-content').show()
   $('#sign-in-form').trigger('reset')
   $('.login-forms').hide()
@@ -81,7 +81,7 @@ const onLogoClick = () => {
     $('#app-tabs').show()
     $('#user-account-span').show()
     $('#user-account-form').hide()
-    $('#user-account-text').text(`${store.user} account`)
+    $('#user-account-text').text(`Your Account`)
     $('#app-tabs-content').show()
     $('#sign-in-form').trigger('reset')
     $('#change-account-info-form').trigger('reset')
@@ -409,6 +409,7 @@ const onShowMarkets = async () => {
 }
 
 const onShowPortfolio = () => {
+  $('#previous-page').hide()
   $('#portfolio-cards').empty()
   // variable for the fetched transactions from database
   let txs = store.transactions
@@ -445,13 +446,11 @@ const onShowPortfolio = () => {
       }
     })
   }
-  let usdValue 
   let totalUsdValue = 0
   let totalBtcValue = 0
   let totalChangeAmount = 0
   let totalChangePercentage
   let totalChangeColor
-  let change
   let circSupply
   let marketCap
   for (const coin in portfolio) {
@@ -494,8 +493,8 @@ const onShowPortfolio = () => {
   displayOrder.forEach(coin => {
     $('#portfolio-cards').append(
       `
-    <div class="col-lg-3 col-md-4 col-sm-6 col-12 rounded-3">
-      <div class="card bg-card text-white m-auto mt-4" style="width: 18rem;">
+    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-12 rounded-3">
+      <div class="card bg-card text-white m-auto mt-4">
         <div class="text-center">
           <img src="${coin.image}" class="card-img-top text-center" alt="crypto-logo">
         </div>

@@ -29,7 +29,7 @@
 
             </ul>
             <span id="user-account-span" class="navbar-text me-3">
-              <a id="user-account-text" class="nav-link active" href="#">user account</a>
+              <a id="user-account-text" class="nav-link active text-left" href="#">account options</a>
             </span>
             <button id="sign-out-btn" type="submit" class="btn btn-primary nav-button me-3 mt-2 mb-2">Sign Out</button>
             <button id="sign-in-btn" type="submit" class="btn btn-primary nav-button me-3 mt-2 mb-2">Sign In</button>
@@ -155,20 +155,20 @@
               </div>
               <!-- main tabs menus section -->
               <ul class="nav nav-tabs mt-5" id="app-tabs" role="tablist">
-                <li class="nav-item me-3 rounded-3" role="presentation">
-                  <button class="nav-link active" id="market-tab" data-bs-toggle="tab" data-bs-target="#markets-tab" type="button" role="tab"
+                <li id="markets-tab" class="nav-item me-3 rounded-3" role="presentation">
+                  <button class="nav-link" id="markets-btn" data-bs-toggle="tab" data-bs-target="#markets" type="button" role="tab"
                     aria-controls="markets-tab" aria-selected="true">Market Overview</button>
                 </li>
-                <li class="nav-item me-3 rounded-3" role="presentation">
-                  <button class="nav-link" id="portfolio-tab" data-bs-toggle="tab" data-bs-target="#portfolio" type="button" role="tab"
+                <li id="portfolio-tab" class="nav-item me-3 rounded-3" role="presentation">
+                  <button class="nav-link" id="portfolio-btn" data-bs-toggle="tab" data-bs-target="#portfolio" type="button" role="tab"
                     aria-controls="portfolio" aria-selected="false">Portfolio</button>
                 </li>
-                <li class="nav-item me-3 rounded-3" role="presentation">
-                  <button class="nav-link" id="transactions-tab" data-bs-toggle="tab" data-bs-target="#transactions-list" type="button" role="tab"
+                <li id="transactions-tab" class="nav-item me-3 rounded-3" role="presentation">
+                  <button class="nav-link" id="transactions-btn" data-bs-toggle="tab" data-bs-target="#transactions-list" type="button" role="tab"
                     aria-controls="transactions-list" aria-selected="false">Transactions</button>
                 </li>
                 <li class="nav-item rounded-3">
-                  <button id="refresh-markets" type="button" class="nav-link">
+                  <button id="refresh-markets-btn" type="button" class="nav-link">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise"
                       viewBox="0 0 16 16">
                       <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"></path>
@@ -192,7 +192,7 @@
               </ul>
               <div class="tab-content" id="app-tabs-content">
                 <!-- markets-tab content -->
-                <div class="tab-pane light show active" id="markets-tab" role="tabpanel" aria-labelledby="markets-tab">
+                <div class="tab-pane light show active" id="markets" role="tabpanel" aria-labelledby="markets-tab">
                   <div class="table-responsive">
                     <table class="table table-responsive" id="markets-table-header">
                       <!--start of table data-->
@@ -214,14 +214,14 @@
                   </div>
                 </div>
                 <!-- portfolio tab content -->
-                <div class="tab-pane light" id="portfolio" role="tabpanel" aria-labelledby="portfolio-tab">
+                <div class="tab-pane light" id="portfolio" role="tabpanel" aria-labelledby="portfolio-btn">
                   <!-- overview card -->
                   <div class="row">
-                    <div class="col-lg-9 col-12 m-auto">
+                    <div class="col-xl-9 col-md-12 m-auto">
                       <div class="row">
 
-                        <div class="col-lg-4 col-md-12 m-auto mt-4">
-                          <div class="card bg-card text-light m-auto" style="width: 18rem;">
+                        <div class="col-xl-4 col-md-12 m-auto mt-4">
+                          <div class="card card-summary bg-card text-light m-auto" style="width: 18rem;">
                             <div class="card-body">
                               <h5 id="account-usd-value" class="card-title"></h5>
                               <p class="card-text">USD Account Value</p>
@@ -229,8 +229,8 @@
                           </div>
                         </div>
 
-                        <div class="col-lg-4 col-md-12 m-auto mt-4">
-                          <div class="card bg-card text-light m-auto" style="width: 18rem;">
+                        <div class="col-xl-4 col-md-12 m-auto mt-4">
+                          <div class="card card-summary bg-card text-light m-auto" style="width: 18rem;">
                             <div class="card-body">
                               <h5 id="account-btc-value" class="card-title"></h5>
                               <p class="card-text">BTC Account Value</p>
@@ -238,8 +238,8 @@
                           </div>
                         </div>
 
-                        <div class="col-lg-4 col-md-12 m-auto mt-4">
-                          <div class="card bg-card text-light m-auto" style="width: 18rem;">
+                        <div class="col-xl-4 col-md-12 m-auto mt-4">
+                          <div class="card card-summary bg-card text-light m-auto" style="width: 18rem;">
                             <div class="card-body">
                               <h5 id="account-change" class="card-title"></h5>
                               <p class="card-text">24H Account Change</p>
@@ -258,7 +258,7 @@
                 <!-- transactions tab content -->
                 <div class="tab-pane" id="transactions-list" role="tabpanel" aria-labelledby="transactions-tab">
                   <div class="tab-pane fade show active" id="nav-transaction-table" role="tabpanel" aria-labelledby="nav-home-tab">
-                    <table class="table" id="markets-table-header">
+                    <table class="table" id="transactions-table-header">
                       <!--start of table data-->
                       <thead id="transaction-table-header">
                         <tr>

@@ -48,8 +48,25 @@ const onHome = async () => {
     $('#market-table-splash').empty()
     await ui.populateCoinsTable()
   } else {
-    $('#market-tab').trigger('click')
+    $('#market-btn').trigger('click')
   }
+}
+
+const onMarketsTab = () => {
+  $('#next-page').show()
+  if (store.page > 1) {
+    $('#previous-page').show()
+  }
+}
+
+const onPortfolioTab = () => {
+  $('#next-page').hide()
+  $('#previous-page').hide()
+}
+
+const onTransactionsTab = () => {
+  $('#next-page').hide()
+  $('#previous-page').hide()
 }
 
 //===ACCOUNT AND CHANGE PASSWORD ACTIONS===//
@@ -235,5 +252,8 @@ module.exports = {
   onNextPage,
   onPreviousPage,
   onSearchMarkets,
-  onHome
+  onMarketsTab,
+  onPortfolioTab,
+  onTransactionsTab,
+  onHome,
 }
