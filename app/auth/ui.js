@@ -141,31 +141,6 @@ const onSignOutSuccess = async () => {
       $('#user-alert-message').text('Cryptocurrency Markets by Market Cap.')
     })
   }, 4000)
- 
-  // setTimeout(() => {
-
-  // }, 6005)
-
-
-  // setTimeout()
-  // setTimeout(() => {
-  //   if (!store.onLoginView) {
-  //     $('#user-alert-message').text('Cryptocurrency Markets by Market Cap')
-  //     $('#user-alert-message').show()
-  //   }
-  // }, 5000)
-	// $('#user-alert-message').fadeOut(4000, () => {
-    // if we sign out we want to make sure 'Cryptocurrency Markets by Market Cap' doesn't pop up
-    // if we click 'Sign In' while the 'See you next time!' is still fading. This if statement
-    // won't allow that message to appear over the login forms if we have logged out already.
-  //   if (!store.onLoginView) {
-  //     $('#user-alert-message').text('Cryptocurrency Markets by Market Cap')
-  //     $('#user-alert-message').show()
-  //   }
-  // })
-
-
-
 }
 
 const onEditTransactionSuccess = () => {
@@ -306,7 +281,11 @@ const onChangePasswordSuccess = () => {
   $('#account-info').text('Your account information:')
   $('#user-alert-message').show()
   $('#user-alert-message').text('Your password has been changed.')
-	$('#user-alert-message').fadeOut(4000)
+  setTimeout(() => {
+    $('#user-alert-message').fadeOut(2000, () => {
+      $('#user-alert-message').text('Cryptocurrency Markets by Market Cap')
+    })
+  }, 4000)
 }
 
 const onChangePasswordFailure = (error) => {
