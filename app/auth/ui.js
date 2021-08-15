@@ -548,15 +548,18 @@ const onCoinSearch = async (search) => {
   // variable that makes the search term all lower case no matter what
   const searchTermLowerCase = search.toLowerCase()
   // initialize our data variable to contain our found coin object
-  let data
+  let data = []
   // if the search term string is contained anywhere in the markets[index].id string,
   // then let data = that coin object at that index
-  data = markets.find(coin => {
+  data = markets.filter(coin => {
     // variable for the coin name found in the object currently iterated
     let coinName = coin.id
+    let coinSymbol = coin.symbol
     // look inside the coin we're iterating, if the search string matches any part of
     // the coin name string, assign that coin object to the data variable
-    if (coinName.indexOf(searchTermLowerCase) !== -1) {
+    if ((coinName.indexOf(searchTermLowerCase) !== -1)
+      ||
+      (coinSymbol.indexOf(searchTermLowerCase) !== -1)) {
       // if there is a match to the search term, empty the markets table data
       $('.market-tab-table').empty()
       // boolean so that we can enable full market reload inside of 
@@ -565,23 +568,22 @@ const onCoinSearch = async (search) => {
       return true
     }
   })
-
-  const cryptoName = data.name
-  const marketRank = data.market_cap_rank
-  const coinImage = data.image
-  const marketCap = data.market_cap
-    ? Number(data.market_cap).toFixed(2)
+  
+data.forEach((coin, index) => {
+  const cryptoName = coin.name
+  const marketRank = coin.market_cap_rank
+  const coinImage = coin.image
+  const marketCap = coin.market_cap ? Number(coin.market_cap).toFixed(2) : '-'
+  const coinPrice = coin.current_price
+    ? Number(coin.current_price).toFixed(2)
     : '-'
-  const coinPrice = data.current_price
-    ? Number(data.current_price).toFixed(2)
+  const coinDelta = coin.price_change_percentage_24h
+    ? Number(coin.price_change_percentage_24h).toFixed(2)
     : '-'
-  const coinDelta = data.price_change_percentage_24h
-    ? Number(data.price_change_percentage_24h).toFixed(2)
-    : '-'
-  const sparkData = data.sparkline_in_7d.price
+  const sparkData = coin.sparkline_in_7d.price
   const sparkAve = actions.movingAve(sparkData)
-  const coinSymbol = data.symbol
-  const id = data.id
+  const coinSymbol = coin.symbol
+  const id = coin.id
   let i = 0
 
   //table dynamically created, data feed from fetch(marketData)
@@ -594,7 +596,6 @@ const onCoinSearch = async (search) => {
     //if change is a negative number show it red
     classColor = 'danger'
   }
-
   $('.market-tab-table').append(
     //populates the table rows with data from API
     `<tr class="text-light">
@@ -605,7 +606,7 @@ const onCoinSearch = async (search) => {
           <td class="text-right">${actions.formatter.format(marketCap)}</td>
           <td class="text-right">${actions.formatter.format(coinPrice)}</td>
           <td id="coin-change-percent" class="text-right text-${classColor}">${coinDelta}%</td>
-          <td class="text-center p-0"><span id="sparkline-splash${i}"></span></td>
+          <td class="text-center p-0"><span id="sparkline-splash${index}"></span></td>
           <td class="text-center">
             <a 
               class="new-tx" 
@@ -623,12 +624,13 @@ const onCoinSearch = async (search) => {
   )
   //control flow for painting sparklines green (up-trending) or red (down-trending)
   if (sparkAve[0] > sparkAve[sparkAve.length - 1]) {
-    actions.sparkLine(sparkAve, '#ff0000', i)
+    actions.sparkLine(sparkAve, '#ff0000', index)
   }
   if (sparkAve[0] < sparkAve[sparkAve.length - 1]) {
-    actions.sparkLine(sparkAve, '#00bf00', i)
+    actions.sparkLine(sparkAve, '#00bf00', index)
   }
-  $('#search-form').trigger('reset')
+})
+$('#search-form').trigger('reset')
 }
 
 module.exports = {
