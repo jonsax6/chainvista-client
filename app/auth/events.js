@@ -38,6 +38,7 @@ const onSignOut = (event) => {
 
 const onHome = async () => {
   if (!store.login) {
+    $('#search-container').show()
     $('#sign-in-btn').show()
     $('#login-forms').hide()
     $('#splash-table').show()

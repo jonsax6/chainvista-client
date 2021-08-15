@@ -35,6 +35,7 @@ const onSignInButton = () => {
   $('#sign-in-btn').hide()
   $('#login-forms').show()
   $('#splash-table').hide()
+  $('#search-container').hide()
   $('#user-alert-message').hide()
   $('#user-alert-message').text('Cryptocurrency Markets by Market Cap')
 }
@@ -46,6 +47,7 @@ const onSignInSuccess = async (response) => {
   store.owner = response.user._id
   // if we click sign in, change store.onLoginView to false
   store.onLoginView = false
+  $('#search-container').show()
   $('#next-page').show()
   $('#app-tabs').show()
   $('#sign-in-btn').hide()
@@ -57,12 +59,13 @@ const onSignInSuccess = async (response) => {
   $('.login-forms').hide()
   $('#sign-out-btn').show()
   $('#sign-up-error').hide()
+	$('#user-alert-message').show()
+	$('#user-alert-message').text('Welcome! Start or add to your portfolio.')
+  $('#user-alert-message').fadeOut(4000)
   $('#login-title').text('Login to see your crypto:')
-  $('#user-alert-message').show()
-  $('#user-alert-message').text('...looking up market data...')
+  // $('#user-alert-message').show()
+  // $('#user-alert-message').text('...looking up market data...')
   $('#transaction-table').empty()
-  $('#user-alert-message').hide()
-  $('#user-alert-message').text('')
   $('.market-tab-table').empty()
   await populateCoinsTable()
   store.images = getCoinImages(store.markets)
@@ -100,6 +103,7 @@ const onSignOutSuccess = () => {
   // make sure store.onLoginView is false so we don't default to the login screen,
   // we want to logout to the splash screen market overview
   store.onLoginView = false
+  $('#search-container').show()
   $('#splash-table').show()
   $('#sign-in-btn').show()
   $('#sign-out-btn').hide()
