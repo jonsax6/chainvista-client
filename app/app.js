@@ -13,7 +13,6 @@ store.login = false
 store.cardView = true
 
 $(async () => {
-  console.log('store.page: ' + store.page)
   $('#user-account-span').hide()
   $('#app-tabs').hide()
 	$('.login-forms').hide()

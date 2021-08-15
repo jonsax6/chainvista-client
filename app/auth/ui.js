@@ -17,17 +17,23 @@ const allCoinsMarkets = async (PG) => {
 } 
 
 const onSignUpSuccess = (response) => {
-	$('#sign-up-form').trigger('reset')
-	$('#sign-up').hide()
-	$('#login-title').text('Thank you! You can sign-in now...')
-	$('#sign-up-error').hide()
-	$('#sign-up-welcome').show()
+  $('#sign-up-message').text('Thank you! You can now sign in.')
+  setTimeout(() => {
+    $('#sign-up-message').fadeOut(2000, () => {
+      $('#sign-up-message').show()
+      $('#sign-up-message').text('Sign up for a new account:')
+    })
+  }, 4000)
 }
 
 const onSignUpFailure = () => {
-	$('#sign-up-error').show()
-	$('#sign-up-welcome').hide()
-}
+	$('#sign-up-message').text('There was a problem, please try again.')
+  setTimeout(() => {
+    $('#sign-up-message').fadeOut(2000, () => {
+      $('#sign-up-message').show()
+      $('#sign-up-message').text('Sign up for a new account:')
+    })
+  }, 4000)}
 
 const onSignInButton = () => {
   // if we click on the sign in button, change store.onLoginView to true
@@ -36,6 +42,7 @@ const onSignInButton = () => {
   $('#login-forms').show()
   $('#splash-table').hide()
   $('#search-container').hide()
+  $('#sign-in-message').text('Login to see your crypto:')
   $('#user-alert-message').hide()
   $('#user-alert-message').text('Cryptocurrency Markets by Market Cap')
 }
@@ -58,14 +65,13 @@ const onSignInSuccess = async (response) => {
   $('#sign-in-form').trigger('reset')
   $('.login-forms').hide()
   $('#sign-out-btn').show()
-  $('#sign-up-error').hide()
 	$('#user-alert-message').show()
 	$('#user-alert-message').text('Welcome! Start or add to your portfolio.')
   setTimeout(() => {
     $('#user-alert-message').fadeOut(2000)
 
   }, 4000)
-  $('#login-title').text('Login to see your crypto:')
+  $('#sign-in-message').text('Login to see your crypto:')
   // $('#user-alert-message').show()
   // $('#user-alert-message').text('...looking up market data...')
   $('#transaction-table').empty()
@@ -90,14 +96,17 @@ const onLogoClick = () => {
     $('#change-account-info-form').trigger('reset')
     $('.login-forms').hide()
     $('#sign-out-btn').show()
-    $('#sign-up-error').hide()
   }
 }
 
 const onSignInFailure = (error) => {
-	$('#login-title').hide()
-	$('#user-login-message').show()
-	$('#user-login-message').text('Account not found.  Try another account.')
+	$('#sign-in-message').text('Account not found.  Try another account.')
+  setTimeout(() => {
+    $('#sign-in-message').fadeOut(2000, () => {
+      $('#sign-in-message').show()
+      $('#sign-in-message').text('Login to see your crypto:')
+    })
+  },4000)
 }
 
 const onSignOutSuccess = async () => {
@@ -518,8 +527,6 @@ const onShowPortfolio = () => {
     if(a.usdValue < b.usdValue) return 1
     return 0
   })
-  console.log(displayOrder)
-
   displayOrder.forEach((coin, index) => {
     // if the store.cardView toggle is true, render portfolio as cards
     if (store.cardView === true) {
