@@ -44,7 +44,7 @@ const onHome = async () => {
     $('#splash-table').show()
     $('#user-alert-message').show()
     $('#user-alert-message').text('Cryptocurrency Markets by Market Cap')
-    $('.market-tab-table').empty()
+    $('.market-table-tab').empty()
     $('#market-table-splash').empty()
     await ui.populateCoinsTable()
   } else {
@@ -194,7 +194,7 @@ const onCloseModals = () => {
 //===PAGINATION===//
 const onNextPage = () => {
   store.page++
-  $('.market-tab-table').empty()
+  $('.market-table-tab').empty()
   ui.populateCoinsTable()
   if (store.page > 1) {
   $('#previous-page').show()
@@ -203,7 +203,7 @@ const onNextPage = () => {
 
 const onPreviousPage = () => {
   store.page--
-  $('.market-tab-table').empty()
+  $('.market-table-tab').empty()
   ui.populateCoinsTable()
   if (store.page === 1) {
     $('#previous-page').hide()

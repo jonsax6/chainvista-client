@@ -66,7 +66,7 @@ const onSignInSuccess = async (response) => {
   // $('#user-alert-message').show()
   // $('#user-alert-message').text('...looking up market data...')
   $('#transaction-table').empty()
-  $('.market-tab-table').empty()
+  $('.market-table-tab').empty()
   await populateCoinsTable()
   store.images = getCoinImages(store.markets)
   api
@@ -97,7 +97,7 @@ const onSignInFailure = (error) => {
 	$('#user-login-message').text('Account not found.  Try another account.')
 }
 
-const onSignOutSuccess = () => {
+const onSignOutSuccess = async () => {
   // change store.login to false
   store.login = false
   // make sure store.onLoginView is false so we don't default to the login screen,
@@ -119,6 +119,9 @@ const onSignOutSuccess = () => {
   $('#account-btc-value').empty()
   $('#account-change').empty()
   $('#user-alert-message').show()
+  $('.market-table-tab').empty()
+  $('#market-table-splash').empty()
+  await populateCoinsTable()
 	$('#user-alert-message').text('See you next time!')
 	$('#user-alert-message').fadeOut(4000, () => {
     // if we sign out we want to make sure 'Cryptocurrency Markets by Market Cap' doesn't pop up
@@ -326,11 +329,13 @@ const populateCoinsTable = async () => {
       //if change is a negative number show it red
       classColor = 'danger'
     }
-    $('.market-tab-table').append(
-			//populates the table rows with data from API
-			`<tr class="text-light">
+    $('.market-table-tab').append(
+      //populates the table rows with data from API
+      `<tr class="text-light">
           <td class="text-center" scope="row">${coinData.market_cap_rank}</td>
-          <td><b class="text-right"><img src="${coinData.image}" style="height: 1.25em;">&nbsp;&nbsp;&nbsp;${coinName}</b></td>
+          <td><b class="text-right"><img src="${
+            coinData.image
+          }" style="height: 1.25em;">&nbsp;&nbsp;&nbsp;${coinName}</b></td>
           <td class="text-right">${actions.formatter.format(marketCap)}</td>
           <td class="text-right">${actions.formatter.format(coinPrice)}</td>
           <td id="coin-change-percent" class="text-right text-${classColor}">${coinDelta}%</td>
@@ -349,7 +354,7 @@ const populateCoinsTable = async () => {
             </a>
           </td>
       </tr>`
-		)
+    )
     $('#market-table-splash').append(
       `
       <tr>
@@ -389,14 +394,14 @@ const onShowMarkets = async () => {
   // if data isn't loaded from coinGecko, empty table, load data, then populate the table.
   if (!store.loaded) {
     $('#next-page').show()
-    $('.market-tab-table').empty()
+    $('.market-table-tab').empty()
     await onRefreshMarkets()
     await populateCoinsTable()
   } 
   // if we have search results showing, empty results and repopulate the table
   else if (store.search === true) {
     $('#next-page').show()
-    $('.market-tab-table').empty()
+    $('.market-table-tab').empty()
     populateCoinsTable()
     store.search = false
   }
@@ -559,7 +564,7 @@ const onCoinSearch = async (search) => {
       (coinSymbol.indexOf(searchTermLowerCase) !== -1)) {
       // if there is a match to the search term, empty the markets table data
       $('#next-page').hide()
-      $('.market-tab-table').empty()
+      $('.market-table-tab').empty()
       $('#market-table-splash').empty()
       // boolean so that we can enable full market reload inside of 
       store.search = true
@@ -607,7 +612,7 @@ data.forEach((coin, index) => {
     //if change is a negative number show it red
     classColor = 'danger'
   }
-  $('.market-tab-table').append(
+  $('.market-table-tab').append(
     //populates the table rows with data from API
     `<tr class="text-light">
           <td class="text-center" scope="row">${marketRank}</td>

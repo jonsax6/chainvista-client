@@ -37,7 +37,7 @@ $(async () => {
   $('#transaction-form-delete').on('submit', authEvents.onDeleteTransactionSubmit)
   $('#transaction-table').on('click', '.delete-tx', authEvents.onDeleteTransactionModal)
   $('#transaction-table').on('click', '.edit-tx', authEvents.onEditTransactionModal)
-  $('.market-tab-table').on('click', '.new-tx', authEvents.onNewTransactionModal)
+  $('.market-table-tab').on('click', '.new-tx', authEvents.onNewTransactionModal)
   $('#new-modal-close').on('click', authEvents.onCloseModals)
   $('#edit-modal-close').on('click', authEvents.onCloseModals)
   $('#previous-page').hide()
