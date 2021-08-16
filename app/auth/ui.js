@@ -23,7 +23,8 @@ const onSignUpSuccess = (response) => {
       $('#sign-up-message').show()
       $('#sign-up-message').text('Sign up for a new account:')
     })
-  }, 4000)
+  }, 6000)
+  $('#sign-up-form').trigger('reset')
 }
 
 const onSignUpFailure = () => {
@@ -33,7 +34,9 @@ const onSignUpFailure = () => {
       $('#sign-up-message').show()
       $('#sign-up-message').text('Sign up for a new account:')
     })
-  }, 4000)}
+  }, 4000)
+  $('#sign-up-form').trigger('reset')
+}
 
 const onSignInButton = () => {
   // if we click on the sign in button, change store.onLoginView to true
