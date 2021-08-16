@@ -381,10 +381,10 @@ const populateCoinsTable = async () => {
     )
     //control flow for painting sparklines green (up-trending) or red (down-trending)
     if (sparkAve[0] > sparkAve[sparkAve.length - 1]) {
-      actions.sparkLine(sparkAve, '#ff0000', i)
+      actions.sparkLine(sparkAve, '#ff0000', '200',i)
     }
     if (sparkAve[0] < sparkAve[sparkAve.length - 1]) {
-      actions.sparkLine(sparkAve, '#00bf00', i)
+      actions.sparkLine(sparkAve, '#00bf00', '200',i)
     }
   }
 }
@@ -512,28 +512,28 @@ const onShowPortfolio = () => {
       $('#portfolio-cards').append(
         `
       <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-12 rounded-3">
-        <div class="card bg-card text-white m-auto mt-4">
+        <div class="card bg-image text-white m-auto mt-4">
           <div class="text-center">
             <img src="${
               coin.image
             }" class="card-img-top text-center" alt="crypto-logo">
           </div>
           <div class="card-body">
-            <h5 class="card-title">${coin.id}</h5>
-            <p class="card-text">${new Intl.NumberFormat().format(coin.quantity)}
+            <h5 class="card-title text-center">${coin.id}</h5>
+            <p class="card-text text-center">Holdings: ${new Intl.NumberFormat().format(coin.quantity)}
             </p>
           </div>
           <ul class="list-group list-group-flush">
-            <li class="list-group-item bg-secondary text-light">
+            <li class="list-group-item bg-price text-light">
               Current Price: ${actions.formatter.format(coin.price)}</li>
-            <li class="list-group-item bg-secondary text-light">
+            <li class="list-group-item bg-price text-light">
               USD value: ${actions.formatter.format(coin.usdValue)}</li>
             <li class="list-group-item bg-card text-light">
               24h: <span class="text-${
                 coin.changeColor
               }">${coin.change.toPrecision(2)}%</span></li>
             <li class="list-group-item bg-card text-light">
-              7-day: <span class="m-auto" id="sparkline-portfolio${index}"></span></li>
+              7-day: <span class="m-auto" id="sparkline-portfolio-card${index}"></span></li>
             <li class="list-group-item bg-card text-light">
               Mkt Cap: $${new Intl.NumberFormat().format(
                 parseInt(coin.marketCap)
@@ -566,12 +566,22 @@ const onShowPortfolio = () => {
       )
     }
     //control flow for painting sparklines green (up-trending) or red (down-trending)
-    if (coin.sparkAve[0] > coin.sparkAve[coin.sparkAve.length - 1]) {
-      actions.sparkLine(coin.sparkAve, '#ff0000', index)
+    if(store.cardView) {
+      if (coin.sparkAve[0] > coin.sparkAve[coin.sparkAve.length - 1]) {
+        actions.sparkLineSmall(coin.sparkAve, '#ff0000', '150 ', index)
+      }
+      if (coin.sparkAve[0] < coin.sparkAve[coin.sparkAve.length - 1]) {
+        actions.sparkLineSmall(coin.sparkAve, '#00bf00', '150', index)
+      }    
+    } else {
+      if (coin.sparkAve[0] > coin.sparkAve[coin.sparkAve.length - 1]) {
+        actions.sparkLine(coin.sparkAve, '#ff0000', '200', index)
+      }
+      if (coin.sparkAve[0] < coin.sparkAve[coin.sparkAve.length - 1]) {
+        actions.sparkLine(coin.sparkAve, '#00bf00', '200', index)
+      }
     }
-    if (coin.sparkAve[0] < coin.sparkAve[coin.sparkAve.length - 1]) {
-      actions.sparkLine(coin.sparkAve, '#00bf00', index)
-    }
+
   })
 
 
@@ -701,10 +711,10 @@ data.forEach((coin, index) => {
   )
   //control flow for painting sparklines green (up-trending) or red (down-trending)
   if (sparkAve[0] > sparkAve[sparkAve.length - 1]) {
-    actions.sparkLine(sparkAve, '#ff0000', index)
+    actions.sparkLine(sparkAve, '#ff0000', '200', index)
   }
   if (sparkAve[0] < sparkAve[sparkAve.length - 1]) {
-    actions.sparkLine(sparkAve, '#00bf00', index)
+    actions.sparkLine(sparkAve, '#00bf00', '200', index)
   }
 })
 $('#search-form').trigger('reset')

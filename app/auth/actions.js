@@ -17,10 +17,10 @@ const movingAve = (array) => {
 		return aveArray
 	}
 
-const sparkLine = (data, color, i) => {
+const sparkLine = (data, color, width, i) => {
 	$(`#sparkline${i}, #sparkline-splash${i}, #sparkline-portfolio${i}`).sparkline(data, {
 		type: 'line',
-		width: '200',
+		width: width,
 		height: '40',
 		lineColor: color,
 		fillColor: null,
@@ -33,7 +33,22 @@ const sparkLine = (data, color, i) => {
 		highlightLineColor: undefined,
 	})
 }
-
+const sparkLineSmall = (data, color, width, i) => {
+  $(`#sparkline-portfolio-card${i}`).sparkline(data, {
+    type: 'line',
+    width: width,
+    height: '30',
+    lineColor: color,
+    fillColor: null,
+    lineWidth: 1.5,
+    spotColor: null,
+    minSpotColor: null,
+    maxSpotColor: null,
+    spotRadius: 0,
+    highlightSpotColor: undefined,
+    highlightLineColor: undefined,
+  })
+}
 //function to display numbers as $###,###.##
 const formatter = new Intl.NumberFormat('en-US', {
 	style: 'currency',
@@ -49,5 +64,6 @@ module.exports = {
 	formatter,
 	movingAve,
 	sparkLine,
+  sparkLineSmall,
 	capitalize
 }

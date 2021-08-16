@@ -25,6 +25,14 @@ body {
   background-color: $bg-card;
 }
 
+.bg-image {
+  background-color: $modal-bg-clr;
+}
+
+.bg-price {
+  background-color: rgb(104, 115, 141);
+}
+
 .card {
   width: 95%;
 }
@@ -106,7 +114,7 @@ a .nav-link .dropdown-toggle {
     width: 65%;
     height: 10vw;
     object-fit: cover;
-    filter: drop-shadow(5px 5px 5px rgb(69, 69, 69));
+    filter: drop-shadow(5px 5px 5px rgb(34, 42, 61));
 }
 
 @media screen and (max-width: 1200px) {
