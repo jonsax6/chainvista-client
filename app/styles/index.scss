@@ -130,17 +130,20 @@ a .nav-link .dropdown-toggle {
 
 @media screen and (max-width: 800px) {
   .card-img-top {
-    width: 65%;
+    width: 95%;
     height: 25vw;
     object-fit: cover;    
   }
 } 
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 575px) {
   .card-img-top {
     width: 65%;
     height: 50vw;
     object-fit: cover;    
+  }
+  .card {
+    width: 65%;
   }
 } 
 
