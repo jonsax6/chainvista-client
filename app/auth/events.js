@@ -251,6 +251,9 @@ const onPreviousPage = () => {
 
 const onSearchMarkets = (event) => {
   event.preventDefault()
+  if (store.login === true) {
+    $('#markets-btn').trigger('click')
+  }
   const form = event.target
   const data = getFormFields(form)
   const search = data.searchTerm.input
