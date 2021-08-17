@@ -333,6 +333,85 @@ const noResults = (data, search) => {
   }
 }
 
+const renderSearchResults = (data) => {
+   data.forEach((coin, index) => {
+     const cryptoName = coin.name
+     const marketRank = coin.market_cap_rank
+     const coinImage = coin.image
+     const marketCap = coin.market_cap
+       ? Number(coin.market_cap).toFixed(2)
+       : '-'
+     const coinPrice = coin.current_price
+       ? Number(coin.current_price).toFixed(2)
+       : '-'
+     const coinDelta = coin.price_change_percentage_24h
+       ? Number(coin.price_change_percentage_24h).toFixed(2)
+       : '-'
+     const sparkData = coin.sparkline_in_7d.price
+     const sparkAve = movingAve(sparkData)
+     const coinSymbol = coin.symbol
+     const id = coin.id
+     let i = 0
+
+     //table dynamically created, data feed from fetch(marketData)
+     let classColor
+     if (coinDelta > 0) {
+       //if change is a positive number show it green
+       classColor = 'success'
+     }
+     if (coinDelta < 0) {
+       //if change is a negative number show it red
+       classColor = 'danger'
+     }
+     $('.market-table-tab').append(
+       //populates the table rows with data from API
+       `<tr class="text-light">
+            <td class="text-center" scope="row">${marketRank}</td>
+            <td><b class="text-right"><img src="${coinImage}" style="height: 1.25em;">
+              &nbsp;&nbsp;&nbsp;${cryptoName}</b>
+            </td>
+            <td class="text-right">${formatter.format(marketCap)}</td>
+            <td class="text-right">${formatter.format(coinPrice)}</td>
+            <td id="coin-change-percent" class="text-right text-${classColor}">${coinDelta}%</td>
+            <td class="text-center p-0"><span id="sparkline-splash${index}"></span></td>
+            <td class="text-center">
+              <a 
+                class="new-tx" 
+                href="#" 
+                data-coin="${id}"
+                data-symbol="${coinSymbol}"
+                data-price="${coinPrice}"
+                data-bs-toggle="modal"
+                data-bs-target="#new-transaction-modal" 
+                style="text-decoration:none"
+                >add &nbsp;
+              </a>
+            </td>
+        </tr>`
+     )
+     $('#market-table-splash').append(
+       `
+    <tr>
+        <td class="text-center" scope="row">${marketRank}</td>
+        <td><b class="text-right"><img src="${coinImage}" style="height: 1.25em;">
+          &nbsp;&nbsp;&nbsp;${cryptoName}</b></td>
+        <td class="text-right">${formatter.format(marketCap)}</td>
+        <td class="text-right">${formatter.format(coinPrice)}</td>
+        <td id="coin-change-percent" class="text-right text-${classColor}">${coinDelta}%</td>
+        <td class="text-center p-0"><span id="sparkline${index}"></span></td>
+    </tr>
+    `
+     )
+     //control flow for painting sparklines green (up-trending) or red (down-trending)
+     if (sparkAve[0] > sparkAve[sparkAve.length - 1]) {
+       sparkLine(sparkAve, '#ff0000', '200', index)
+     }
+     if (sparkAve[0] < sparkAve[sparkAve.length - 1]) {
+       sparkLine(sparkAve, '#00bf00', '200', index)
+     }
+   })
+}
+
 module.exports = {
   formatter,
   movingAve,
@@ -346,5 +425,6 @@ module.exports = {
   buildPortfolio,
   sortPortfolio,
   filterSearch,
-  noResults
+  noResults,
+  renderSearchResults
 }
