@@ -368,6 +368,7 @@ const onRefreshMarkets = async () => {
   store.images = getCoinImages(store.markets)
 }
 
+// still need to refactor this and split up into smaller functions //
 const onCoinSearch = async (search) => {
   const data = actions.filterSearch(search)
   actions.noResults(data, search)
