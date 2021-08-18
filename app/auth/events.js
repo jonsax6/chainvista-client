@@ -3,7 +3,7 @@ const getFormFields = require('../../lib/get-form-fields')
 const store = require('../store')
 const api = require('./api')
 const ui = require('./ui')
-const actions = require('./actions')
+const utils = require('./utils')
 
 
 //===LOGIN/LOGOUT ACTIONS===//
@@ -114,7 +114,7 @@ const onNewTransactionModal = (event) => {
   // grab the data-coin from the DOM element
   const coin = $(newTxButton).data('coin')
   // capital the first letter for better display
-  const coinCaps = actions.capitalize(coin)
+  const coinCaps = utils.capitalize(coin)
   // bind the txCoin, txSymbol and txPrice to the store for immediate use in the onNewTransactionSubmit function
   store.txCoin = coin
   store.txSymbol = $(newTxButton).data('symbol')
@@ -126,7 +126,7 @@ const onNewTransactionModal = (event) => {
     `<b>Symbol:</b> ${store.txSymbol.toUpperCase()}`
   )
   $('#new-tx-form-price').html(
-    `<b>Price:</b> ${actions.formatter.format(store.txPrice)}`
+    `<b>Price:</b> ${utils.formatter.format(store.txPrice)}`
   )
 }
 
@@ -157,7 +157,7 @@ const onEditTransactionModal = (event) => {
   $('#editTransactionModalLabel').text('Revise your transaction:')
   const editTxButton = event.target
   const coin = $(editTxButton).data('coin')
-  const coinCaps = actions.capitalize(coin)
+  const coinCaps = utils.capitalize(coin)
   const editButton = event.target
   store.editTxId = $(editButton).data('id')
   store.txCoin = coin
@@ -168,7 +168,7 @@ const onEditTransactionModal = (event) => {
     `<b>Symbol:</b> ${store.txSymbol.toUpperCase()}`
   )
   $('#edit-tx-form-price').html(
-    `<b>Price:</b> ${actions.formatter.format(store.txPrice)}`
+    `<b>Price:</b> ${utils.formatter.format(store.txPrice)}`
   )
 }
 

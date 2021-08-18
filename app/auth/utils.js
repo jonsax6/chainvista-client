@@ -142,6 +142,80 @@ const capitalize = (str) => {
 	return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
+const initializePortfolio = (transactions) => {
+  return new Promise((resolve, reject) => {
+      let portfolio = {}
+      transactions.forEach((tx) => {
+        // make the coin name all lower case for each transaction
+        let coin = tx.coin.toLowerCase()
+        // if user owns the transaction
+        if (store.owner === tx.owner) {
+          // and if the token is NOT already in the portfolio object
+          if (!(coin in portfolio)) {
+            // initialize this crypto into the portfolio starting at 0
+            portfolio[coin] = { quantity: 0 }
+          }
+        }
+      })
+      for (const coin in portfolio) {
+        // now iterate over each transaction
+        transactions.forEach((tx) => {
+          // if the coin in the store transactions array is the same as the coin were iterating
+          // add the quantity from that coin object to the coin key in the portfolio
+          if (tx.coin.toLowerCase() === coin && store.owner === tx.owner) {
+            portfolio[coin].id = coin
+            if (tx.orderType === 'buy') {
+              portfolio[coin].quantity += tx.quantity
+            } else {
+              portfolio[coin].quantity -= tx.quantity
+            }
+          }
+        })
+      }
+      resolve(portfolio)
+    }
+  )
+}
+
+const buildPortfolio = (portfolio) => {
+  store.totalUsdValue = 0
+  store.totalBtcValue = 0
+  store.totalChangeAmount = 0
+  for (const coin in portfolio) {
+    store.markets.forEach((crypto) => {
+      if (coin === crypto.id) {
+        portfolio[coin].id = coin
+        portfolio[coin].image = crypto.image
+        portfolio[coin].price = crypto.current_price
+        portfolio[coin].usdValue =
+        portfolio[coin].quantity * crypto.current_price
+        portfolio[coin].rank = crypto.market_cap_rank
+        store.totalUsdValue += portfolio[coin].usdValue
+        store.totalBtcValue =
+        store.totalUsdValue / store.markets[0].current_price
+        portfolio[coin].change = crypto.price_change_percentage_24h
+        portfolio[coin].changeColor =
+        portfolio[coin].change > 0 ? 'success' : 'danger'
+        portfolio[coin].marketCap = crypto.market_cap
+        portfolio[coin].circSupply = crypto.circulating_supply
+        portfolio[coin].sparkData = crypto.sparkline_in_7d.price
+        portfolio[coin].sparkAve = movingAve(portfolio[coin].sparkData)
+        portfolio[coin].classColor =
+        portfolio[coin].change > 0 ? 'success' : 'danger'
+        store.marketCap = crypto.market_cap
+        store.totalChangeAmount +=
+        portfolio[coin].usdValue * (portfolio[coin].change / 100)
+        store.totalChangePercentage =
+          (store.totalChangeAmount / store.totalUsdValue) * 100
+        store.totalChangeColor =
+          store.totalChangePercentage > 0 ? 'success' : 'danger'
+      }
+    })
+  }
+ 
+
+}
+
 const renderPortfolio = (portfolio) => {
   portfolio.forEach((coin, index) => {
     // if the store.cardView toggle is true, render portfolio as cards
@@ -157,7 +231,9 @@ const renderPortfolio = (portfolio) => {
           </div>
           <div class="card-body">
             <h5 class="card-title text-center">${coin.id}</h5>
-            <p class="card-text text-center">Holdings: ${new Intl.NumberFormat().format(coin.quantity)}
+            <p class="card-text text-center">Holdings: ${new Intl.NumberFormat().format(
+              coin.quantity
+            )}
             </p>
           </div>
           <ul class="list-group list-group-flush">
@@ -190,94 +266,30 @@ const renderPortfolio = (portfolio) => {
         `            
         <tr>
           <td class="text-center">${coin.rank}</td>
-          <td><b class="text-right"><img src="${coin.image}" style="height: 1.25em;">
+          <td><b class="text-right"><img src="${
+            coin.image
+          }" style="height: 1.25em;">
             &nbsp;&nbsp;&nbsp;${coin.id}</b></td>
           <td class="text-right">${formatter.format(coin.price)}</td>
-          <td class="text-right">${new Intl.NumberFormat().format(coin.quantity)}</td>
+          <td class="text-right">${new Intl.NumberFormat().format(
+            coin.quantity
+          )}</td>
           <td class="text-right">${formatter.format(coin.usdValue)}</td>
           <td class="text-right">${formatter.format(coin.marketCap)}</td>
-          <td class="text-right text-${coin.classColor}">${coin.change.toPrecision(2)}%</td>
+          <td class="text-right text-${
+            coin.classColor
+          }">${coin.change.toPrecision(2)}%</td>
           <td class="text-center"><span class="mb-1 mt-1" id="sparkline-portfolio${index}"></span></td>
         </tr>
         `
       )
     }
-    if(store.cardView) {
+    if (store.cardView) {
       drawSparkline(coin.sparkAve, '150', '#sparkline-portfolio-card', index)
     } else {
       drawSparkline(coin.sparkAve, '200', '#sparkline-portfolio', index)
     }
   })
-}
-
-const initializePortfolio = (transactions) => {
-  let portfolio = {}
-  transactions.forEach((tx) => {
-    // make the coin name all lower case for each transaction
-    let coin = tx.coin.toLowerCase()
-    // if user owns the transaction
-    if (store.owner === tx.owner) {
-      // and if the token is NOT already in the portfolio object
-      if (!(coin in portfolio)) {
-        // initialize this crypto into the portfolio starting at 0
-        portfolio[coin] = { quantity: 0 }
-      }
-    }
-  })
-  for (const coin in portfolio) {
-    // now iterate over each transaction
-    transactions.forEach((tx) => {
-      // if the coin in the store transactions array is the same as the coin were iterating
-      // add the quantity from that coin object to the coin key in the portfolio
-      if (tx.coin.toLowerCase() === coin && store.owner === tx.owner) {
-        portfolio[coin].id = coin
-        if (tx.orderType === 'buy') {
-          portfolio[coin].quantity += tx.quantity
-        } else {
-          portfolio[coin].quantity -= tx.quantity
-        }
-      }
-    })
-  }
-  return portfolio
-}
-
-const buildPortfolio = (portfolio) => {
-  store.totalUsdValue = 0
-  store.totalBtcValue = 0
-  store.totalChangeAmount = 0
-  for (const coin in portfolio) {
-    const coins = store.images
-    coins.forEach((coinObj) => {
-      // if the object from the images object array's coin key is the same as key we're iterating above
-      // grab that URL and bind it to coinImage variable
-      if (portfolio[coin].id === coinObj.id) {
-        portfolio[coin].image = coinObj.image
-      }
-    })
-    // iterate over the large crypto object array and set each variable value to be displayed
-    store.markets.forEach((crypto) => {
-      if (coin === crypto.id) {
-        portfolio[coin].id = coin
-        portfolio[coin].price = crypto.current_price
-        portfolio[coin].usdValue = portfolio[coin].quantity * crypto.current_price
-        portfolio[coin].rank = crypto.market_cap_rank
-        store.totalUsdValue += portfolio[coin].usdValue
-        store.totalBtcValue = store.totalUsdValue / store.markets[0].current_price
-        portfolio[coin].change = crypto.price_change_percentage_24h
-        portfolio[coin].changeColor = portfolio[coin].change > 0 ? 'success' : 'danger'
-        portfolio[coin].marketCap = crypto.market_cap
-        portfolio[coin].circSupply = crypto.circulating_supply
-        portfolio[coin].sparkData = crypto.sparkline_in_7d.price
-        portfolio[coin].sparkAve = movingAve(portfolio[coin].sparkData)
-        portfolio[coin].classColor = portfolio[coin].change > 0 ? 'success' : 'danger'
-        store.marketCap = crypto.market_cap
-        store.totalChangeAmount += portfolio[coin].usdValue * (portfolio[coin].change / 100)
-        store.totalChangePercentage = (store.totalChangeAmount / store.totalUsdValue) * 100
-        store.totalChangeColor = store.totalChangePercentage > 0 ? 'success' : 'danger'
-      }
-    })
-  }
 }
 
 const renderPortfolioHeader = () => {

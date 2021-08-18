@@ -1,6 +1,6 @@
 'use strict'
 const store = require('../store')
-const actions = require('./actions')
+const utils = require('./utils')
 const events = require('./events')
 const api = require('./api')
 
@@ -243,7 +243,7 @@ const onIndexSuccess = (response) => {
           <td class="text-light" scope="row">
           <b><img src="${coinImage}" style="height: 1.25em;">&nbsp;&nbsp;${coin}</b></td>
           <td class="text-right">${symbol}</td>
-          <td class="text-right">${actions.formatter.format(price)}</td>
+          <td class="text-right">${utils.formatter.format(price)}</td>
           <td class="text-right">${new Intl.NumberFormat().format(
             quantity
           )}</td>
@@ -307,7 +307,7 @@ const populateCoinsTable = async () => {
   // find the starting index based on current page number in store.page
   // if page is 1, then the marketIndex is 0, if page is 2, then marketIndex is 100, and so on...
   let startIndex = (store.page - 1) * 100
-  actions.renderMarketTables(data, startIndex)
+  utils.renderMarketTables(data, startIndex)
 }
 
 const getCoinImages = (data) => {
@@ -339,21 +339,21 @@ const onShowMarkets = async () => {
 
 }
 
-const onShowPortfolio = () => {
+const onShowPortfolio = async () => {
   $('#previous-page').hide()
   $('#portfolio-cards').empty()
   $('#portfolio-table-data').empty()
   // variable for the fetched transactions from database
   let txs = store.transactions
   // initialize portfolio object
-  let portfolio = actions.initializePortfolio(txs)
+  let portfolio = await utils.initializePortfolio(txs)
   // build the full portfolio object
-  actions.buildPortfolio(portfolio)
+  utils.buildPortfolio(portfolio)
   // change the order from largest to smallest holdings
-  const displayOrder = actions.sortPortfolio(portfolio)
+  const displayOrder = utils.sortPortfolio(portfolio)
   // now render to the DOM
-  actions.renderPortfolio(displayOrder)
-  actions.renderPortfolioHeader()
+  utils.renderPortfolio(displayOrder)
+  utils.renderPortfolioHeader()
 }
 
 const onRefreshMarkets = async () => {
@@ -368,11 +368,10 @@ const onRefreshMarkets = async () => {
   store.images = getCoinImages(store.markets)
 }
 
-// still need to refactor this and split up into smaller functions //
 const onCoinSearch = async (search) => {
-  const data = actions.filterSearch(search)
-  actions.noResults(data, search)
-  actions.renderSearchResults(data)
+  const data = utils.filterSearch(search)
+  utils.noResults(data, search)
+  utils.renderSearchResults(data)
   $('#search-form').trigger('reset')
 }
 

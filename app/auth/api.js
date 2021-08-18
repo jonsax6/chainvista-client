@@ -1,6 +1,6 @@
 'use strict'
 const store = require('../store')
-const actions = require('./actions')
+const actions = require('./utils')
 const { apiUrl } = require('../config')
 
 const signUp = (data) => {
