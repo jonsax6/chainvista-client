@@ -145,6 +145,7 @@ const capitalize = (str) => {
 const initializePortfolio = (transactions) => {
   return new Promise((resolve, reject) => {
       let portfolio = {}
+      console.log(portfolio)
       transactions.forEach((tx) => {
         // make the coin name all lower case for each transaction
         let coin = tx.coin.toLowerCase()
@@ -152,26 +153,16 @@ const initializePortfolio = (transactions) => {
         if (store.owner === tx.owner) {
           // and if the token is NOT already in the portfolio object
           if (!(coin in portfolio)) {
-            // initialize this crypto into the portfolio starting at 0
             portfolio[coin] = { quantity: 0 }
+            portfolio[coin].id = coin
+          }
+          if (tx.orderType === 'buy') {
+            portfolio[coin].quantity += tx.quantity
+          } else {
+            portfolio[coin].quantity -= tx.quantity
           }
         }
       })
-      for (const coin in portfolio) {
-        // now iterate over each transaction
-        transactions.forEach((tx) => {
-          // if the coin in the store transactions array is the same as the coin were iterating
-          // add the quantity from that coin object to the coin key in the portfolio
-          if (tx.coin.toLowerCase() === coin && store.owner === tx.owner) {
-            portfolio[coin].id = coin
-            if (tx.orderType === 'buy') {
-              portfolio[coin].quantity += tx.quantity
-            } else {
-              portfolio[coin].quantity -= tx.quantity
-            }
-          }
-        })
-      }
       resolve(portfolio)
     }
   )

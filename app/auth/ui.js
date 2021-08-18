@@ -347,6 +347,7 @@ const onShowPortfolio = async () => {
   let txs = store.transactions
   // initialize portfolio object
   let portfolio = await utils.initializePortfolio(txs)
+  console.log(portfolio)
   // build the full portfolio object
   utils.buildPortfolio(portfolio)
   // change the order from largest to smallest holdings
