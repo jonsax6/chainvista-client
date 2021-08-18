@@ -118,6 +118,7 @@ const onSignOutSuccess = async () => {
   // make sure store.onLoginView is false so we don't default to the login screen,
   // we want to logout to the splash screen market overview
   store.onLoginView = false
+  store.cardView = true
   $('#search-container').show()
   $('#splash-table').show()
   $('#sign-in-btn').show()
@@ -129,7 +130,10 @@ const onSignOutSuccess = async () => {
   $('#app-tabs').hide()
   $('#app-tabs-content').hide()
   $('#transaction-table').empty()
-  $('#portfolio-list').empty()
+  $('#portfolio-table-data').empty()
+  $('#portfolio-list').hide()
+  $('#portfolio-cards').show()
+  $('#list-toggle-btn').text('Toggle List')
   $('#account-usd-value').empty()
   $('#account-btc-value').empty()
   $('#account-change').empty()
@@ -140,8 +144,10 @@ const onSignOutSuccess = async () => {
 	$('#user-alert-message').text('See you next time!')
   setTimeout(() => {
     $('#user-alert-message').fadeOut(2000, () => {
-      $('#user-alert-message').show()
-      $('#user-alert-message').text('Cryptocurrency Markets by Market Cap.')
+      if (store.onLoginView === false) {
+        $('#user-alert-message').show()
+        $('#user-alert-message').text('Cryptocurrency Markets by Market Cap.')
+      }
     })
   }, 4000)
 }
@@ -347,7 +353,6 @@ const onShowPortfolio = async () => {
   let txs = store.transactions
   // initialize portfolio object
   let portfolio = await utils.initializePortfolio(txs)
-  console.log(portfolio)
   // build the full portfolio object
   utils.buildPortfolio(portfolio)
   // change the order from largest to smallest holdings

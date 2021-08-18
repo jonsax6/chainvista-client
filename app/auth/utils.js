@@ -145,7 +145,6 @@ const capitalize = (str) => {
 const initializePortfolio = (transactions) => {
   return new Promise((resolve, reject) => {
       let portfolio = {}
-      console.log(portfolio)
       transactions.forEach((tx) => {
         // make the coin name all lower case for each transaction
         let coin = tx.coin.toLowerCase()

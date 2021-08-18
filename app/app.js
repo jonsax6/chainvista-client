@@ -8,6 +8,7 @@ const store = require('./store')
 const events = require('./auth/events')
 const ui = require('./auth/ui')
 const Modal = require('bootstrap').Modal
+
 store.page = 1
 store.login = false
 store.cardView = true

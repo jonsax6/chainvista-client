@@ -31,6 +31,7 @@ const onSignIn = (event) => {
 
 const onSignOut = (event) => {
 	event.preventDefault()
+  $('#markets-btn').trigger('click')
 	api.signOut()
     .then(ui.onSignOutSuccess)
     .catch(ui.onFailure)
