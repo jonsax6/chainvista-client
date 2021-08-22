@@ -418,13 +418,15 @@ const renderSearchResults = (data) => {
     `
      )
      //control flow for painting sparklines green (up-trending) or red (down-trending)
-     if (sparkAve[0] > sparkAve[sparkAve.length - 1]) {
-       sparkLine(sparkAve, '#ff0000', '200', index)
-     }
-     if (sparkAve[0] < sparkAve[sparkAve.length - 1]) {
-       sparkLine(sparkAve, '#00bf00', '200', index)
-     }
-   })
+    //  if (sparkAve[0] > sparkAve[sparkAve.length - 1]) {
+    //    sparkLine(sparkAve, '#ff0000', '200', index)
+    //  }
+    //  if (sparkAve[0] < sparkAve[sparkAve.length - 1]) {
+    //    sparkLine(sparkAve, '#00bf00', '200', index)
+    //  }
+    drawSparkline(sparkAve, '200', '#sparkline-splash', index)
+    drawSparkline(sparkAve, '200', '#sparkline', index) 
+    })
 }
 
 module.exports = {
