@@ -58,6 +58,7 @@ const onHome = async () => {
   }
 }
 
+//===MARKET ACTIONS===//
 const onMarketsTab = () => {
   $('#next-page').show()
   $('#portfolio-list-toggle').hide()
@@ -91,7 +92,18 @@ const onListToggle = () => {
       $('#list-toggle-btn').text('Toggle Cards')
       ui.onShowPortfolio()
     }
+}
+
+const onSearchMarkets = (event) => {
+  event.preventDefault()
+  if (store.login === true) {
+    $('#markets-btn').trigger('click')
   }
+  const form = event.target
+  const data = getFormFields(form)
+  const search = data.searchTerm.input
+  ui.onCoinSearch(search)
+}
 
 //===ACCOUNT AND CHANGE PASSWORD ACTIONS===//
 const onShowAccount = (event) => {
@@ -253,17 +265,6 @@ const onPreviousPage = () => {
     $('#previous-page').hide()
     $('#previous-page-splash').hide()
   } 
-}
-
-const onSearchMarkets = (event) => {
-  event.preventDefault()
-  if (store.login === true) {
-    $('#markets-btn').trigger('click')
-  }
-  const form = event.target
-  const data = getFormFields(form)
-  const search = data.searchTerm.input
-  ui.onCoinSearch(search)
 }
 
 module.exports = {
