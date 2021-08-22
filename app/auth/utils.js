@@ -192,6 +192,7 @@ const buildPortfolio = (portfolio) => {
         portfolio[coin].sparkAve = movingAve(portfolio[coin].sparkData)
         portfolio[coin].classColor =
         portfolio[coin].change > 0 ? 'success' : 'danger'
+        portfolio[coin].percentOfTotal = 0
         store.marketCap = crypto.market_cap
         store.totalChangeAmount +=
         portfolio[coin].usdValue * (portfolio[coin].change / 100)
@@ -202,8 +203,24 @@ const buildPortfolio = (portfolio) => {
       }
     })
   }
- 
+}
 
+const percentOfTotal = (portfolio) => {
+  for (const coin in portfolio) {
+    portfolio[coin].percentOfTotal = (portfolio[coin].usdValue / store.totalUsdValue) * 100
+  }
+}
+
+const renderPortfolioHeader = () => {
+  $('#account-usd-value').text(`${formatter.format(store.totalUsdValue)}`)
+  $('#account-btc-value').html(
+    `<i class="icon-btc"></i>${new Intl.NumberFormat().format(
+      store.totalBtcValue
+    )}`
+  )
+  $('#account-change').html(`<span class="text-${store.totalChangeColor}">
+      ${store.totalChangePercentage.toPrecision(2)}%
+    </span>`)
 }
 
 const renderPortfolio = (portfolio) => {
@@ -230,7 +247,9 @@ const renderPortfolio = (portfolio) => {
             <li class="list-group-item bg-price text-light">
               Current Price: ${formatter.format(coin.price)}</li>
             <li class="list-group-item bg-price text-light">
-              USD value: ${formatter.format(coin.usdValue)}</li>
+              USD value: ${formatter.format(
+                coin.usdValue
+              )}&nbsp;(${coin.percentOfTotal.toPrecision(3)}%)</li>
             <li class="list-group-item bg-card text-light">
               24h: <span class="text-${
                 coin.changeColor
@@ -264,7 +283,9 @@ const renderPortfolio = (portfolio) => {
           <td class="text-right">${new Intl.NumberFormat().format(
             coin.quantity
           )}</td>
-          <td class="text-right">${formatter.format(coin.usdValue)}</td>
+          <td class="text-right">${formatter.format(coin.usdValue)}&nbsp;(${
+          coin.percentOfTotal.toPrecision(3)
+        }%)</td>
           <td class="text-right">${formatter.format(coin.marketCap)}</td>
           <td class="text-right text-${
             coin.classColor
@@ -280,14 +301,6 @@ const renderPortfolio = (portfolio) => {
       drawSparkline(coin.sparkAve, '200', '#sparkline-portfolio', index)
     }
   })
-}
-
-const renderPortfolioHeader = () => {
-  $('#account-usd-value').text(`${formatter.format(store.totalUsdValue)}`)
-  $('#account-btc-value').html(`<i class="icon-btc"></i>${new Intl.NumberFormat().format(store.totalBtcValue)}`)
-  $('#account-change').html(`<span class="text-${store.totalChangeColor}">
-      ${store.totalChangePercentage.toPrecision(2)}%
-    </span>`)
 }
 
 const filterSearch = (search) => {
@@ -428,5 +441,6 @@ module.exports = {
   sortPortfolio,
   filterSearch,
   noResults,
-  renderSearchResults
+  renderSearchResults,
+  percentOfTotal
 }

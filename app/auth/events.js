@@ -20,6 +20,11 @@ const onSignUp = (event) => {
     .catch(ui.onSignUpFailure)
 }
 
+const onAnotherUserBtn = () => {
+  $('#sign-up-btn').hide()
+  $('#sign-up').show()
+}
+
 const onSignIn = (event) => {
 	event.preventDefault()
 	const form = event.target
@@ -263,6 +268,7 @@ const onSearchMarkets = (event) => {
 
 module.exports = {
   onSignUp,
+  onAnotherUserBtn,
   onSignIn,
   onSignOut,
   onShowAccount,

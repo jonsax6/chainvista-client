@@ -17,11 +17,13 @@ const allCoinsMarkets = async (PG) => {
 } 
 
 const onSignUpSuccess = (response) => {
-  $('#sign-up-message').text('Thank you! You can now sign in.')
+  $('#sign-up-btn').show()
+  $('#sign-up').hide()
+  $('#sign-in-message').text('Thank you! You can now sign in.')
   setTimeout(() => {
-    $('#sign-up-message').fadeOut(2000, () => {
-      $('#sign-up-message').show()
-      $('#sign-up-message').text('Sign up for a new account:')
+    $('#sign-in-message').fadeOut(2000, () => {
+      $('#sign-in-message').show()
+      $('#sign-in-message').text('Login to see your crypto:')
     })
   }, 6000)
   $('#sign-up-form').trigger('reset')
@@ -42,6 +44,8 @@ const onSignInButton = () => {
   // if we click on the sign in button, change store.onLoginView to true
   store.onLoginView = true
   $('#sign-in-btn').hide()
+  $('#sign-up-btn').hide()
+  $('#sign-up').show()
   $('#login-forms').show()
   $('#splash-table').hide()
   $('#search-container').hide()
@@ -345,6 +349,25 @@ const onShowMarkets = async () => {
 
 }
 
+const onRefreshMarkets = async () => {
+  store.markets = []
+  $('#user-alert-message').show()
+  $('#user-alert-message').text('...looking up market data...')
+  for (let i = 1; i < 6; i++) {
+    await allCoinsMarkets(i)
+  }
+  $('#user-alert-message').hide()
+  $('#user-alert-message').text('')
+  store.images = getCoinImages(store.markets)
+}
+
+const onCoinSearch = async (search) => {
+  const data = utils.filterSearch(search)
+  utils.noResults(data, search)
+  utils.renderSearchResults(data)
+  $('#search-form').trigger('reset')
+}
+
 const onShowPortfolio = async () => {
   $('#previous-page').hide()
   $('#portfolio-cards').empty()
@@ -355,30 +378,14 @@ const onShowPortfolio = async () => {
   let portfolio = await utils.initializePortfolio(txs)
   // build the full portfolio object
   utils.buildPortfolio(portfolio)
-  // change the order from largest to smallest holdings
+  // we need the built object above to calculate the percent of total for each coin
+  // uses the store.totalUsdValue to calculate its percentage
+  utils.percentOfTotal(portfolio)
+  // change the order of the array from largest to smallest holdings
   const displayOrder = utils.sortPortfolio(portfolio)
   // now render to the DOM
   utils.renderPortfolio(displayOrder)
   utils.renderPortfolioHeader()
-}
-
-const onRefreshMarkets = async () => {
-  store.markets = []
-  $('#user-alert-message').show()
-  $('#user-alert-message').text('...looking up market data...')
-  for(let i = 1; i < 6; i++) {
-    await allCoinsMarkets(i)
-  }
-  $('#user-alert-message').hide()
-	$('#user-alert-message').text('')
-  store.images = getCoinImages(store.markets)
-}
-
-const onCoinSearch = async (search) => {
-  const data = utils.filterSearch(search)
-  utils.noResults(data, search)
-  utils.renderSearchResults(data)
-  $('#search-form').trigger('reset')
 }
 
 module.exports = {

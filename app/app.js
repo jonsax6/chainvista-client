@@ -29,6 +29,8 @@ $(async () => {
   $('#sign-up-form').on('submit', authEvents.onSignUp)
 	$('#sign-in-form').on('submit', authEvents.onSignIn)
 	$('#sign-out-btn').on('click', authEvents.onSignOut)
+  $('#sign-up-btn').hide()
+  $('#sign-up-btn').on('click', authEvents.onAnotherUserBtn)
   $('#transactions-btn').on('click', ui.onTransactionTabClick)
   $('#markets-btn').on('click', ui.onShowMarkets)
   $('#portfolio-btn').on('click', ui.onShowPortfolio)
