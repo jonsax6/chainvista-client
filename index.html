@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ChainVista</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Do not add `link` tags-->
+    <link rel="shortcut icon" type="image/x-icon" href="public/cv-favicon.png">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+
+    <!-- Do not add `script` tags-->
+    <script src="public/vendor.js" type="text/javascript" charset="utf-8" defer></script>
+    <script src="public/application.js" type="text/javascript" charset="utf-8" defer></script>
+
+  </head>
+  <body>
+    <div class="container-lg">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-black">
+        <div class="container-fluid">
+          <a id="home" class="navbar-brand" href="#">
+            <img id="logo-image" src="public/chainvista-logo.png" alt="">
+          </a>            
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+            </ul>
+            <span id="user-account-span" class="navbar-text me-3">
+              <a id="user-account-text" class="nav-link active text-left" href="#">account options</a>
+            </span>
+            <button id="sign-out-btn" type="submit" class="btn btn-primary nav-button me-3 mt-2 mb-2">Sign Out</button>
+            <button id="sign-in-btn" type="submit" class="btn btn-primary nav-button me-3 mt-2 mb-2">Sign In</button>
+            <div id="search-container">
+              <form id="search-form" class="d-flex mt-2 mb-2">
+                <input name="searchTerm[input]" class="form-control me-2 bg-dark text-light search-box" type="text"
+                  placeholder="Market Search" aria-label="Search">
+                <button id="search-btn" class="btn btn-outline-primary" type="submit">Search</button>
+              </form>
+            </div>
+
+            <!-- <button type="button" class="btn btn-primary" id="previous-page">&laquo; Previous 100</button>
+            <button type="button" class="btn btn-primary" id="next-page">Next 100 &raquo;</button> -->
+
+
+          </div>
+        </div>
+      </nav>
+      <div class="row">
+        <div class="col-12">
+          <div class="row">
+            <!-- USER ALERTS FIELD -->
+            <div class="col-12 m-auto mt-4 text-center">
+              <h5 id="user-alert-message" class="text-light">Cryptocurrency Markets by Market Cap</h5>
+            </div>
+          </div>
+          <div id="login-forms" class="row login-forms mt-5">
+            <!-- sign-in form -->
+            <div class="col-12 m-auto sign-in">
+              <div id="sign-in" class="row">
+                <div class="col-md-6 col-11 text-light m-auto rounded-3 forms-bg border-dark shadow-lg p-5">
+                  <form id="sign-in-form">
+                    <h4 id="sign-in-message">Login to see your crypto:</h4>
+                    <div class="mb-3">
+                      <label for="signin-email" class="form-label">Email address</label>
+                      <input name="credentials[email]" type="email" class="form-control border-dark shadow"
+                        placeholder="email@example.com">
+                    </div>
+                    <div class="mb-3">
+                      <label for="signin-password" class="form-label">Password</label>
+                      <input name="credentials[password]" type="password" class="form-control border-dark shadow"
+                        placeholder="enter password">
+                    </div>
+                    <button type="submit" class="btn btn-warning border-dark shadow">Login</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <!-- sign-up form -->
+            <div id="sign-up" class="col-12 m-auto mt-5 sign-up">
+              <div class="row">
+                <div
+                  class="col-md-6 col-11 m-auto text-light rounded-3 forms-bg border border-dark shadow-lg p-5">
+                  <form id="sign-up-form" autocomplete="off">
+                    <h4 id="sign-up-message">Sign up for a new account:</h4>
+                    <div class="mb-3">
+                      <label class="form-label">Email address</label>
+                      <input id="sign-up-email" name="credentials[email]" type="email" class="form-control border-dark shadow"
+                        placeholder="email@example.com">
+                      <div id="emailHelp" class="form-text text-light">We'll never share your email with anyone else.</div>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Password</label>
+                      <input id="sign-up-password" name="credentials[password]" type="password"
+                        class="form-control border-dark shadow" placeholder="enter a password">
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Re-type Password</label>
+                      <input name="credentials[password_confirmation]" type="password" class="form-control border-dark shadow"
+                        placeholder="re-type your password">
+                    </div>
+                    <button type="submit" class="btn btn-warning border-dark shadow shadow">Register</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12 text-center">
+                <button id="sign-up-btn" type="submit" class="btn btn-warning border-dark shadow shadow m-auto mt-3 text-light">Sign Up Another User</button>
+              </div>
+            </div>
+          </div>
+          <!-- change password form -->
+          <div id="user-account-form" class="col-12 m-auto mt-5 account">
+            <div class="row">
+              <div class="col-md-6 col-11 m-auto text-light rounded-3 forms-bg border border-dark shadow-lg p-5">
+                <form id="change-account-info-form" autocomplete="off">
+                  <h4 id="account-info">Your account information:</h4>
+                  <div class="mb-3">
+                    <label class="form-label">Email:</label>
+                    <span id="account-email">email@placeholder</span>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Old Password</label>
+                    <input name="passwords[old]" type="password" class="form-control border-dark shadow"
+                      placeholder="old password">
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">New Password</label>
+                    <input name="passwords[new]" type="password" class="form-control border-dark shadow"
+                      placeholder="new password">
+                  </div>
+                  <button type="submit" class="btn btn-warning border-dark shadow shadow">Submit</button>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div id="transactions" class="row">
+            <div class="col-12">
+              <!-- splash view market overview -->
+              <div id="splash-table" class="table-responsive mt-5">
+                  <button type="button" class="btn btn-primary nav-button me-3" id="previous-page-splash">
+                    &laquo; Previous 100
+                  </button>
+                  <button type="button" class="btn btn-primary nav-button" id="next-page-splash">
+                    Next 100 &raquo;
+                  </button>
+                <table class="table table-responsive" id="markets-table-header-splash">
+                  <!--start of table data-->
+                  <thead id="table-header-splash">
+                    <tr>
+                      <th class="text-center text-table" scope="col">#</th>
+                      <th class="col-2 text-left text-table col-name" scope="col">Name</th>
+                      <th class="text-right text-success" scope="col">Market Cap</th>
+                      <th class="text-right text-success" scope="col">Price</th>
+                      <!-- <th class="text-right text-success" scope="col">Volume (24h)</th> -->
+                      <th class="text-right text-primary" scope="col">24h</th>
+                      <th class="text-center text-primary" scope="col">7-Day</th>
+                    </tr>
+                  </thead>
+                  <tbody id="market-table-splash">
+                  </tbody>
+                </table>
+              </div>
+              <!-- main tabs menus section -->
+              <ul class="nav nav-tabs mt-5" id="app-tabs" role="tablist">
+                <li id="markets-tab" class="nav-item me-3 rounded-3" role="presentation">
+                  <button class="nav-link" id="markets-btn" data-bs-toggle="tab" data-bs-target="#markets" type="button" role="tab"
+                    aria-controls="markets-tab" aria-selected="true">Market Overview</button>
+                </li>
+                <li id="portfolio-tab" class="nav-item me-3 rounded-3" role="presentation">
+                  <button class="nav-link" id="portfolio-btn" data-bs-toggle="tab" data-bs-target="#portfolio" type="button" role="tab"
+                    aria-controls="portfolio" aria-selected="false">Portfolio</button>
+                </li>
+                <li id="transactions-tab" class="nav-item me-3 rounded-3" role="presentation">
+                  <button class="nav-link" id="transactions-btn" data-bs-toggle="tab" data-bs-target="#transactions-list" type="button" role="tab"
+                    aria-controls="transactions-list" aria-selected="false">Transactions</button>
+                </li>
+                <li class="nav-item rounded-3">
+                  <button id="refresh-markets-btn" type="button" class="nav-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise"
+                      viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"></path>
+                      <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z">
+                      </path>
+                    </svg>
+                    refresh markets
+                  </button>                  
+                </li>
+                <li id="portfolio-list-toggle" class="nav-item rounded-3">
+                  <button class="nav-link" id="list-toggle-btn" data-bs-toggle="tab" type="button"
+                    role="tab" aria-controls="portfolio-list-toggle" aria-selected="false">Toggle List
+                  </button>              
+                </li>
+                <!-- PAGINATION -->
+                <li class="nav-item me-3 rounded-3" role="presentation">
+                  <button type="button" class="btn btn-primary nav-button" id="previous-page">
+                    &laquo; Previous 100
+                  </button>
+                </li>
+                <li class="nav-item me-3 rounded-3" role="presentation">
+                  <button type="button" class="btn btn-primary nav-button" id="next-page">
+                    Next 100 &raquo;
+                  </button>
+                </li>
+              </ul>
+              <div class="tab-content" id="app-tabs-content">
+                <!-- markets-tab content -->
+                <div class="tab-pane light show active" id="markets" role="tabpanel" aria-labelledby="markets-tab">
+                  <div class="table-responsive">
+                    <table class="table table-responsive" id="markets-table-header">
+                      <!--start of table data-->
+                      <thead id="table-header">
+                        <tr>
+                          <th class="text-center text-table" scope="col">#</th>
+                          <th class="col-2 text-left text-table col-name" scope="col">Name</th>
+                          <th class="text-right text-success" scope="col">Market Cap</th>
+                          <th class="text-right text-success" scope="col">Price</th>
+                          <!-- <th class="text-right text-success" scope="col">Volume (24h)</th> -->
+                          <th class="text-right text-primary" scope="col">24h</th>
+                          <th class="text-center text-primary" scope="col">7-Day</th>
+                          <th class="text-center text-primary" scope="col">+</th>
+                        </tr>
+                      </thead>
+                      <tbody class="market-table-tab">
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <!-- portfolio tab content -->
+                <div class="tab-pane light" id="portfolio" role="tabpanel" aria-labelledby="portfolio-btn">
+                  <!-- overview card -->
+                  <div class="row">
+                    <div class="col-xl-9 col-md-12 m-auto">
+                      <div class="row">
+
+                        <div class="col-xl-4 col-md-12 m-auto mt-4">
+                          <div class="card card-summary bg-card text-light m-auto" style="width: 18rem;">
+                            <div class="card-body">
+                              <h5 id="account-usd-value" class="card-title"></h5>
+                              <p class="card-text">USD Account Value</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-xl-4 col-md-12 m-auto mt-4">
+                          <div class="card card-summary bg-card text-light m-auto" style="width: 18rem;">
+                            <div class="card-body">
+                              <h5 id="account-btc-value" class="card-title"></h5>
+                              <p class="card-text">BTC Account Value</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="col-xl-4 col-md-12 m-auto mt-4">
+                          <div class="card card-summary bg-card text-light m-auto" style="width: 18rem;">
+                            <div class="card-body">
+                              <h5 id="account-change" class="card-title"></h5>
+                              <p class="card-text">24H Account Change</p>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                
+                  <div id="portfolio-cards" class="row">
+                    <!-- cards filled in from onShowPortfolio - ui.js -->
+                  </div>
+                  <div id="portfolio-list" class="row mt-5">
+                    <div>
+                      <table class="table table-responsive">
+                        <thead id="portfolio-table-header">
+                          <tr>
+                            <th class="text-left text-secondary" scope="col">Rank</th>
+                            <th class="col-2 text-left text-table col-name" scope="col">Name</th>
+                            <th class="text-right text-success" scope="col">Price</th>
+                            <th class="text-right text-success" scope="col">Holdings</th>
+                            <th class="text-right text-success" scope="col">USD Value</th>
+                            <th class="text-right text-success" scope="col">Market Cap</th>
+                            <th class="text-right text-primary" scope="col">24h</th>
+                            <th class="text-center text-primary" scope="col">7-day</th>
+                          </tr>
+                        </thead>
+                        <tbody id="portfolio-table-data">
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>                
+                </div>
+                <!-- transactions tab content -->
+                <div class="tab-pane" id="transactions-list" role="tabpanel" aria-labelledby="transactions-tab">
+                  <div class="tab-pane fade show active" id="nav-transaction-table" role="tabpanel" aria-labelledby="nav-home-tab">
+                    <table class="table" id="transactions-table-header">
+                      <!--start of table data-->
+                      <thead id="transaction-table-header">
+                        <tr>
+                          <th class="text-left text-warning" scope="col">Coin</th>
+                          <th class="text-right text-primary" scope="col">Symbol</th>
+                          <th class="text-right text-success" scope="col">Price</th>
+                          <th class="text-right text-success" scope="col">Quantity</th>
+                          <th class="text-right text-success" scope="col">Order Type</th>
+                          <th class="text-right text-secondary" scope="col">Transactions</th>
+                        </tr>
+                      </thead>
+                      <tbody id="transaction-table">
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <!-- New Transaction Modal -->
+              <div class="modal custom fade" id="new-transaction-modal" tabindex="-1" aria-labelledby="newTransactionModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title text-light" id="newTransactionModalLabel">Log a new transaction</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-light">
+                      <div class="mb-3">
+                        <p id="new-tx-form-coin" class="form-label"></p>
+                      </div>
+                      <div class="mb-3">
+                        <p id="new-tx-form-symbol" class="form-label"></p>
+                      </div>
+                      <div class="mb-3">
+                        <p id="new-tx-form-price" class="form-label"></p>
+                      </div>
+                      <form id="transaction-form-new">
+                        <div class="mb-3">
+                          <label class="form-label">Quantity</label>
+                          <input name="transaction[quantity]" type="text" class="form-control" id="form-quantity-new"
+                            placeholder="quantity">
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">orderType</label>
+                          <input name="transaction[orderType]" type="text" class="form-control" id="form-orderType-new"
+                            placeholder="buy/sell">
+                        </div>
+                        <button id="new-tx-form-submit" type="submit" class="btn btn-warning border-dark shadow shadow">Submit</button>
+                      </form>
+                    </div>
+                    <div class="modal-footer text-light">
+                      <button id="new-modal-close" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- edit transaction modal -->
+              <div class="modal custom fade" id="edit-transaction-modal" tabindex="-1" aria-labelledby="editTransactionModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content content-dark">
+                    <div class="modal-header">
+                      <h5 class="modal-title text-light" id="editTransactionModalLabel">Revise your transaction.</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-light">
+                      <div class="mb-3">
+                        <p id="edit-tx-form-coin" class="form-label"></p>
+                      </div>
+                      <div class="mb-3">
+                        <p id="edit-tx-form-symbol" class="form-label"></p>
+                      </div>
+                      <div class="mb-3">
+                        <p id="edit-tx-form-price" class="form-label"></p>
+                      </div>
+                      <form id="transaction-form-edit">
+                        <div class="mb-3">
+                          <label class="form-label">Quantity</label>
+                          <input name="transaction[quantity]" type="text" class="form-control" id="form-quantity-edit"
+                            placeholder="quantity">
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">orderType</label>
+                          <input name="transaction[orderType]" type="text" class="form-control" id="form-orderType-edit"
+                            placeholder="buy/sell">
+                        </div>
+                        <button id="edit-tx-submit" type="submit" class="btn btn-warning border-dark shadow shadow">Submit</button>
+                      </form>
+                    </div>
+                    <div class="modal-footer text-light">
+                      <button id="edit-modal-close" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- delete transaction modal -->
+              <div class="modal custom fade" id="delete-transaction-modal" tabindex="-1" aria-labelledby="deleteTransactionModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title text-light" id="deleteTransactionModalLabel">Delete a transaction</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-light">
+                      <div class="mb-3">
+                        <h5 id="delete-tx-form-coin" class="form-label"></h5>
+                      </div>                      
+                      <form id="transaction-form-delete">
+                      <button id="delete-tx-submit" type="submit" class="btn btn-warning border-dark shadow shadow">Submit</button>
+                      </form>
+                    </div>
+                    <div class="modal-footer text-light">
+                      <button id="delete-modal-close" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+
+<!-- code to go in the portfolio cards after modal generation working -->
+ <!-- <a class="edit-tx" type="submit" href="#" data-id="${id}" data-bs-toggle="modal"
+        data-bs-target="#edit-transaction-modal" style="text-decoration:none">edit &nbsp;</a><span>/</span>
+      <a class="delete-tx" type="submit" href="#" data-id="${id}" data-bs-toggle="modal"
+        data-bs-target="#delete-transaction-modal" style="text-decoration:none">delete</a> -->

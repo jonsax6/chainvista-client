@@ -1,0 +1,250 @@
+@import '~bootstrap/scss/bootstrap';
+
+$modal-bg-clr: rgb(43, 53, 78);
+$bg-color: rgb(35, 40, 51);
+$bg-card: #474a63;
+
+body {
+  background-color: $bg-color;
+}
+
+.modal-content {
+  border-radius: 25px;
+}
+
+.modal-body {
+  background: rgb(31,56,120);
+  background: linear-gradient(0deg, rgba(31,56,120,1) 0%, rgba(56,85,159,1) 50%, rgba(86,116,195,1) 100%);
+}
+
+.modal-header {
+  background-color: $modal-bg-clr;
+}
+
+.bg-card {
+  background-color: $bg-card;
+}
+
+.bg-image {
+  background-color: $modal-bg-clr;
+}
+
+.bg-price {
+  background-color: rgb(104, 115, 141);
+}
+
+.card {
+  width: 95%;
+}
+
+.card-summary {
+  width: 75%;
+}
+
+.modal-footer {
+  background-color: $modal-bg-clr;
+}
+
+#app-tabs li .active button { 
+  border-color: rgb(145, 145, 145);
+  border-bottom-color: transparent; 
+  background-color:Yellow;
+  border-radius: 25px;
+}
+
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+  color: #495057;
+  background-color: #4a68b6;
+  color: rgb(213, 213, 213);
+  border: none;
+}
+
+.nav-item:hover {
+  background-color: #394157;
+}
+
+.nav-link:hover {
+  color: rgb(213, 213, 213);
+  border: none;
+}
+
+.nav-link {
+  background-color: #4a68b6;
+  color: rgb(213, 213, 213); 
+}
+
+.dropdown-item:hover {
+  background-color: #4a68b6;
+}
+
+.coin-logo {
+  height: 15px;
+}
+
+.dropdown-menu {
+  background-color: rgb(46, 46, 46);
+  color: rgb(213, 213, 213);
+}
+
+.nav-link.active {
+  color: rgb(213, 213, 213);
+}
+
+a .nav-link .dropdown-toggle {
+  color: rgb(213, 213, 213);
+}
+
+#user-account-text {
+  background-color: $bg-color;
+}
+.table {
+  color: rgb(186, 186, 186);
+  // width: 1200px;
+}
+
+.col-name {
+  width: 250px;
+}
+
+.text-table {
+  color: rgb(186, 186, 186);
+}
+
+.card-img-top {
+    width: 65%;
+    height: 10vw;
+    object-fit: cover;
+    filter: drop-shadow(5px 5px 5px rgb(34, 42, 61));
+}
+
+@media screen and (max-width: 1200px) {
+  .card-img-top {
+    width: 65%;
+    height: 20vw;
+    object-fit: cover;    
+  }
+  .table {
+    width: 1000px;
+  }
+} 
+
+@media screen and (max-width: 800px) {
+  .card-img-top {
+    width: 95%;
+    height: 25vw;
+    object-fit: cover;    
+  }
+} 
+
+@media screen and (max-width: 575px) {
+  .card-img-top {
+    width: 65%;
+    height: 50vw;
+    object-fit: cover;    
+  }
+  .card {
+    width: 65%;
+  }
+} 
+
+.card-img-header {
+    width: 50%;
+    height: 20vw;
+}
+
+#logo-image {
+  width: 400px;
+}
+
+@media only screen and (max-width: 1000px) {
+  #logo-image {
+  width: 350px;
+  }
+}
+@media only screen and (max-width: 800px) {
+  #logo-image {
+  width: 300px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  #logo-image {
+  width: 250px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  #logo-image {
+  width: 200px;
+  }
+}
+
+#sign-out-btn {
+  background-color: #4a68b6;
+  border: none;
+}
+
+#sign-out-btn:hover {
+  background-color: #587edd;
+}
+
+#sign-in-btn {
+  background-color: #4a68b6;
+  border: none;
+}
+
+#sign-up-btn {
+  background-color: #4a68b6;
+  border: none;
+}
+
+#sign-in-btn:hover {
+  background-color: #587edd;
+}
+
+#next-page, #next-page-splash {
+  background-color: #4a68b6;
+  border: none;
+}
+
+#next-page:hover, #next-page-splash:hover {
+  background-color: #587edd;
+}
+
+#previous-page, #previous-page-splash {
+  background-color: #4a68b6;
+  border: none;
+}
+
+#previous-page:hover, #previous-page-splash:hover {
+  background-color: #587edd;
+}
+
+.forms-bg {
+  background: rgb(31,56,120);
+  background: linear-gradient(0deg, rgba(31,56,120,1) 0%, rgba(56,85,159,1) 50%, rgba(86,116,195,1) 100%);
+} 
+
+#search-btn {
+  color: #587edd;
+  border-color: #587edd;
+}
+
+#search-btn:hover {
+  color: #ededed;
+  border-color: #668df0;
+  background-color: #587edd;
+}
+
+.table td {
+  padding: 20px;
+  height: 40px;
+  font-size: .875rem;
+  vertical-align: middle;
+}
+
+// table {
+//     border-collapse: collapse;
+//     text-indent: initial;
+//     border-spacing: 2px;
+// }
