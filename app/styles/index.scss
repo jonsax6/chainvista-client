@@ -152,6 +152,33 @@ a .nav-link .dropdown-toggle {
     height: 20vw;
 }
 
+#logo-image {
+  width: 400px;
+}
+
+@media only screen and (max-width: 1000px) {
+  #logo-image {
+  width: 350px;
+  }
+}
+@media only screen and (max-width: 800px) {
+  #logo-image {
+  width: 300px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  #logo-image {
+  width: 250px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  #logo-image {
+  width: 200px;
+  }
+}
+
 #sign-out-btn {
   background-color: #4a68b6;
   border: none;
